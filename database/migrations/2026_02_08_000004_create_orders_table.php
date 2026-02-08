@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->string('invoice_number')->unique();
+            $table->decimal('total_price', 12, 2);
+            $table->enum('status', ['unpaid', 'paid', 'processing', 'completed', 'cancelled'])->default('unpaid');
+            $table->string('snap_token')->nullable(); // Payment Gateway
             $table->timestamps();
         });
     }
