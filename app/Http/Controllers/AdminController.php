@@ -94,12 +94,34 @@ class AdminController extends Controller
     public function orders()
     {
         $orders = Order::with('user')->latest()->paginate(10);
-        return view('admin.orders.index', compact('orders'));
+        $categories = Category::all();
+        return view('admin.orders.index', compact('orders', 'categories'));
     }
 
     public function updateStatus(Request $request, Order $order)
     {
         $order->update(['status' => $request->status]);
         return back()->with('success', 'Status pesanan diperbarui');
+    }
+
+    // --- CATEGORY MANAGEMENT ---
+
+    public function categories()
+    {
+        $categories = Category::all();
+        return view('admin.categories.index', compact('categories'));
+    }
+
+    public function storeCategory(Request $request)
+    {
+        $request->validate(['name' => 'required|unique:categories,name']);
+        Category::create(['name' => $request->name, 'is_active' => true]);
+        return back()->with('success', 'Kategori berhasil ditambah');
+    }
+
+    public function toggleCategory(Category $category)
+    {
+        $category->update(['is_active' => !$category->is_active]);
+        return back()->with('success', 'Status kategori diperbarui');
     }
 }
