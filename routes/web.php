@@ -56,6 +56,11 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     // Order Management
     Route::get('/orders', [AdminController::class, 'orders'])->name('orders.index');
     Route::post('/orders/{order}/status', [AdminController::class, 'updateStatus'])->name('orders.updateStatus');
+
+    // Admin Category Routes
+    Route::get('/categories', [AdminController::class, 'categories'])->name('categories.index');
+    Route::post('/categories', [AdminController::class, 'storeCategory'])->name('categories.store');
+    Route::post('/categories/{category}/toggle', [AdminController::class, 'toggleCategory'])->name('categories.toggle');
 });
 
 // --- 4. EXCLUDED ROUTES (Midtrans Webhook) ---
