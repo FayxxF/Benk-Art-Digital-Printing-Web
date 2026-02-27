@@ -41,6 +41,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/orders', [OrderController::class, 'store'])->name('orders.store'); // Checkout Action
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index'); // History List
     Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show'); // Invoice View
+    Route::post('/orders/{order}/payment-success', [OrderController::class, 'paymentSuccess'])->name('orders.payment_success'); // Sukses Dibayar
 
 });
 

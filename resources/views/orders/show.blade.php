@@ -1,6 +1,12 @@
 @extends('layouts.app')
 
 @section('content')
+<head>
+    <script type="text/javascript"
+		src="https://app.sandbox.midtrans.com/snap/snap.js"
+        data-client-key="Mid-client-mqmvrVZuR8bqb4AN">
+    </script>
+</head>
 <div class="container">
     <div class="card shadow-lg border-0">
         <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center p-4">
@@ -87,6 +93,33 @@
                         <i class="fas fa-credit-card me-2"></i> Bayar Sekarang
                     </button>
                 @endif
+
+                {{-- checkout midtrans --}}
+                <div id="snap-container"></div>
+<form id="payment-success-form" action="{{ route('orders.payment_success', $order->id) }}" method="POST" style="display: none;">
+    @csrf
+</form>
+                     <script type="text/javascript">
+                        // For example trigger on button clicked, or any time you need
+                        var payButton = document.getElementById('pay-button');
+                        payButton.addEventListener('click', function () {
+                            // Trigger snap popup. @TODO: Replace TRANSACTION_TOKEN_HERE with your transaction token
+                            window.snap.pay('{{ $order->snap_token }}', {onSuccess: function(result){
+                                // Auto-submit the hidden form to update database and redirect
+                                document.getElementById('payment-success-form').submit();
+                                },
+                                onPending: function(result){
+                                    alert("Menunggu pembayaran Anda!");
+                                },
+                                onError: function(result){
+                                    alert("Pembayaran gagal!");
+                                },
+                                onClose: function(){
+                                    // Customer closed the popup without finishing
+                                }});
+                            // customer will be redirected after completing payment pop-up
+                        });
+                    </script>
             </div>
         </div>
     </div>
