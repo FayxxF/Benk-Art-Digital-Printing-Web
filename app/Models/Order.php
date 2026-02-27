@@ -29,18 +29,5 @@ class Order extends Model
         return $this->hasMany(OrderDetail::class);
     }
 
-    // generate link whatsapp untuk konfirmasi pemesanan
-    public function getWhatsappLinkAttribute()
-    {
-        $adminPhone = 'xxxx';
-        
-        $message  = "Halo Admin Benk Art, saya ingin konfirmasi pesanan:\n";
-        $message .= "No Invoice: *{$this->invoice_number}*\n";
-        $message .= "Total: Rp " . number_format($this->total_price, 0, ',', '.') . "\n";
-        $message .= "Status: " . ucfirst($this->status) . "\n\n";
-        $message .= "Mohon diproses. Terima kasih.";
-
-        return "https://wa.me/{$adminPhone}?text=" . urlencode($message);
-    }
 
 }

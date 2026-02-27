@@ -81,9 +81,6 @@
             </div>
 
             <div class="d-flex justify-content-end gap-2 mt-4">
-                <a href="{{ $order->whatsapp_link }}" target="_blank" class="btn btn-success">
-                    <i class="fab fa-whatsapp me-2"></i> Konfirmasi ke Admin
-                </a>
 
                 @if($order->status == 'unpaid')
                     <button id="pay-button" class="btn btn-primary">
