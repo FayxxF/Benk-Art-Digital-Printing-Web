@@ -20,7 +20,7 @@ class OrderDetail extends Model
     ];
 
     protected $casts = [
-        'specs_snapshot' => 'array',
+        'specs_detail' => 'array',
     ];
 
     // FK

@@ -52,9 +52,9 @@ class OrderService{
                     'product_id' => $item->product_id,
                     'quantity' => $item->quantity,
                     'price' => $finalUnitPrice, // Save Historical Price
-                    'specs_snapshot' => $item->specs_request,
-                    'image_snapshot' => $item->image_request,
-                    'note_snapshot' => $item->description_request,
+                    'specs_detail' => $item->specs_request,
+                    'image_detail' => $item->image_request,
+                    'note_detail' => $item->description_request,
                 ]);
             }
 

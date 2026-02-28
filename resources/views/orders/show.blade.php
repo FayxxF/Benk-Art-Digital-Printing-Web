@@ -27,6 +27,24 @@
         
         <div class="card-body p-4">
             <div class="row mb-4">
+                <div class="col-md-5 mb-4">
+                   @foreach($order->details as $detail)
+        <tr>
+            <td>
+                <strong>{{ $detail->product->name }}</strong>
+                <img src="{{ $detail->image_detail ? asset('storage/'.$detail->image_detail) : 'https://via.placeholder.com/500x500?text=No+Image' }}" 
+                    class="img-fluid rounded shadow-sm w-100">
+                @if($detail->specs_snapshot)
+                    <br><small class="text-muted">Specs: {{ $detail->specs_snapshot }}</small>
+                @endif
+            </td>
+            
+            <td>{{ $detail->quantity }}</td>
+            <td>Rp {{ number_format($detail->price, 0, ',', '.') }}</td>
+            <td>Rp {{ number_format($detail->quantity * $detail->price, 0, ',', '.') }}</td>
+        </tr>
+    @endforeach
+    </div>
                 <div class="col-md-6">
                     <h6 class="text-muted">Ditagihkan Kepada:</h6>
                     <p class="fw-bold mb-0">{{ $order->user->name }}</p>
