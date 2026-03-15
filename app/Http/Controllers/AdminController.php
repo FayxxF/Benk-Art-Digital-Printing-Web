@@ -150,6 +150,8 @@ class AdminController extends Controller
                     'Email',
                     'Produk',
                     'Qty',
+                    'Spesifikasi',
+                    'Deskripsi',
                     'Harga Satuan',
                     'Subtotal Produk',
                     'Total Order',
@@ -158,12 +160,17 @@ class AdminController extends Controller
                 ], ';');
                 foreach ($orders as $order) {
                     foreach ($order->details as $detail) {
+                        $specsString = collect($detail->specs_detail)
+                        ->map(fn($val, $key) => "$key: $val")
+                        ->implode(' · ');
                         fputcsv($file, [
                             $order->invoice_number,
                             $order->user->name,
                             $order->user->email,
                             $detail->product->name ?? '-',
                             $detail->quantity,
+                            $specsString,
+                            $detail->note_detail,
                             $detail->price,
                             $detail->price * $detail->quantity,
                             $order->total_price,
