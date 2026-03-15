@@ -119,7 +119,7 @@
             </div>
 
             {{-- Action --}}
-            @if($order->status == 'unpaid')
+            @if($order->status == 'unpaid' && auth()->user()?->role == 'customer')
             <div style="display:flex;justify-content:flex-end">
                 <button id="pay-button"
                         style="display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:600;padding:10px 24px;border-radius:8px;background:#3B82F6;color:#fff;border:none;cursor:pointer"
