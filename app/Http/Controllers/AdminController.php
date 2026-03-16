@@ -12,7 +12,8 @@ class AdminController extends Controller
 {
     public function dashboard(){
         $stats = [
-            'income' => Order::where('status', 'paid')->sum('total_price'),
+            'income' => Order::whereIn('status', ['paid', 'completed'])->sum('total_price')
+            - Order::where('status', 'cancelled')->sum('total_price'),
             'orders_count' => Order::count(),
             'products_count' => Product::count(),
             'recent_orders' => Order::with('user')->latest()->take(5)->get()

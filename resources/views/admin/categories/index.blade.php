@@ -22,11 +22,6 @@
     <div class="bg-white rounded-lg shadow-xl w-full max-w-sm mx-4 p-6" style="border:1px solid rgba(34,53,96,0.1)">
         <div class="flex items-center justify-between mb-4">
             <h5 class="text-base font-bold text-navy">Tambah Kategori</h5>
-            <button type="button" onclick="closeModal('modalKategori')"
-                    class="w-7 h-7 rounded-md flex items-center justify-center text-sm"
-                    style="background:rgba(34,53,96,0.07);color:#223560;border:none;cursor:pointer">
-                <i class="fas fa-times"></i>
-            </button>
         </div>
         <form action="{{ route('admin.categories.store') }}" method="POST">
             @csrf
@@ -44,18 +39,16 @@
                        onfocus="this.style.borderColor='#3B82F6';this.style.background='#fff'"
                        onblur="this.style.borderColor='rgba(34,53,96,0.15)';this.style.background='#f8f9fb'">
             </div>
-            <div class="flex gap-2">
+            <div style="display:flex;gap:8px">
                 <button type="button" onclick="closeModal('modalKategori')"
-                        class="flex-1 text-sm font-semibold px-4 py-2 rounded-md text-navy"
-                        style="background:rgba(34,53,96,0.08);border:none;cursor:pointer"
+                        style="flex:1;background:rgba(34,53,96,0.08);border:none;cursor:pointer;padding:8px 16px;border-radius:6px;font-size:14px;font-weight:600;color:#223560"
                         onmouseover="this.style.background='rgba(34,53,96,0.15)'" onmouseout="this.style.background='rgba(34,53,96,0.08)'">
                     Batal
                 </button>
                 <button type="submit"
-                        class="flex-1 inline-flex items-center justify-center gap-2 text-white text-sm font-semibold px-4 py-2 rounded-md"
-                        style="background:#3B82F6;border:none;cursor:pointer"
+                        style="flex:1;display:inline-flex;align-items:center;justify-content:center;gap:6px;background:#3B82F6;border:none;cursor:pointer;padding:8px 16px;border-radius:6px;font-size:14px;font-weight:600;color:white"
                         onmouseover="this.style.background='#2563EB'" onmouseout="this.style.background='#3B82F6'">
-                    <i class="fas fa-plus text-xs"></i> Simpan
+                    <i class="fas fa-plus" style="font-size:11px"></i> Simpan
                 </button>
             </div>
         </form>
@@ -132,6 +125,7 @@
             <tr style="background:rgba(34,53,96,0.04)">
                 <th class="text-left text-xs font-semibold uppercase tracking-wider px-5 py-2.5 text-navy" style="opacity:0.5">Nama Kategori</th>
                 <th class="text-left text-xs font-semibold uppercase tracking-wider px-5 py-2.5 text-navy" style="opacity:0.5">Total Produk</th>
+                <th class="text-left text-xs font-semibold uppercase tracking-wider px-5 py-2.5 text-navy" style="opacity:0.5">Tampil di Toko</th>
                 <th class="text-left text-xs font-semibold uppercase tracking-wider px-5 py-2.5 text-navy" style="opacity:0.5">Aksi</th>
             </tr>
         </thead>
@@ -156,18 +150,35 @@
                     </span>
                 </td>
 
+                {{-- Toggle On/Off --}}
+                <td class="px-5 py-3">
+                    <form action="{{ route('admin.categories.toggle', $cat->id) }}" method="POST" style="margin:0;display:inline">
+                        @csrf
+                        <button type="submit" title="{{ $cat->is_active ? 'Klik untuk sembunyikan' : 'Klik untuk tampilkan' }}"
+                                style="background:none;border:none;cursor:pointer;padding:0;display:inline-flex;align-items:center;gap:8px">
+                            {{-- Toggle visual --}}
+                            <div style="position:relative;width:40px;height:22px;border-radius:11px;transition:background 0.2s;background:{{ $cat->is_active ? '#3B82F6' : 'rgba(34,53,96,0.2)' }}">
+                                <div style="position:absolute;top:3px;left:{{ $cat->is_active ? '21px' : '3px' }};width:16px;height:16px;border-radius:50%;background:white;transition:left 0.2s;box-shadow:0 1px 3px rgba(0,0,0,0.2)"></div>
+                            </div>
+                            <span style="font-size:11px;font-weight:600;color:{{ $cat->is_active ? '#059669' : 'rgba(34,53,96,0.4)' }}">
+                                {{ $cat->is_active ? 'Aktif' : 'Nonaktif' }}
+                            </span>
+                        </button>
+                    </form>
+                </td>
+
                 {{-- Aksi --}}
                 <td class="px-5 py-3">
                     <div class="flex items-center gap-2">
                         <button type="button" onclick="openEditModal({{ $cat->id }}, '{{ addslashes($cat->name) }}')"
-                                class="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-md transition-colors duration-150 cursor-pointer"
+                                class="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-md cursor-pointer"
                                 style="background:rgba(34,53,96,0.08);color:#223560;border:none"
                                 onmouseover="this.style.background='rgba(34,53,96,0.15)'" onmouseout="this.style.background='rgba(34,53,96,0.08)'">
                             <i class="fas fa-pencil-alt" style="font-size:10px"></i>
                             Edit
                         </button>
                         <button type="button" onclick="openHapusModal({{ $cat->id }}, '{{ addslashes($cat->name) }}')"
-                                class="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-md transition-colors duration-150 cursor-pointer"
+                                class="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-md cursor-pointer"
                                 style="background:rgba(239,68,68,0.08);color:#dc2626;border:none"
                                 onmouseover="this.style.background='rgba(239,68,68,0.15)'" onmouseout="this.style.background='rgba(239,68,68,0.08)'">
                             <i class="fas fa-trash-alt" style="font-size:10px"></i>
@@ -179,7 +190,7 @@
             </tr>
             @empty
             <tr>
-                <td colspan="3" class="px-5 py-12 text-center text-navy" style="opacity:0.3">
+                <td colspan="4" class="px-5 py-12 text-center text-navy" style="opacity:0.3">
                     <i class="fas fa-tags text-3xl mb-2 block"></i>
                     <p class="text-sm font-medium">Belum ada kategori</p>
                 </td>
@@ -193,30 +204,23 @@
     function openModal(id) {
         document.getElementById(id).style.display = 'flex';
     }
-
     function closeModal(id) {
         document.getElementById(id).style.display = 'none';
     }
-
-    // Tutup modal kalau klik di luar
     ['modalKategori','modalEditKategori','modalHapusKategori'].forEach(id => {
         document.getElementById(id).addEventListener('click', function(e) {
             if (e.target === this) closeModal(id);
         });
     });
-
-    // Auto buka modal tambah jika ada error validasi
     @if($errors->any())
         openModal('modalKategori');
     @endif
-
     function openEditModal(id, name) {
         document.getElementById('editNamaKategori').value = name;
         document.getElementById('formEditKategori').action = '/admin/categories/' + id;
         openModal('modalEditKategori');
         setTimeout(() => document.getElementById('editNamaKategori').focus(), 100);
     }
-
     function openHapusModal(id, name) {
         document.getElementById('hapusNamaKategori').textContent = '"' + name + '"';
         document.getElementById('formHapusKategori').action = '/admin/categories/' + id;
