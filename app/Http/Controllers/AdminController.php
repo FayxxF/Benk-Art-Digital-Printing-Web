@@ -83,21 +83,22 @@ class AdminController extends Controller
     }
 
     public function update(Request $request, Product $product)
-    {
-        $data = $request->all();
-
-        if ($request->hasFile('image')) {
-            Storage::disk('public')->delete($product->image);
-            $data['image'] = $request->file('image')->store('products', 'public');
-        }
-
-        if ($request->has('specs')) {
-            $data['specs'] = $request->specs;
-        }
-
-        $product->update($data);
-        return redirect()->route('admin.products.index')->with('success', 'Produk diupdate');
+{
+    if ($request->hasFile('image')) {
+        Storage::disk('public')->delete($product->image);
+        $product->image = $request->file('image')->store('products', 'public');
     }
+
+    $product->name        = $request->name;
+    $product->category_id = $request->category_id;
+    $product->price       = $request->price;
+    $product->stock         = $request->stock ?? $product->stock;
+    $product->description = $request->description;
+    $product->specs       = $request->specs;
+    $product->save();
+
+    return redirect()->route('admin.products.index')->with('success', 'Produk diupdate');
+}
 
     public function destroy(Product $product)
     {

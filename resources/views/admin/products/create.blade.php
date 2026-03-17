@@ -140,6 +140,7 @@
                             onmouseover="this.style.background='rgba(239,68,68,0.15)'" onmouseout="this.style.background='rgba(239,68,68,0.08)'">
                         &times;
                     </button>
+                    
                 </div>
                 <div id="options-container-${specIndex}" class="flex flex-col gap-1.5 mb-2"></div>
                 <button type="button" onclick="addOption(${specIndex})"
@@ -147,6 +148,7 @@
                         style="color:#3B82F6;background:none;border:none;cursor:pointer;padding:0">
                     + Tambah Opsi
                 </button>
+                
             </div>
         `;
         container.insertAdjacentHTML('beforeend', html);
@@ -155,22 +157,28 @@
     }
 
     function addOption(groupIndex) {
-        const container = document.getElementById(`options-container-${groupIndex}`);
-        const optionIndex = container.children.length;
-        const html = `
-            <div class="flex gap-2">
-                <input type="text" name="specs[${groupIndex}][options][${optionIndex}][value]"
-                       class="flex-1 px-3 py-1.5 rounded-lg text-xs text-navy outline-none"
-                       style="border:1.5px solid rgba(34,53,96,0.15);background:#fff"
-                       placeholder="Pilihan (Cth: Ivory)" required>
-                <input type="number" name="specs[${groupIndex}][options][${optionIndex}][price]"
-                       class="w-24 px-3 py-1.5 rounded-lg text-xs text-navy outline-none"
-                       style="border:1.5px solid rgba(34,53,96,0.15);background:#fff"
-                       placeholder="Harga +" value="0">
-            </div>
-        `;
-        container.insertAdjacentHTML('beforeend', html);
-    }
+    const container = document.getElementById(`options-container-${groupIndex}`);
+    const optionIndex = container.children.length;
+    const html = `
+        <div class="flex gap-2 spec-option-row">
+            <input type="text" name="specs[${groupIndex}][options][${optionIndex}][value]"
+                   class="flex-1 px-3 py-1.5 rounded-lg text-xs text-navy outline-none"
+                   style="border:1.5px solid rgba(34,53,96,0.15);background:#fff"
+                   placeholder="Pilihan (Cth: Ivory)" required>
+            <input type="number" name="specs[${groupIndex}][options][${optionIndex}][price]"
+                   class="w-24 px-3 py-1.5 rounded-lg text-xs text-navy outline-none"
+                   style="border:1.5px solid rgba(34,53,96,0.15);background:#fff"
+                   placeholder="Harga +" value="0">
+            <button type="button" onclick="this.closest('.spec-option-row').remove()"
+                    class="w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold"
+                    style="background:rgba(239,68,68,0.08);color:#dc2626;border:none;cursor:pointer"
+                    title="Hapus opsi">
+                &times;
+            </button>
+        </div>
+    `;
+    container.insertAdjacentHTML('beforeend', html);
+}
 
     function removeGroup(id) {
         document.getElementById(`spec-group-${id}`).remove();
