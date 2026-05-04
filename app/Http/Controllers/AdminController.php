@@ -6,17 +6,42 @@ use App\Models\Category;
 use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class AdminController extends Controller
 {
     public function dashboard(){
+        $bestSellers = Product::with('category')
+            ->select('products.*')
+            ->withSum(['orderDetails as sold_count' => function($q) {
+                $q->join('orders', 'order_details.order_id', '=', 'orders.id')
+                ->whereIn('orders.status', ['paid', 'processing', 'completed']);
+            }], 'quantity')
+            ->orderByDesc('sold_count')
+            ->take(5)
+            ->get();    
+        
+        $grafikBulanan = Order::select(
+                DB::raw('YEAR(created_at) as tahun'),
+                DB::raw('MONTH(created_at) as bulan'),
+                DB::raw('COUNT(id) as total_transaksi'),
+                DB::raw('SUM(total_price) as total_pendapatan')
+            )
+            ->whereIn('status', ['paid', 'processing', 'completed'])
+            ->groupBy('tahun', 'bulan')
+            ->orderBy('tahun', 'desc')
+            ->orderBy('bulan', 'desc')
+            ->get();
+
         $stats = [
             'income' => Order::whereIn('status', ['paid', 'completed'])->sum('total_price')
             - Order::where('status', 'cancelled')->sum('total_price'),
             'orders_count' => Order::count(),
             'products_count' => Product::count(),
-            'recent_orders' => Order::with('user')->latest()->take(5)->get()
+            'best_seller' => $bestSellers,
+            'recent_orders' => Order::with('user')->latest()->take(5)->get(),
+            'grafik_bulanan' => $grafikBulanan,
         ];
         return view('admin.dashboard', compact('stats'));
     }

@@ -53,10 +53,107 @@
         <h3 class="text-2xl font-bold text-white">{{ $stats['products_count'] }}</h3>
     </div>
 
+    
+</div>
+{{-- Table: Produk Terlaris --}}
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+<div class="px-6 py-4 border-b border-gray-100 bg-gray-50">
+    <h3 class="text-lg font-bold text-gray-900">Produk Terlaris</h3>
+</div>
+
+<div class="overflow-x-auto">
+    <table class="w-full text-sm text-left text-gray-500">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50 border-b border-gray-100">
+            <tr>
+                <th scope="col" class="px-6 py-3">Produk</th>
+                <th scope="col" class="px-6 py-3">Harga Dasar</th>
+                <th scope="col" class="px-6 py-3">Jumlah Terjual</th>
+                <th scope="col" class="px-6 py-3">Spesifikasi & Varian</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{-- Use forelse to automatically handle empty data --}}
+            @forelse ($stats['best_seller'] as $product)
+                <tr class="bg-white border-b hover:bg-gray-50 transition-colors">
+                    
+                    {{-- PRODUCT NAME & DESC --}}
+                    <td class="px-6 py-4">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-lg bg-gray-200 overflow-hidden shrink-0">
+                                {{-- Use Laravel's asset() helper for images --}}
+                                <img 
+                                    src="{{ asset('storage/' . $product->image) }}" 
+                                    alt="{{ $product->name }}"
+                                    class="w-full h-full object-cover"
+                                    onerror="this.src='https://via.placeholder.com/150?text=No+Image'"
+                                />
+                            </div>
+                            <div>
+                                <div class="font-semibold text-gray-900">{{ $product->name }}</div>
+                                <div class="text-xs text-gray-400 mt-0.5 line-clamp-1 max-w-[200px]">
+                                    {{ $product->description }}
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+
+                    {{-- BASE PRICE --}}
+                    <td class="px-6 py-4 font-medium text-gray-900">
+                        Rp {{ number_format($product->price, 0, ',', '.') }}
+                    </td>
+
+                    {{-- STOCK --}}
+                    <td class="px-6 py-4">
+                        <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded border border-green-200">
+                            {{ $product->sold_count }} pcs
+                        </span>
+                    </td>
+
+                    {{-- NESTED SPECS & OPTIONS --}}
+                    <td class="px-6 py-4">
+                        <div class="space-y-3">
+                            {{-- Assuming 'specs' is cast to an array in your Product model --}}
+                            @if(!empty($product->specs))
+                                @foreach ($product->specs as $spec)
+                                    <div>
+                                        <span class="text-xs font-semibold text-gray-700 block mb-1">
+                                            {{ $spec['name'] }}:
+                                        </span>
+                                        <div class="flex flex-wrap gap-1.5">
+                                            @foreach ($spec['options'] as $opt)
+                                                <span class="inline-flex items-center px-2 py-1 rounded-md text-[10px] font-medium bg-gray-100 text-gray-600 border border-gray-200">
+                                                    {{ $opt['value'] }}
+                                                    
+                                                    @if (isset($opt['price']) && $opt['price'] > 0)
+                                                        <span class="ml-1 text-indigo-600 font-bold">
+                                                            (+Rp {{ number_format($opt['price'], 0, ',', '.') }})
+                                                        </span>
+                                                    @endif
+                                                </span>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                @endforeach
+                            @endif
+                        </div>
+                    </td>
+
+                </tr>
+            @empty
+                {{-- Empty State --}}
+                <tr>
+                    <td colspan="4" class="px-6 py-8 text-center text-gray-400">
+                        Belum ada data produk terlaris.
+                    </td>
+                </tr>
+            @endforelse
+        </tbody>
+    </table>
+</div>
 </div>
 
 {{-- Recent Orders Table --}}
-<div class="bg-white rounded-lg shadow-sm overflow-hidden" style="border:1px solid rgba(34,53,96,0.1)">
+<div class="bg-white rounded-lg shadow-sm overflow-hidden mt-10" style="border:1px solid rgba(34,53,96,0.1)">
 
     {{-- Table Header --}}
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 px-5 py-3" style="border-bottom:1px solid rgba(34,53,96,0.08)">
