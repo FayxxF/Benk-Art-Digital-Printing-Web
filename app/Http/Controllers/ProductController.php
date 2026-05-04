@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Product;
+use App\Services\AprioriService;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -13,14 +14,12 @@ class ProductController extends Controller
         $query = Product::with('category')
             ->whereHas('category', fn($q) => $q->where('is_active', true));
 
-        // Filter by category id
-        if ($request->filled('category')) {
-            $query->where('category_id', $request->category);
-        }
-
-        // Filter search
         if ($request->filled('search')) {
             $query->where('name', 'like', '%' . $request->search . '%');
+        }
+
+        if ($request->filled('category')) {
+            $query->where('category_id', $request->category);
         }
 
         $products   = $query->paginate(12)->withQueryString();
@@ -35,6 +34,28 @@ class ProductController extends Controller
             abort(404);
         }
 
-        return view('products.show', compact('product'));
+        // Apriori recommendation
+        $apriori         = new AprioriService(minSupport: 0.1, minConfidence: 0.3);
+        $recommendations = $apriori->recommend($product->id, 4);
+
+        // Load produk yang direkomendasikan
+        $recommendedProducts = collect();
+        if (!empty($recommendations)) {
+            $productIds          = array_column($recommendations, 'product_id');
+            $recommendedProducts = Product::with('category')
+                ->whereIn('id', $productIds)
+                ->whereHas('category', fn($q) => $q->where('is_active', true))
+                ->get()
+                ->map(function ($p) use ($recommendations) {
+                    // Tambah info confidence & support ke produk
+                    $rule = collect($recommendations)->firstWhere('product_id', $p->id);
+                    $p->rec_confidence = $rule['confidence'] ?? 0;
+                    $p->rec_support    = $rule['support'] ?? 0;
+                    return $p;
+                })
+                ->sortByDesc('rec_confidence');
+        }
+
+        return view('products.show', compact('product', 'recommendedProducts'));
     }
 }
