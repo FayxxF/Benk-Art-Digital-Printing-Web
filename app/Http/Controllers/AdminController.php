@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Order;
 use App\Models\Product;
+use App\Services\AprioriService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -34,6 +35,50 @@ class AdminController extends Controller
             ->orderBy('bulan', 'desc')
             ->get();
 
+        $apriori = new AprioriService(minSupport: 0.01, minConfidence: 0.3);
+
+        // 1. Dapatkan SEMUA rule kombinasi secara global, bukan per produk
+        $rules = $apriori->generateRules();
+
+        $formattedRecommendations = [];
+        $topCombination = 'Belum ada data yang cukup';
+        $totalPairsCount = count($rules);
+
+        if (!empty($rules)) {
+            // 2. Ambil misal 5 rule teratas saja untuk ditampilkan di Dashboard
+            $topRules = array_slice($rules, 0, 5);
+
+            // 3. Kumpulkan SEMUA Product ID dari rule tersebut agar kita cukup query 1x ke DB
+            $productIds = [];
+            foreach ($topRules as $rule) {
+                $productIds = array_merge($productIds, $rule['antecedent'], $rule['consequent']);
+            }
+            $productIds = array_unique($productIds);
+
+            // 4. Ambil nama produk dari database dan jadikan array [id => name]
+            $productNames = Product::whereIn('id', $productIds)
+                ->pluck('name', 'id');
+
+            // 5. Format datanya agar sesuai dengan React Frontend Anda (product_a, product_b, percentage)
+            foreach ($topRules as $rule) {
+                // Karena Apriori bisa menghasilkan kombinasi [1, 2] => [3], kita ambil item pertamanya saja untuk disederhanakan di UI
+                $idA = $rule['antecedent'][0] ?? null;
+                $idB = $rule['consequent'][0] ?? null;
+
+                $formattedRecommendations[] = [
+                    'product_a' => $productNames[$idA] ?? 'Produk Dihapus',
+                    'product_b' => $productNames[$idB] ?? 'Produk Dihapus',
+                    'percentage' => round($rule['confidence'] * 100) // Ubah 0.85 jadi 85
+                ];
+            }
+
+            // 6. Set Top Combination untuk KPI Card
+            if (count($formattedRecommendations) > 0) {
+                $topCombination = $formattedRecommendations[0]['product_a'] . ' + ' . $formattedRecommendations[0]['product_b'];
+            }
+        }
+
+
         $stats = [
             'income' => Order::whereIn('status', ['paid', 'completed'])->sum('total_price')
             - Order::where('status', 'cancelled')->sum('total_price'),
@@ -42,6 +87,9 @@ class AdminController extends Controller
             'best_seller' => $bestSellers,
             'recent_orders' => Order::with('user')->latest()->take(5)->get(),
             'grafik_bulanan' => $grafikBulanan,
+            'recommend_products' => $formattedRecommendations,
+            'top_combination' => $topCombination,
+            'total_pairs_count' => $totalPairsCount
         ];
         return view('admin.dashboard', compact('stats'));
     }

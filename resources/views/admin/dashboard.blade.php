@@ -152,6 +152,118 @@
 </div>
 </div>
 
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+    
+    {{-- KIRI: REKOMENDASI PRODUK (APRIORI) --}}
+    <div class="lg:col-span-2">
+        <div class="flex items-center justify-between mb-4">
+            <h2 class="text-lg font-bold text-gray-900">Rekomendasi Bundling Produk</h2>
+            {{-- Icon TrendingUp SVG --}}
+            <svg class="w-5 h-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline>
+                <polyline points="16 7 22 7 22 13"></polyline>
+            </svg>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            @forelse ($stats['recommend_products'] as $rec)
+                @php
+                    // Logika penentuan warna badge
+                    $percentage = $rec['percentage'];
+                    if ($percentage > 70) {
+                        $colorClass = 'bg-emerald-100 text-emerald-700 border-emerald-200';
+                        $label = 'Strong';
+                    } elseif ($percentage > 50) {
+                        $colorClass = 'bg-blue-100 text-blue-700 border-blue-200';
+                        $label = 'Medium';
+                    } else {
+                        $colorClass = 'bg-gray-100 text-gray-600 border-gray-200';
+                        $label = 'Low';
+                    }
+                @endphp
+
+                <div class="bg-white rounded-xl border border-gray-100 p-5 hover:shadow-sm transition-all group">
+                    <div class="flex justify-between items-start mb-3">
+                        <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold border uppercase tracking-wider {{ $colorClass }}">
+                            {{ $label }}
+                        </span>
+                        <span class="text-xl font-bold text-indigo-600">
+                            {{ $percentage }}%
+                        </span>
+                    </div>
+                    
+                    <div class="flex flex-wrap items-center gap-2 text-sm font-semibold text-gray-800 mt-4">
+                        <span class="bg-gray-50 px-2 py-1 rounded border border-gray-100">{{ $rec['product_a'] }}</span>
+                        <span class="text-gray-400 font-normal">→</span>
+                        <span class="bg-gray-50 px-2 py-1 rounded border border-gray-100">{{ $rec['product_b'] }}</span>
+                    </div>
+                    
+                    <div class="mt-4 pt-4 border-t border-gray-50 flex items-center justify-between">
+                        <p class="text-[10px] text-gray-400 font-medium">Kombinasi Apriori (Confidence)</p>
+                    </div>
+                </div>
+            @empty
+                <div class="col-span-full bg-white rounded-xl border border-dashed border-gray-200 p-12 text-center">
+                    <p class="text-gray-400 text-sm italic">Belum ada data kombinasi produk yang cukup untuk dianalisis.</p>
+                </div>
+            @endforelse
+        </div>
+    </div>
+
+    {{-- KANAN: INSIGHTS & STATISTIK APRIORI --}}
+    <div class="lg:col-span-1">
+        <div class="flex items-center justify-between mb-4">
+            <h2 class="text-lg font-bold text-gray-900">Insight Analisis</h2>
+            {{-- Icon Lightbulb SVG --}}
+            <svg class="w-5 h-5 text-indigo-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.9 1.2 1.5 1.5 2.5"></path>
+                <path d="M9 18h6"></path>
+                <path d="M10 22h4"></path>
+            </svg>
+        </div>
+        
+        <div class="bg-indigo-50 border border-indigo-100 rounded-xl p-6 h-full shadow-sm">
+            
+            <h4 class="text-xs font-bold text-indigo-800 uppercase tracking-widest mb-3">Market Basket Analysis</h4>
+            <p class="text-sm text-indigo-700 mb-6 leading-relaxed">
+                Sistem mendeteksi total <strong class="bg-indigo-100 px-1.5 py-0.5 rounded">{{ $totalPairsCount ?? 0 }} aturan</strong> kombinasi unik berdasarkan histori transaksi.
+            </p>
+
+            <ul class="space-y-4">
+                <li>
+                    <div class="flex items-center gap-2 text-xs text-indigo-800 font-bold mb-2">
+                        <svg class="w-4 h-4 text-indigo-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                        </svg>
+                        Kombinasi Terpopuler:
+                    </div>
+                    <div class="bg-white px-3 py-2.5 rounded-lg border border-indigo-100 text-sm text-gray-800 font-semibold shadow-sm leading-tight">
+                        {{ $topCombination ?? 'Belum ada kombinasi' }}
+                    </div>
+                </li>
+            </ul>
+
+            <div class="mt-8 pt-6 border-t border-indigo-100/60">
+                <ul class="space-y-2">
+                    <li class="flex items-center gap-2 text-[11px] text-indigo-600 font-medium">
+                        <div class="w-1.5 h-1.5 bg-emerald-400 rounded-full"></div>
+                        > 70% (Sangat direkomendasikan)
+                    </li>
+                    <li class="flex items-center gap-2 text-[11px] text-indigo-600 font-medium">
+                        <div class="w-1.5 h-1.5 bg-blue-400 rounded-full"></div>
+                        > 50% (Cukup potensial)
+                    </li>
+                    <li class="flex items-center gap-2 text-[11px] text-indigo-600 font-medium">
+                        <div class="w-1.5 h-1.5 bg-gray-400 rounded-full"></div>
+                        < 50% (Potensi rendah)
+                    </li>
+                </ul>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
 {{-- Recent Orders Table --}}
 <div class="bg-white rounded-lg shadow-sm overflow-hidden mt-10" style="border:1px solid rgba(34,53,96,0.1)">
 
