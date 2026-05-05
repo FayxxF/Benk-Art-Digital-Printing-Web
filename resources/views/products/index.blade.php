@@ -39,38 +39,45 @@
                 @if(request('category')) <input type="hidden" name="category" value="{{ request('category') }}"> @endif
                 <div class="input-group shadow-sm border rounded-pill p-1">
                     <input type="text" name="search" value="{{ request('search') }}" class="form-control border-0 rounded-pill px-3" placeholder="Cari produk...">
-                    <button class="btn btn-primary rounded-pill px-4" type="submit">Cari</button>
+                    <button class="btn btn-primary rounded-pill px-3" type="submit">
+                        <i class="fas fa-search"></i>
+                    </button>
                 </div>
             </form>
 
             {{-- GRID PRODUK --}}
             <div id="productGrid" class="row g-4">
                 @foreach($products as $product)
-                <div class="col-md-6 col-lg-4 product-card">
-                    <div class="product-grid-card h-100">
-                        <div class="product-img-wrapper">
-                            <img src="{{ $product->image ? asset('storage/'.$product->image) : 'https://via.placeholder.com/300' }}" alt="{{ $product->name }}">
+                <div class="col-md-4 col-lg-3 product-card">
+                    <a href="{{ route('products.show', $product->id) }}" class="text-decoration-none text-dark">
+                        <div class="product-grid-card h-100">
+                            <div class="product-img-wrapper">
+                                <img src="{{ $product->image ? asset('storage/'.$product->image) : 'https://via.placeholder.com/300' }}" alt="{{ $product->name }}">
+                            </div>
+                            <div class="p-3">
+                                <small class="text-primary fw-bold text-uppercase" style="font-size: 0.65rem;">{{ $product->category->name }}</small>
+                                <h6 class="fw-bold my-1 text-truncate">{{ $product->name }}</h6>
+                                <p class="fw-bold mb-3">Rp {{ number_format($product->price, 0, ',', '.') }}</p>
+                                <span class="btn btn-outline-dark btn-sm w-100 rounded-pill">Detail & Pesan</span>
+                            </div>
                         </div>
-                        <div class="p-3">
-                            <small class="text-primary fw-bold text-uppercase" style="font-size: 0.65rem;">{{ $product->category->name }}</small>
-                            <h6 class="fw-bold my-1 text-truncate">{{ $product->name }}</h6>
-                            <p class="fw-bold mb-3">Rp {{ number_format($product->price, 0, ',', '.') }}</p>
-                            <a href="{{ route('products.show', $product->id) }}" class="btn btn-outline-dark btn-sm w-100 rounded-pill">Detail & Pesan</a>
-                        </div>
-                    </div>
+                    </a>
                 </div>
                 @endforeach
             </div>
             
-            {{-- Loading & End (Sama seperti punya Anda) --}}
-            <div id="loadingIndicator" class="text-center py-4" style="display:none;"><div class="spinner-border text-primary"></div></div>
-            <div id="endOfList" class="text-center py-4" style="display:none;"><p class="text-muted small">Semua produk ditampilkan</p></div>
+            {{-- Loading & End --}}
+            <div id="loadingIndicator" class="text-center py-4" style="display:none;">
+                <div class="spinner-border text-primary"></div>
+            </div>
+            <div id="endOfList" class="text-center py-4" style="display:none;">
+                <p class="text-muted small">Semua produk ditampilkan</p>
+            </div>
         </div>
     </div>
 </div>
 
 <script>
-    // Pastikan ID dan class di atas sinkron dengan script loadMore() Anda
-    // Script Infinite Scroll Anda sudah benar, silakan tempel di sini kembali
+    // Script Infinite Scroll tetap
 </script>
 @endsection

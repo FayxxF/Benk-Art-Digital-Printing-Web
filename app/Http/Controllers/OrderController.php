@@ -40,19 +40,39 @@ class OrderController extends Controller
 
     public function index(Request $request)
     {
-        if($request->status){
-            $orders = Order::where('status', $request->status)
-            ->latest()
-            ->paginate(10);
-        }else{
-        $orders = Order::where('user_id', auth()->id())
-                    ->latest()
-                    ->paginate(10);
-        }
-        $categories = Category::all();
-        $products = Product::all();
+        $query = Order::where('user_id', auth()->id());
 
-        return view('orders.index', compact('orders', 'categories', 'products'));
+        // SEARCH LOGIC: If searching, search by invoice or product name across ALL statuses
+        if ($request->search) {
+            $query->where(function($q) use ($request) {
+                $q->where('invoice_number', 'like', '%' . $request->search . '%')
+                  ->orWhereHas('details.product', function($pq) use ($request) {
+                      $pq->where('name', 'like', '%' . $request->search . '%');
+                  });
+            });
+        } else {
+            // Only filter by status if NOT searching
+            if ($request->status) {
+                $query->where('status', $request->status);
+            }
+        }
+
+        // Filter by Category
+        if ($request->category) {
+            $query->whereHas('details.product', function($q) use ($request) {
+                $q->where('category_id', $request->category);
+            });
+        }
+
+        // Filter by Date
+        if ($request->date) {
+            $query->whereDate('created_at', $request->date);
+        }
+
+        $orders = $query->latest()->paginate(10);
+        $categories = Category::all();
+
+        return view('orders.index', compact('orders', 'categories'));
     }
 
     public function paymentSuccess(Order $order)

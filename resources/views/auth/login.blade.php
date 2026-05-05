@@ -35,7 +35,7 @@
 <div class="d-flex align-items-center justify-content-center py-5" style="min-height: 70vh;">
     <div class="auth-card">
         <div class="text-center mb-5">
-            <h2 class="fw-black text-dark mb-2">Login Pelanggan</h2>
+            <h2 class="fw-black text-dark mb-2">Login Akun</h2>
             <p class="text-muted">Masuk ke akun Benk Art Anda</p>
         </div>
 

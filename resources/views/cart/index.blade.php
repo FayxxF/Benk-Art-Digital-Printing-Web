@@ -34,7 +34,7 @@
                                     <tr class="border-bottom">
                                         {{-- 1. Produk --}}
                                         <td class="ps-0 py-4">
-                                            <div class="fw-bold text-dark">{{ $item->product->name }}</div>
+                                            <div class="fw-bold text-dark text-truncate" style="max-width: 100px;" title="{{ $item->product->name }}">{{ $item->product->name }}</div>
                                         </td>
                                         
                                         {{-- 2. Detail Order --}}
