@@ -62,6 +62,7 @@
                             <button class="btn btn-link text-dark p-2" type="button" data-bs-toggle="dropdown"><i class="bi bi-person-circle fs-5"></i></button>
                             <ul class="dropdown-menu dropdown-menu-end">
                                 <li class="px-3 py-2 border-bottom mb-2"><p class="mb-0 fw-bold">{{ auth()->user()->name }}</p></li>
+                                <li><a class="dropdown-item" href="{{ route('profile') }}"><i class="bi bi-person me-2"></i>Profil Saya</a></li>
                                 <li><a class="dropdown-item" href="{{ route('orders.index') }}"><i class="bi bi-receipt me-2"></i>Pesanan Saya</a></li>
                                 @if(Auth::user()->role === 'admin')
                                     <li><a class="dropdown-item" href="{{ route('admin.dashboard') }}"><i class="bi bi-graph-up me-2"></i>Dashboard</a></li>
@@ -79,7 +80,7 @@
         </div>
     </nav>
 
-    <main class="flex-grow-1" style="margin-top:100px;">
+    <main class="flex-grow-1" style="margin-top:80px;">
         <div class="container">
             @if(session('success'))
                 <div class="alert alert-success border-0 shadow-sm rounded-4 alert-dismissible fade show mb-4">
@@ -91,7 +92,7 @@
         </div>
     </main>
 
-    <footer class="footer">
+    <footer class="footer" id="footer">
         <div class="container">
             <div class="row g-5 mb-5 pb-5 border-bottom border-white border-opacity-10">
                 <div class="col-lg-4">

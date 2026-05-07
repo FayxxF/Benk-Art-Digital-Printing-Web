@@ -31,6 +31,7 @@ Route::middleware('auth')->group(function () {
     // Auth Actions
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('/profile', [PageController::class, 'profile'])->name('profile');
+    Route::put('/profile', [AuthController::class, 'updateProfile'])->name('profile.update');
 
     // Cart Management
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');

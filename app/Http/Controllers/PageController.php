@@ -16,6 +16,6 @@ class PageController extends Controller
 
     public function profile()
     {
-        return view('pages.profile');
+        return view('auth.profile');
     }
 }

@@ -78,4 +78,44 @@ class AuthController extends Controller
         return redirect()->route('login')->with('success', 'Anda telah logout.');
     }
 
+    public function updateProfile(Request $request)
+    {
+        $user = Auth::user();
+        
+        // Handle Profile Information Update
+        if ($request->action === 'profile') {
+            $validated = $request->validate([
+                'name' => 'required|string|max:255',
+                'phone' => 'nullable|string|max:20',
+                'email' => 'required|email|unique:users,email,' . $user->id,
+            ]);
+
+            $user->name = $validated['name'];
+            $user->phone = $validated['phone'];
+            $user->email = $validated['email'];
+            $user->save();
+
+            return back()->with('success', 'Informasi profil berhasil diperbarui!');
+        }
+
+        // Handle Password Update
+        if ($request->action === 'password') {
+            $request->validate([
+                'current_password' => ['required', function ($attribute, $value, $fail) use ($user) {
+                    if (!\Illuminate\Support\Facades\Hash::check($value, $user->password)) {
+                        $fail('Password saat ini tidak cocok.');
+                    }
+                }],
+                'password' => 'required|min:6|confirmed',
+            ]);
+
+            $user->password = \Illuminate\Support\Facades\Hash::make($request->password);
+            $user->save();
+
+            return back()->with('success', 'Password berhasil diperbarui!');
+        }
+
+        return back();
+    }
+
 }
