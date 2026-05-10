@@ -39,7 +39,7 @@ class CartController extends Controller
         // memanggil fungsi cartservice tambah keranjang 
         $this->cartService->addToCart(Auth::user(), $request->all(), $request->file('image_request'));
 
-        return redirect()->route('cart.index')->with('success', 'Berhasil ditambahkan ke keranjang!');
+        return redirect()->route('products.index')->with('success', 'Berhasil ditambahkan ke keranjang!');
     }
 
     public function destroy($id)

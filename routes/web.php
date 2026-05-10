@@ -13,6 +13,7 @@ use App\Http\Controllers\PaymentController;
 Route::get('/', [PageController::class, 'index'])->name('home');
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
 Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
+Route::get('/about', [PageController::class, 'about'])->name('about');
 
 
 // Pengunjung yang belum login
@@ -31,6 +32,7 @@ Route::middleware('auth')->group(function () {
     // Auth Actions
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('/profile', [PageController::class, 'profile'])->name('profile');
+    Route::put('/profile', [AuthController::class, 'updateProfile'])->name('profile.update');
 
     // Cart Management
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');

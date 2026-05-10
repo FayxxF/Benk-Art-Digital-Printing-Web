@@ -11,11 +11,17 @@ class PageController extends Controller
     {
         // Get 6 latest products for homepage
         $products = Product::latest()->take(6)->get();
-        return view('layouts.app', compact('products'));
+        return view('home', compact('products'));
     }
 
     public function profile()
     {
-        return view('pages.profile');
+        return view('auth.profile');
     }
+
+        public function about()
+    {
+        return view('about');
+    }
+    
 }
