@@ -10,6 +10,7 @@
         position: relative;
         padding: 1.5rem 2.5rem;
         margin-bottom: 1.5rem;
+        margin-top: 1.5rem;
         border: 1px solid #ffffff;
         box-shadow: 0 15px 30px rgba(0,0,0,0.02);
     }
@@ -93,9 +94,9 @@
 
     .product-card-premium {
         background: white;
-        border-radius: 2.5rem;
+        border-radius: 1rem;
         overflow: hidden;
-        border: 1px solid #f1f5f9;
+        border: 2px solid #f1f5f9;
         transition: all 0.4s ease;
         padding: 0.75rem;
         height: 100%;
@@ -108,7 +109,7 @@
 
     .product-img-container {
         height: 200px;
-        border-radius: 1.5rem;
+        border-radius: 0.5rem;
         overflow: hidden;
         position: relative;
     }

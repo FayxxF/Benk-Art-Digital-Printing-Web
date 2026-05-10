@@ -116,7 +116,8 @@
                     <ul class="list-unstyled d-grid gap-2">
                         <li><a href="#" class="footer-link">Cetak Banner</a></li>
                         <li><a href="#" class="footer-link">Sticker Label</a></li>
-                        <li><a href="#" class="footer-link">Kartu Nama</a></li>
+                        <li><a href="#" class="footer-link">Cetak Undangan</a></li>
+                        <li><a href="#" class="footer-link">Custom Printing</a></li>
                     </ul>
                 </div>
                 <div class="col-md-4 col-lg-4">
