@@ -275,7 +275,6 @@
             @if($order->status == 'unpaid')
                 <a href="{{ route('orders.show', $order->id) }}" class="btn-action-tkp btn-tkp-primary">Bayar Sekarang</a>
             @else
-                <a href="#" class="btn-action-tkp btn-tkp-outline d-none d-sm-inline-block">Tulis Ulasan</a>
                 <a href="{{ route('products.index') }}" class="btn-action-tkp btn-tkp-primary">Beli Lagi</a>
             @endif
             {{-- REMOVED ELLIPSIS BUTTON AS REQUESTED --}}

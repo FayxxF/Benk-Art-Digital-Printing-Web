@@ -25,6 +25,57 @@
         .dropdown-menu { border: none; box-shadow: 0 10px 30px rgba(0,0,0,0.08); border-radius: 1rem; padding: 0.75rem; }
         .dropdown-item { border-radius: 0.5rem; padding: 0.6rem 1rem; font-weight: 600; font-size: 0.85rem; color: #4A5568; }
         .dropdown-item:hover { background-color: #f8fafc; color: var(--primary-color); }
+        .navbar-avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid rgba(13,110,253,0.2);
+        }
+        .navbar-avatar-placeholder {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: #e2e8f0;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #0d6efd;
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        /* Styling teks user di navbar */
+        .nav-user-details {
+            line-height: 1.2;
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .nav-user-name {
+            font-size: 0.85rem; /* Ukuran sama dengan .dropdown-item */
+            font-weight: 700;
+            color: #4A5568; /* Warna teks dropdown Anda */
+            display: block;
+            margin: 0;
+        }
+
+        .nav-user-role {
+            font-size: 0.75rem;
+            color: #a0aec0; /* Warna muted yang seragam */
+            font-weight: 500;
+            display: block;
+            margin: 0;
+        }
+
+        /* Memastikan container flex tetap rapi */
+        .navbar-user-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 12px; /* Jarak antara foto dan teks */
+        }
         
         /* Footer */
         .footer { background: var(--dark-color); color: white; padding: 5rem 0 2rem; margin-top: auto; }
@@ -64,17 +115,14 @@
                         @endif
 
                         <div class="dropdown">
-                            <button class="btn btn-link text-dark p-2" type="button" data-bs-toggle="dropdown"><i class="bi bi-person-circle fs-5"></i></button>
+                            <button class="btn btn-link text-dark p-0" type="button" data-bs-toggle="dropdown">
+                                @if(auth()->user()->profile_image)
+                                    <img src="{{ asset('storage/' . auth()->user()->profile_image) }}" alt="Avatar" class="navbar-avatar">
+                                @else
+                                    <span class="navbar-avatar-placeholder">{{ strtoupper(substr(auth()->user()->name, 0, 1)) }}</span>
+                                @endif
+                            </button>
                             <ul class="dropdown-menu dropdown-menu-end">
-                                <li class="px-3 py-2 border-bottom mb-2">
-                                    @if(auth()->user()->role === 'admin')
-                                        <p class="mb-0 fw-bold">Admin Benk Art</p>
-                                        <small class="text-muted">Administrator</small>
-                                    @else
-                                        <p class="mb-0 fw-bold">{{ auth()->user()->name }}</p>
-                                        <small class="text-muted">Pelanggan</small>
-                                    @endif
-                                </li>
 
                                 @if(auth()->user()->role === 'admin')
                                     <li>
@@ -98,6 +146,14 @@
                                 </li>
                             </ul>
                         </div>
+
+                        <div class="nav-user-details d-none d-md-flex">
+                            <span class="nav-user-name">{{ auth()->user()->name }}</span>
+                            <span class="nav-user-role">
+                                {{ auth()->user()->role === 'admin' ? 'Administrator' : 'Pelanggan' }}
+                            </span>
+                        </div>
+
                     @else
                         <a href="{{ route('login') }}" class="btn btn-outline-primary rounded-3 px-3 py-2 fw-bold d-flex align-items-center">
                             <i class="bi bi-box-arrow-in-right me-2"></i> Login
@@ -126,11 +182,6 @@
                 <div class="col-lg-4">
                     <h3 class="fw-black mb-4">BENK ART</h3>
                     <p class="text-white text-opacity-50 small mb-4">Solusi percetakan digital terpercaya sejak 2015. Kami menghadirkan kualitas cetak terbaik dengan teknologi terkini untuk mendukung bisnis Anda.</p>
-                    <!-- <div class="d-flex gap-2">
-                        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
-                    </div> -->
                 </div>
                 <div class="col-md-4 col-lg-2">
                     <h6>Tautan Cepat</h6>
