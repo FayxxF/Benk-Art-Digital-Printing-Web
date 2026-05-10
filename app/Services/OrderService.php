@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\OrderDetail;
+use App\Models\Product;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -56,9 +57,14 @@ class OrderService{
                     'image_detail' => $item->image_request,
                     'note_detail' => $item->description_request,
                 ]);
+                // 5. reduce stock
+                $product = Product::find($item->product_id);
+                if ($product) {
+                    $product->decrement('stock', $item->quantity);
+                }
             }
 
-            // 5. clear cart
+            // 6. clear cart
             Cart::where('user_id', $user->id)->delete();
             return $order;
         });

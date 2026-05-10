@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cart;
+use App\Models\Product;
 use App\Services\CartService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -36,6 +37,12 @@ class CartController extends Controller
             'image_request' => 'nullable|image|max:5120',
         ]);
 
+        // validasi stok produk 
+        $product = Product::find($request->product_id);
+        if (!$product || $request->quantity > $product->stock){
+            return redirect()->back()->with('error', 'Maaf, stok tidak cukup.');
+        }   
+        
         // memanggil fungsi cartservice tambah keranjang 
         $this->cartService->addToCart(Auth::user(), $request->all(), $request->file('image_request'));
 

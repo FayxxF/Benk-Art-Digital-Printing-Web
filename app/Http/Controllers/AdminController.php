@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Order;
+use App\Models\OrderDetail;
 use App\Models\Product;
 use App\Services\AprioriService;
 use Illuminate\Http\Request;
@@ -296,6 +297,21 @@ class AdminController extends Controller
  
     public function updateStatus(Request $request, Order $order)
     {
+        // validasi
+        if ($request -> status == 'cancelled' && $order->status != 'cancelled'){
+            // ngambil semua detail order per produk
+            $orderDetails = OrderDetail::where('order_id', $order->id)->get();
+            // restore stok per produk
+            foreach ($orderDetails as $detail) {
+                $product = Product::find($detail->product_id);
+                // cek kalo produk nya ada
+                if ($product) {
+                    // tambah kembali quantity nya
+                    $product->increment('stock', $detail->quantity);
+                }
+            }
+            // update status
+        }
         $order->update(['status' => $request->status]);
         return back()->with('success', 'Status pesanan diperbarui');
     }
