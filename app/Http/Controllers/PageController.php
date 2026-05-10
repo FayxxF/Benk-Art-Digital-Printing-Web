@@ -18,4 +18,10 @@ class PageController extends Controller
     {
         return view('auth.profile');
     }
+
+        public function about()
+    {
+        return view('about');
+    }
+    
 }

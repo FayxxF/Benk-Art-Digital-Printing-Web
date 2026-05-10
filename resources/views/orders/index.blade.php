@@ -148,6 +148,37 @@
     }
 
     .text-brand { color: #0d6efd !important; }
+
+    .pagination-btn-tkp {
+        width: 38px;
+        height: 38px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 0.75rem;
+        font-weight: 800;
+        font-size: 0.85rem;
+        transition: 0.2s;
+        text-decoration: none;
+        border: 1px solid #e5e7eb;
+        background: white;
+        color: #64748b;
+    }
+    .pagination-btn-tkp:hover {
+        background: #f8fafc;
+        color: #0d6efd;
+        border-color: #cbd5e1;
+    }
+    .pagination-btn-tkp.active {
+        background: #0d6efd;
+        color: white;
+        border-color: #0d6efd;
+    }
+    .pagination-btn-tkp.disabled {
+        opacity: 0.25;
+        pointer-events: none;
+        background: #f8fafc;
+    }
 </style>
 
 <div class="container py-4">
@@ -244,6 +275,7 @@
             @if($order->status == 'unpaid')
                 <a href="{{ route('orders.show', $order->id) }}" class="btn-action-tkp btn-tkp-primary">Bayar Sekarang</a>
             @else
+                <a href="#" class="btn-action-tkp btn-tkp-outline d-none d-sm-inline-block">Tulis Ulasan</a>
                 <a href="{{ route('products.index') }}" class="btn-action-tkp btn-tkp-primary">Beli Lagi</a>
             @endif
             {{-- REMOVED ELLIPSIS BUTTON AS REQUESTED --}}
@@ -259,8 +291,43 @@
     @endforelse
 
     {{-- Pagination --}}
-    <div class="mt-4 d-flex justify-content-center">
-        {{ $orders->appends(request()->all())->links() }}
+    @if($orders->hasPages())
+    <div class="mt-5">
+        <div class="d-flex justify-content-center align-items-center gap-2">
+            {{-- Previous Page Link --}}
+            @if ($orders->onFirstPage())
+                <span class="pagination-btn-tkp disabled"><i class="fas fa-chevron-left"></i></span>
+            @else
+                <a href="{{ $orders->previousPageUrl() }}&{{ http_build_query(request()->except('page')) }}" class="pagination-btn-tkp">
+                    <i class="fas fa-chevron-left"></i>
+                </a>
+            @endif
+
+            {{-- Pagination Elements --}}
+            @foreach ($orders->getUrlRange(max(1, $orders->currentPage() - 2), min($orders->lastPage(), $orders->currentPage() + 2)) as $page => $url)
+                @if ($page == $orders->currentPage())
+                    <span class="pagination-btn-tkp active">{{ $page }}</span>
+                @else
+                    <a href="{{ $url }}&{{ http_build_query(request()->except('page')) }}" class="pagination-btn-tkp">{{ $page }}</a>
+                @endif
+            @endforeach
+
+            {{-- Next Page Link --}}
+            @if ($orders->hasMorePages())
+                <a href="{{ $orders->nextPageUrl() }}&{{ http_build_query(request()->except('page')) }}" class="pagination-btn-tkp">
+                    <i class="fas fa-chevron-right"></i>
+                </a>
+            @else
+                <span class="pagination-btn-tkp disabled"><i class="fas fa-chevron-right"></i></span>
+            @endif
+        </div>
+        
+        <div class="text-center mt-3">
+            <p class="text-muted" style="font-size: 0.75rem; font-weight: 600;">
+                Menampilkan {{ $orders->firstItem() }} sampai {{ $orders->lastItem() }} dari {{ $orders->total() }} pesanan
+            </p>
+        </div>
     </div>
+    @endif
 </div>
 @endsection

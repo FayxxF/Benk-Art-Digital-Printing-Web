@@ -178,9 +178,9 @@
                     <a href="{{ route('products.index') }}" class="btn btn-primary rounded-4 px-4 py-2 fw-bold shadow-lg text-white">
                         Mulai Belanja <i class="fas fa-arrow-right ms-2 small"></i>
                     </a>
-                    <!-- <a href="#" class="btn btn-outline-secondary rounded-4 px-4 py-2 fw-bold border-2">
-                        Tentang Kami
-                    </a> -->
+                    <a href="https://wa.me/6289637506893" target="_blank" class="btn btn-outline-primary rounded-4 px-4 py-2 fw-bold border-2">
+                        Hubungi Kami
+                    </a>
                 </div>
                 
                 <div class="d-flex gap-5 pt-4 border-top">

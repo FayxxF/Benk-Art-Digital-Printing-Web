@@ -53,6 +53,9 @@
             </div>
             <div>
                 <p class="text-white font-bold text-sm leading-none">Benk Art</p>
+
+
+
                 <p class="text-white/40 text-xs mt-0.5">Admin Panel</p>
             </div>
         </div>
@@ -81,10 +84,10 @@
             <a href="{{ route('home') }}" class="sidebar-link">
                 <i class="fas fa-arrow-left"></i> Kembali ke Website
             </a>
-            <form action="#" method="POST">
+            <form action="{{ route('logout') }}" method="POST">
                 @csrf
-                <button type="submit" class="sidebar-link w-full text-red-400 hover:text-red-300 hover:bg-red-900/20">
-                    <i class="fas fa-sign-out-alt"></i> Logout
+                <button type="submit" class="sidebar-link w-full text-left text-red-400 hover:text-red-300 hover:bg-red-900/20">
+                    <i class="fas fa-sign-out-alt"></i> Keluar
                 </button>
             </form>
         </div>

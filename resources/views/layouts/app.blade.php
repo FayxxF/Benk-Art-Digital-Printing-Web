@@ -47,27 +47,55 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav mx-auto">
                     <li class="nav-item"><a class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}" href="{{ route('home') }}">Beranda</a></li>
+                    <li class="nav-item"><a class="nav-link {{ request()->routeIs('about') ? 'active' : '' }}" href="{{ route('about') }}">Tentang Kami</a></li>
                     <li class="nav-item"><a class="nav-link {{ request()->routeIs('products.*') ? 'active' : '' }}" href="{{ route('products.index') }}">Katalog</a></li>
                 </ul>
                 
                 <div class="d-flex align-items-center gap-3">
                     @auth
-                        <a href="{{ route('cart.index') }}" class="btn btn-link text-dark position-relative p-2">
-                            <i class="bi bi-cart fs-5"></i>
-                            @if(auth()->user()->carts->count() > 0)
-                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.6rem; padding: 0.35em 0.6em;">{{ auth()->user()->carts->count() }}</span>
-                            @endif
-                        </a>
+                        {{-- Keranjang: Hanya ditampilkan jika role BUKAN admin --}}
+                        @if(auth()->user()->role !== 'admin')
+                            <a href="{{ route('cart.index') }}" class="btn btn-link text-dark position-relative p-2">
+                                <i class="bi bi-cart fs-5"></i>
+                                @if(auth()->user()->carts->count() > 0)
+                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.6rem; padding: 0.35em 0.6em;">{{ auth()->user()->carts->count() }}</span>
+                                @endif
+                            </a>
+                        @endif
+
                         <div class="dropdown">
                             <button class="btn btn-link text-dark p-2" type="button" data-bs-toggle="dropdown"><i class="bi bi-person-circle fs-5"></i></button>
                             <ul class="dropdown-menu dropdown-menu-end">
-                                <li class="px-3 py-2 border-bottom mb-2"><p class="mb-0 fw-bold">{{ auth()->user()->name }}</p></li>
-                                <li><a class="dropdown-item" href="{{ route('profile') }}"><i class="bi bi-person me-2"></i>Profil Saya</a></li>
-                                <li><a class="dropdown-item" href="{{ route('orders.index') }}"><i class="bi bi-receipt me-2"></i>Pesanan Saya</a></li>
-                                @if(Auth::user()->role === 'admin')
-                                    <li><a class="dropdown-item" href="{{ route('admin.dashboard') }}"><i class="bi bi-graph-up me-2"></i>Dashboard</a></li>
+                                <li class="px-3 py-2 border-bottom mb-2">
+                                    @if(auth()->user()->role === 'admin')
+                                        <p class="mb-0 fw-bold">Admin Benk Art</p>
+                                        <small class="text-muted">Administrator</small>
+                                    @else
+                                        <p class="mb-0 fw-bold">{{ auth()->user()->name }}</p>
+                                        <small class="text-muted">Pelanggan</small>
+                                    @endif
+                                </li>
+
+                                @if(auth()->user()->role === 'admin')
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('admin.dashboard') }}">
+                                            <i class="bi bi-graph-up me-2"></i>Dashboard Admin
+                                        </a>
+                                    </li>
+                                @else
+                                    <li><a class="dropdown-item" href="{{ route('profile') }}"><i class="bi bi-person me-2"></i>Profil Saya</a></li>
+                                    <li><a class="dropdown-item" href="{{ route('orders.index') }}"><i class="bi bi-receipt me-2"></i>Pesanan Saya</a></li>
                                 @endif
-                                <li><form action="{{ route('logout') }}" method="POST">@csrf<button type="submit" class="dropdown-item text-danger"><i class="bi bi-power me-2"></i>Keluar</button></form></li>
+
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <form action="{{ route('logout') }}" method="POST">
+                                        @csrf
+                                        <button type="submit" class="dropdown-item text-danger">
+                                            <i class="bi bi-power me-2"></i>Keluar
+                                        </button>
+                                    </form>
+                                </li>
                             </ul>
                         </div>
                     @else
@@ -83,7 +111,7 @@
     <main class="flex-grow-1" style="margin-top:80px;">
         <div class="container">
             @if(session('success'))
-                <div class="alert alert-success border-0 shadow-sm rounded-4 alert-dismissible fade show mb-4">
+                <div id="success-alert" class="alert alert-success border-0 shadow-sm rounded-4 alert-dismissible fade show mb-4">
                     <i class="fas fa-check-circle me-2"></i> {{ session('success') }}
                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                 </div>
@@ -98,16 +126,17 @@
                 <div class="col-lg-4">
                     <h3 class="fw-black mb-4">BENK ART</h3>
                     <p class="text-white text-opacity-50 small mb-4">Solusi percetakan digital terpercaya sejak 2015. Kami menghadirkan kualitas cetak terbaik dengan teknologi terkini untuk mendukung bisnis Anda.</p>
-                    <div class="d-flex gap-2">
+                    <!-- <div class="d-flex gap-2">
                         <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
                         <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
                         <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="col-md-4 col-lg-2">
                     <h6>Tautan Cepat</h6>
                     <ul class="list-unstyled d-grid gap-2">
                         <li><a href="{{ route('home') }}" class="footer-link">Beranda</a></li>
+                        <li><a href="{{ route('about') }}" class="footer-link">Tentang Kami</a></li>
                         <li><a href="{{ route('products.index') }}" class="footer-link">Katalog Produk</a></li>
                     </ul>
                 </div>
@@ -134,5 +163,22 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Cari elemen alert berdasarkan ID yang kita buat tadi
+            const successAlert = document.getElementById('success-alert');
+            
+            if (successAlert) {
+                // Set waktu tunggu 5000 milidetik (5 detik)
+                setTimeout(function() {
+                    // Gunakan fungsi bawaan Bootstrap untuk menutup alert
+                    const bsAlert = new bootstrap.Alert(successAlert);
+                    bsAlert.close();
+                }, 5000);
+            }
+        });
+    </script>
+
 </body>
 </html>
