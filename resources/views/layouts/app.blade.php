@@ -122,9 +122,9 @@
                 <div class="col-md-4 col-lg-4">
                     <h6>Hubungi Kami</h6>
                     <ul class="list-unstyled d-grid gap-3 small text-white text-opacity-50">
-                        <li class="d-flex gap-3"><i class="fas fa-map-marker-alt text-primary mt-1"></i> <span>Jl. Percetakan Raya No. 123, Jakarta Selatan</span></li>
-                        <li class="d-flex gap-3"><i class="fas fa-phone-alt text-primary mt-1"></i> <span>+62 812 3456 7890</span></li>
-                        <li class="d-flex gap-3"><i class="fas fa-envelope text-primary mt-1"></i> <span>info@benkart.com</span></li>
+                        <li class="d-flex gap-3"><i class="fas fa-map-marker-alt text-primary mt-1"></i> <span>Jl. Kiai H. Raden Ma'mun Nawawi No.88, Sukadami, Cikarang Sel., Kabupaten Bekasi, Jawa Barat 17530</span></li>
+                        <li class="d-flex gap-3"><i class="fas fa-phone-alt text-primary mt-1"></i> <span>+62 896-3750-6893</span></li>
+                        <li class="d-flex gap-3"><i class="fas fa-envelope text-primary mt-1"></i> <span>muliaprimabenk@gmail.com</span></li>
                     </ul>
                 </div>
             </div>
