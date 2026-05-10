@@ -28,7 +28,7 @@
                        onfocus="this.style.borderColor='#3B82F6'" onblur="this.style.borderColor='rgba(34,53,96,0.15)'">
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
                 <div>
                     <label class="block text-xs font-semibold text-navy mb-1.5" style="opacity:0.6">Kategori</label>
                     <select name="category_id"
@@ -43,6 +43,13 @@
                 <div>
                     <label class="block text-xs font-semibold text-navy mb-1.5" style="opacity:0.6">Harga (Rp)</label>
                     <input type="number" name="price" value="{{ $product->price }}" required
+                           class="w-full px-4 py-2 rounded-md text-sm text-navy outline-none"
+                           style="border:1.5px solid rgba(34,53,96,0.15);background:#fff"
+                           onfocus="this.style.borderColor='#3B82F6'" onblur="this.style.borderColor='rgba(34,53,96,0.15)'">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-navy mb-1.5" style="opacity:0.6">Stok</label>
+                    <input type="number" name="stock" value="{{ $product->stock }}" required
                            class="w-full px-4 py-2 rounded-md text-sm text-navy outline-none"
                            style="border:1.5px solid rgba(34,53,96,0.15);background:#fff"
                            onfocus="this.style.borderColor='#3B82F6'" onblur="this.style.borderColor='rgba(34,53,96,0.15)'">

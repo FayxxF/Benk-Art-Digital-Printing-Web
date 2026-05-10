@@ -12,7 +12,8 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         $query = Product::with('category')
-            ->whereHas('category', fn($q) => $q->where('is_active', true));
+            ->whereHas('category', fn($q) => $q->where('is_active', true))
+            ->where('stock', '>', 0);
 
         if ($request->filled('search')) {
             $query->where('name', 'like', '%' . $request->search . '%');
