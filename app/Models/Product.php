@@ -13,6 +13,9 @@ class Product extends Model
         'category_id',
         'name',
         'price',
+        'discount_percentage',
+        'discount_start_date',
+        'discount_end_date',
         'stock',
         'image',
         'description',
@@ -20,7 +23,9 @@ class Product extends Model
     ];
 
     protected $casts = [
-        'specs' => 'array'
+        'specs' => 'array',
+        'discount_start_date' => 'datetime',
+        'discount_end_date' => 'datetime',
     ];
 
     // Foreign Key ke Category
@@ -43,7 +48,28 @@ class Product extends Model
 
     // Helper: untuk menghitung harga tambahan sesuai spesifikasi
     public function calculatePrice($selectedSpecs = []){
+        $now = now();
         $total = $this->price;
+        if ($this->discount_percentage > 0) {
+            
+            $now = now(); // Gets the current date and time
+
+            // Check if both dates are filled in the database
+            if ($this->discount_start_date && $this->discount_end_date) { 
+                //Check if today is inside the promo window
+                if ($now->between($this->discount_start_date, $this->discount_end_date)) {
+                    $discountAmount = $this->price * ($this->discount_percentage / 100);
+                    $total = $this->price - $discountAmount;
+                }
+                // If we are outside the date window, return the normal price
+                $total = $this->price;
+            }
+
+            // permanent ongoing discount.
+            $discountAmount = $this->price * ($this->discount_percentage / 100);
+            $total = $this->price - $discountAmount;
+        }
+
         
         // cek apabila tidak ada opsi spesifikasi atau spek yang dipilih = kosong 
         if(empty($this->specs) || empty($selectedSpecs)) {

@@ -66,7 +66,7 @@
                 <div class="col-md-4 col-lg-3 product-card">
                     <a href="{{ route('products.show', $product->id) }}" class="text-decoration-none text-dark">
                         <div class="product-grid-card h-100 position-relative">
-                            @if($product->isDiscountActive())
+                            @if($product->discount_percentage!=0)
                                 <div class="discount-badge">
                                     {{ $product->discount_percentage }}% OFF
                                 </div>
@@ -78,12 +78,12 @@
                                 <small class="text-primary fw-bold text-uppercase" style="font-size: 0.65rem;">{{ $product->category->name }}</small>
                                 <h6 class="fw-bold my-1 text-truncate">{{ $product->name }}</h6>
                                 <div class="mb-3">
-                                    @if($product->isDiscountActive())
+                                    @if($product->discount_percentage!=0)
                                         <p class="text-muted text-decoration-line-through small mb-0" style="font-size: 0.75rem;">
                                             Rp {{ number_format($product->price, 0, ',', '.') }}
                                         </p>
                                         <p class="fw-bold text-danger mb-0" style="font-size: 1.1rem;">
-                                            Rp {{ number_format($product->getDiscountedPrice(), 0, ',', '.') }}
+                                            Rp {{ number_format($product->calculatePrice(), 0, ',', '.') }}
                                         </p>
                                     @else
                                         <p class="fw-bold mb-0">Rp {{ number_format($product->price, 0, ',', '.') }}</p>

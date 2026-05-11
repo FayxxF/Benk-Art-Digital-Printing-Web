@@ -131,6 +131,10 @@ class AdminController extends Controller
             'name' => 'required',
             'category_id' => 'required',
             'price' => 'required|numeric',
+            'discount_percentage' => 'nullable|numeric|min:0|max:100',
+            'discount_start_date' => 'nullable|date',
+            'discount_end_date'   => 'nullable|date|after_or_equal:discount_start_date',
+            'stock' => 'required|integer|min:0',
             'image' => 'required|image',
             'specs' => 'nullable|array'
         ]);
@@ -141,6 +145,9 @@ class AdminController extends Controller
             'name' => $request->name,
             'category_id' => $request->category_id,
             'price' => $request->price,
+            'discount_percentage' => $request->discount_percentage ?? 0,
+            'discount_start_date' => $request->discount_start_date,
+            'discount_end_date'   => $request->discount_end_date,
             'stock' => $request->stock,
             'description' => $request->description,
             'image' => $imagePath,
@@ -157,22 +164,40 @@ class AdminController extends Controller
     }
 
     public function update(Request $request, Product $product)
-{
-    if ($request->hasFile('image')) {
-        Storage::disk('public')->delete($product->image);
-        $product->image = $request->file('image')->store('products', 'public');
+    {
+
+        // $request->validate([
+        //     'name'                => 'required|string|max:255',
+        //     'categories_id'          => 'required|int',
+        //     'price'               => 'required|numeric|min:0',
+        //     'discount_percentage' => 'nullable|numeric|min:0|max:100',
+        //     'discount_start_date' => 'nullable|date',
+        //     'discount_end_date'   => 'nullable|date|after_or_equal:discount_start_date',
+        //     'stock'               => 'nullable|integer|min:0',
+        //     'image'               => 'nullable|image',
+        //     'description'         => 'nullable|string',
+        //     'specs'               => 'nullable|array',
+        // ]);
+
+        if ($request->hasFile('image')) {
+            Storage::disk('public')->delete($product->image);
+            $product->image = $request->file('image')->store('products', 'public');
+        }
+
+        $product->name                = $request->name;
+        $product->category_id         = $request->category_id;
+        $product->price               = $request->price;
+        $product->stock               = $request->stock ?? $product->stock;
+        $product->description         = $request->description;
+        $product->specs               = $request->specs;
+        $product->discount_percentage = $request->discount_percentage ?? 0;
+        $product->discount_start_date = $request->discount_start_date;
+        $product->discount_end_date   = $request->discount_end_date;
+        
+        $product->save();
+
+        return redirect()->route('admin.products.index')->with('success', 'Produk diupdate');
     }
-
-    $product->name        = $request->name;
-    $product->category_id = $request->category_id;
-    $product->price       = $request->price;
-    $product->stock         = $request->stock ?? $product->stock;
-    $product->description = $request->description;
-    $product->specs       = $request->specs;
-    $product->save();
-
-    return redirect()->route('admin.products.index')->with('success', 'Produk diupdate');
-}
 
     public function destroy(Product $product)
     {
