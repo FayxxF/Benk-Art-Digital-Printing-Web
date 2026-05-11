@@ -2,6 +2,19 @@
 
 @section('content')
 
+<style>
+    /* Hide number input spinners */
+    input[type=number]::-webkit-inner-spin-button, 
+    input[type=number]::-webkit-outer-spin-button { 
+        -webkit-appearance: none; 
+        margin: 0; 
+    }
+    input[type=number] {
+        -moz-appearance: textfield;
+    }
+</style>
+
+
 {{-- Page Header --}}
 <div class="mb-4">
     <p class="text-xs font-semibold uppercase tracking-widest text-navy mb-1" style="opacity:0.45">Manajemen Produk</p>
@@ -85,6 +98,51 @@
                 </div>
             </div>
         </div>
+
+        {{-- Discount Settings --}}
+        <div class="bg-white rounded-lg shadow-sm p-5" style="border:1px solid rgba(34,53,96,0.1)">
+            <h5 class="text-base font-bold text-navy mb-1">Pengaturan Diskon</h5>
+            <p class="text-xs text-navy mb-4" style="opacity:0.4">Kelola diskon promosi berdasarkan periode waktu.</p>
+
+            <div class="mb-3">
+                <label class="block text-xs font-semibold text-navy mb-1.5" style="opacity:0.6">Persentase Diskon (%)</label>
+                <div class="relative flex items-center">
+                    <input type="number" name="discount_percentage" id="discount_percentage" 
+                           value="{{ $product->discount_percentage ?? 0 }}" min="0" max="100"
+                           class="w-full px-4 py-2 rounded-md text-sm text-navy outline-none"
+                           style="border:1.5px solid rgba(34,53,96,0.15);background:#fff; padding-right: 2.5rem;"
+                           placeholder="0"
+                           onkeydown="if(event.key==='-' || event.key==='e') event.preventDefault();"
+                           oninput="if(value > 100) value = 100; if(value < 0) value = 0; updatePricePreview()">
+                    <span class="absolute right-4 text-sm font-bold text-navy" style="opacity:0.4">%</span>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="block text-xs font-semibold text-navy mb-1.5" style="opacity:0.6">Tanggal Mulai</label>
+                <input type="datetime-local" name="discount_start" id="discount_start"
+                       value="{{ isset($product->discount_start) ? \Carbon\Carbon::parse($product->discount_start)->format('Y-m-d\TH:i') : '' }}"
+                       class="w-full px-4 py-2 rounded-md text-sm text-navy outline-none"
+                       style="border:1.5px solid rgba(34,53,96,0.15);background:#fff">
+            </div>
+
+            <div class="mb-4">
+                <label class="block text-xs font-semibold text-navy mb-1.5" style="opacity:0.6">Tanggal Berakhir</label>
+                <input type="datetime-local" name="discount_end" id="discount_end"
+                       value="{{ isset($product->discount_end) ? \Carbon\Carbon::parse($product->discount_end)->format('Y-m-d\TH:i') : '' }}"
+                       class="w-full px-4 py-2 rounded-md text-sm text-navy outline-none"
+                       style="border:1.5px solid rgba(34,53,96,0.15);background:#fff">
+            </div>
+
+            <div class="p-4 rounded-lg" style="background:rgba(34,53,96,0.03);border:1px dashed rgba(34,53,96,0.1)">
+                <p class="text-[10px] font-bold uppercase tracking-wider text-navy mb-2" style="opacity:0.5">Preview Harga</p>
+                <div id="price-preview-container">
+                    <p id="original-price-display" class="text-sm text-navy mb-1" style="opacity:0.5; text-decoration: line-through;">Rp {{ number_format($product->price, 0, ',', '.') }}</p>
+                    <p id="discounted-price-display" class="text-xl font-bold text-red-600">Rp {{ number_format($product->price, 0, ',', '.') }}</p>
+                </div>
+            </div>
+        </div>
+
 
         {{-- Spesifikasi --}}
         <div class="bg-white rounded-lg shadow-sm p-5" style="border:1px solid rgba(34,53,96,0.1)">
@@ -204,6 +262,33 @@
             + '</div>';
         container.insertAdjacentHTML('beforeend', html);
     }
+
+    function updatePricePreview() {
+        const basePrice = parseFloat(document.querySelector('input[name="price"]').value) || 0;
+        const discount = parseFloat(document.getElementById('discount_percentage').value) || 0;
+        
+        const originalPriceDisplay = document.getElementById('original-price-display');
+        const discountedPriceDisplay = document.getElementById('discounted-price-display');
+
+        if (discount > 0) {
+            const finalPrice = basePrice - (basePrice * (discount / 100));
+            originalPriceDisplay.style.display = 'block';
+            originalPriceDisplay.innerText = 'Rp ' + new Intl.NumberFormat('id-ID').format(basePrice);
+            discountedPriceDisplay.innerText = 'Rp ' + new Intl.NumberFormat('id-ID').format(finalPrice);
+            discountedPriceDisplay.classList.add('text-red-600');
+        } else {
+            originalPriceDisplay.style.display = 'none';
+            discountedPriceDisplay.innerText = 'Rp ' + new Intl.NumberFormat('id-ID').format(basePrice);
+            discountedPriceDisplay.classList.remove('text-red-600');
+        }
+    }
+
+    // Initialize preview on load
+    document.addEventListener('DOMContentLoaded', function() {
+        updatePricePreview();
+        // Listen to base price changes too
+        document.querySelector('input[name="price"]').addEventListener('input', updatePricePreview);
+    });
 </script>
 
 @endsection

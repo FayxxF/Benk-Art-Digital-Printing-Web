@@ -172,6 +172,13 @@
                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                 </div>
             @endif
+
+            @if(session('error'))
+                <div id="error-alert" class="alert alert-danger border-0 shadow-sm rounded-4 alert-dismissible fade show mb-4">
+                    <i class="fas fa-exclamation-circle me-2"></i> {{ session('error') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            @endif
             @yield('content')
         </div>
     </main>
@@ -217,17 +224,17 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Cari elemen alert berdasarkan ID yang kita buat tadi
-            const successAlert = document.getElementById('success-alert');
+            const alerts = ['success-alert', 'error-alert'];
             
-            if (successAlert) {
-                // Set waktu tunggu 5000 milidetik (5 detik)
-                setTimeout(function() {
-                    // Gunakan fungsi bawaan Bootstrap untuk menutup alert
-                    const bsAlert = new bootstrap.Alert(successAlert);
-                    bsAlert.close();
-                }, 5000);
-            }
+            alerts.forEach(function(id) {
+                const alertElement = document.getElementById(id);
+                if (alertElement) {
+                    setTimeout(function() {
+                        const bsAlert = new bootstrap.Alert(alertElement);
+                        bsAlert.close();
+                    }, 5000);
+                }
+            });
         });
     </script>
 

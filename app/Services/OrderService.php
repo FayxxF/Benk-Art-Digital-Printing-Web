@@ -28,9 +28,14 @@ class OrderService{
                 throw new \Exception("Keranjang Belanja Kosong.");
             }
 
-            // 2. itung total
+            // 2. itung total dan validasi stok
             $grandTotal = 0;
             foreach ($cartItems as $item){
+                // Validasi Stok
+                if ($item->quantity > $item->product->stock) {
+                    throw new \Exception("Stok produk '{$item->product->name}' tidak mencukupi (Tersisa: {$item->product->stock}).");
+                }
+
                 $unitPrice = $item->product->calculatePrice($item->specs_request);
                 $grandTotal += $unitPrice * $item->quantity;
             }
