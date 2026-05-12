@@ -131,12 +131,12 @@ class AdminController extends Controller
             'name' => 'required',
             'category_id' => 'required',
             'price' => 'required|numeric',
+            'stock' => 'required|numeric|min:0',
+            'image' => 'required|image',
+            'specs' => 'nullable|array',
             'discount_percentage' => 'nullable|numeric|min:0|max:100',
             'discount_start_date' => 'nullable|date',
             'discount_end_date'   => 'nullable|date|after_or_equal:discount_start_date',
-            'stock' => 'required|integer|min:0',
-            'image' => 'required|image',
-            'specs' => 'nullable|array'
         ]);
 
         $imagePath = $request->file('image')->store('products', 'public');
@@ -145,13 +145,13 @@ class AdminController extends Controller
             'name' => $request->name,
             'category_id' => $request->category_id,
             'price' => $request->price,
-            'discount_percentage' => $request->discount_percentage ?? 0,
-            'discount_start_date' => $request->discount_start_date,
-            'discount_end_date'   => $request->discount_end_date,
             'stock' => $request->stock,
             'description' => $request->description,
             'image' => $imagePath,
             'specs' => $request->specs,
+            'discount_percentage' => $request->discount_percentage ?? 0,
+            'discount_start_date' => $request->discount_start_date,
+            'discount_end_date'   => $request->discount_end_date,
         ]);
 
         return redirect()->route('admin.products.index')->with('success', 'Produk Berhasil Dibuat!');
@@ -165,19 +165,15 @@ class AdminController extends Controller
 
     public function update(Request $request, Product $product)
     {
-
-        // $request->validate([
-        //     'name'                => 'required|string|max:255',
-        //     'categories_id'          => 'required|int',
-        //     'price'               => 'required|numeric|min:0',
-        //     'discount_percentage' => 'nullable|numeric|min:0|max:100',
-        //     'discount_start_date' => 'nullable|date',
-        //     'discount_end_date'   => 'nullable|date|after_or_equal:discount_start_date',
-        //     'stock'               => 'nullable|integer|min:0',
-        //     'image'               => 'nullable|image',
-        //     'description'         => 'nullable|string',
-        //     'specs'               => 'nullable|array',
-        // ]);
+        $request->validate([
+            'name' => 'required',
+            'category_id' => 'required',
+            'price' => 'required|numeric',
+            'stock' => 'required|numeric|min:0',
+            'discount_percentage' => 'nullable|numeric|min:0|max:100',
+            'discount_start_date' => 'nullable|date',
+            'discount_end_date'   => 'nullable|date|after_or_equal:discount_start_date',
+        ]);
 
         if ($request->hasFile('image')) {
             Storage::disk('public')->delete($product->image);
@@ -198,7 +194,6 @@ class AdminController extends Controller
 
         return redirect()->route('admin.products.index')->with('success', 'Produk diupdate');
     }
-
     public function destroy(Product $product)
     {
         Storage::disk('public')->delete($product->image);

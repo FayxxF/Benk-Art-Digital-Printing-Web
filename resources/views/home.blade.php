@@ -283,7 +283,16 @@
                             </div>
                         </div>
                         <div class="px-3 pb-3">
-                            <h5 class="fw-bold text-dark mb-3 text-truncate" style="max-width: 90%;">{{ $product->name }}</h5>
+                            <h5 class="fw-bold text-dark mb-1 text-truncate" style="max-width: 90%;">{{ $product->name }}</h5>
+                            <div class="mb-3">
+                                @if($product->stock > 10)
+                                    <small class="text-muted" style="font-size: 0.7rem;">Stok: <span class="fw-bold">{{ $product->stock }}</span></small>
+                                @elseif($product->stock > 0)
+                                    <small class="text-warning fw-bold" style="font-size: 0.7rem;">Stok Menipis: {{ $product->stock }}</small>
+                                @else
+                                    <small class="text-danger fw-bold" style="font-size: 0.7rem;">Stok Habis</small>
+                                @endif
+                            </div>
                             <div class="d-flex justify-content-between align-items-center pt-3 border-top">
                                 <div>
                                     <p class="mb-0 text-muted small fw-bold text-uppercase" style="font-size: 8px;">Mulai Dari</p>

@@ -23,7 +23,17 @@
                 <span class="price-tag" id="displayPrice">Rp {{ number_format($product->price, 0, ',', '.') }}</span>
             </div>
             
-            <p class="text-muted mb-5">{{ $product->description }}</p>
+            <p class="text-muted mb-4">{{ $product->description }}</p>
+            
+            <div class="mb-4 p-3 rounded-4 bg-light d-inline-block border">
+                @if($product->stock > 10)
+                    <span class="text-muted small"><i class="fas fa-boxes me-2"></i>Stok Tersedia: <span class="fw-bold text-dark">{{ $product->stock }}</span></span>
+                @elseif($product->stock > 0)
+                    <span class="text-warning small fw-bold"><i class="fas fa-exclamation-triangle me-2"></i>Stok Menipis: {{ $product->stock }}</span>
+                @else
+                    <span class="text-danger small fw-bold"><i class="fas fa-times-circle me-2"></i>Stok Habis</span>
+                @endif
+            </div>
 
             <form action="{{ route('cart.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf

@@ -76,6 +76,15 @@
                             </div>
                             <div class="p-3">
                                 <small class="text-primary fw-bold text-uppercase" style="font-size: 0.65rem;">{{ $product->category->name }}</small>
+                                <div class="mt-0 mb-1">
+                                    @if($product->stock > 10)
+                                        <small class="text-muted" style="font-size: 0.65rem;">Stok: <span class="fw-bold">{{ $product->stock }}</span></small>
+                                    @elseif($product->stock > 0)
+                                        <small class="text-warning fw-bold" style="font-size: 0.65rem;">Stok Menipis: {{ $product->stock }}</small>
+                                    @else
+                                        <small class="text-danger fw-bold" style="font-size: 0.65rem;">Stok Habis</small>
+                                    @endif
+                                </div>
                                 <h6 class="fw-bold my-1 text-truncate">{{ $product->name }}</h6>
                                 <div class="mb-3">
                                     @if($product->discount_percentage!=0)
