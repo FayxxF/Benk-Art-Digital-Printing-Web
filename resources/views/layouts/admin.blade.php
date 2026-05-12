@@ -102,6 +102,20 @@
             </div>
         @endif
 
+        @if($errors->any())
+            <div class="bg-red-50 border border-red-200 text-red-800 text-sm font-medium px-4 py-3 rounded-md mb-6">
+                <div class="flex items-center gap-3 mb-2">
+                    <i class="fas fa-exclamation-circle text-red-500"></i>
+                    <p>Terjadi kesalahan:</p>
+                </div>
+                <ul class="list-disc list-inside ml-7 opacity-80">
+                    @foreach($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         @yield('content')
     </main>
 </div>
@@ -111,6 +125,7 @@
         document.getElementById('sidebar').classList.toggle('hidden');
     }
 </script>
+
 
 @stack('scripts')
 </body>
