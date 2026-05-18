@@ -128,11 +128,11 @@ class AdminController extends Controller
 
     public function store(Request $request){
         $request->validate([
-            'name' => 'required',
+            'name' => 'required|string|max:255',
             'category_id' => 'required',
             'price' => 'required|numeric',
             'stock' => 'required|numeric|min:0',
-            'image' => 'required|image',
+            'image' => 'required|image|max:51200',
             'specs' => 'nullable|array',
             'discount_percentage' => 'nullable|numeric|min:0|max:100',
             'discount_start_date' => 'nullable|date',
@@ -167,11 +167,11 @@ class AdminController extends Controller
     public function update(Request $request, Product $product)
     {
         $request->validate([
-            'name' => 'required',
+            'name' => 'required|string|max:255',
             'category_id' => 'required',
             'price' => 'required|numeric',
             'stock' => 'required|numeric|min:0',
-            'image' => 'nullable|image',
+            'image' => 'nullable|image|max:51200',
             'specs' => 'nullable|array',
             'discount_percentage' => 'nullable|numeric|min:0|max:100',
             'discount_start_date' => 'nullable|date',
@@ -352,7 +352,7 @@ class AdminController extends Controller
  
     public function storeCategory(Request $request)
     {
-        $request->validate(['name' => 'required|unique:categories,name']);
+        $request->validate(['name' => 'required|string|max:255|unique:categories,name']);
         Category::create(['name' => $request->name, 'is_active' => true]);
         return back()->with('success', 'Kategori berhasil ditambah');
     }
@@ -366,7 +366,7 @@ class AdminController extends Controller
     public function updateCategory(Request $request, Category $category)
     {
         $request->validate([
-            'name' => 'required|unique:categories,name,' . $category->id
+            'name' => 'required|string|max:255|unique:categories,name,' . $category->id
         ]);
         $category->update(['name' => $request->name]);
         return back()->with('success', 'Kategori berhasil diupdate');

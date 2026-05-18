@@ -20,7 +20,7 @@
             <span class="badge bg-primary bg-opacity-10 text-primary mb-3">{{ $product->category->name }}</span>
             <h1 class="fw-black mb-3">{{ $product->name }}</h1>
             <div class="mb-4 d-flex align-items-center flex-wrap gap-2">
-                @if($product->discount_percentage != 0)
+                @if($product->calculatePrice() < $product->price)
                     <span class="text-decoration-line-through text-muted fs-4 me-1">Rp {{ number_format($product->price, 0, ',', '.') }}</span>
                     <span class="price-tag text-danger" id="displayPrice">Rp {{ number_format($product->calculatePrice(), 0, ',', '.') }}</span>
                     <span class="badge bg-danger text-white rounded-pill px-3 py-2 fw-bold align-middle shadow-sm">{{ $product->discount_percentage }}% OFF</span>
@@ -122,7 +122,7 @@
             @foreach($recommendedProducts as $rec)
             <div class="col-6 col-md-3">
                 <div class="card h-100 border-0 shadow-sm rounded-4 p-2 position-relative d-flex flex-column">
-                    @if($rec->discount_percentage != 0)
+                    @if($rec->calculatePrice() < $rec->price)
                         <span class="badge bg-danger text-white rounded-pill px-2 py-1 position-absolute top-0 end-0 m-2 shadow-sm" style="font-size: 0.6rem; z-index: 10;">{{ $rec->discount_percentage }}% OFF</span>
                     @endif
                     <img src="{{ $rec->image ? asset('storage/'.$rec->image) : 'https://via.placeholder.com/300' }}" class="rounded-3 mb-2" style="height: 150px; object-fit:cover;">
@@ -130,7 +130,7 @@
                         <small class="text-primary fw-bold">{{ round($rec->rec_confidence * 100) }}% Match</small>
                         <h6 class="fw-bold text-truncate mb-1">{{ $rec->name }}</h6>
                         <div class="mb-2 d-flex flex-column justify-content-end" style="min-height: 38px;">
-                            @if($rec->discount_percentage != 0)
+                            @if($rec->calculatePrice() < $rec->price)
                                 <small class="text-decoration-line-through text-muted" style="font-size: 0.7rem; display: block; line-height: 1;">Rp {{ number_format($rec->price, 0, ',', '.') }}</small>
                                 <span class="fw-black text-danger" style="font-size: 0.95rem; line-height: 1.2;">Rp {{ number_format($rec->calculatePrice(), 0, ',', '.') }}</span>
                             @else
