@@ -120,16 +120,16 @@
 
             <div class="mb-3">
                 <label class="block text-xs font-semibold text-navy mb-1.5" style="opacity:0.6">Tanggal Mulai</label>
-                <input type="datetime-local" name="discount_start" id="discount_start"
-                       value="{{ old('discount_start', isset($product->discount_start) ? \Carbon\Carbon::parse($product->discount_start)->format('Y-m-d\TH:i') : '') }}"
+                <input type="datetime-local" name="discount_start_date" id="discount_start"
+                       value="{{ old('discount_start_date', isset($product->discount_start_date) ? \Carbon\Carbon::parse($product->discount_start_date)->format('Y-m-d\TH:i') : '') }}"
                        class="w-full px-4 py-2 rounded-md text-sm text-navy outline-none"
                        style="border:1.5px solid rgba(34,53,96,0.15);background:#fff">
             </div>
 
             <div class="mb-4">
                 <label class="block text-xs font-semibold text-navy mb-1.5" style="opacity:0.6">Tanggal Berakhir</label>
-                <input type="datetime-local" name="discount_end" id="discount_end"
-                       value="{{ old('discount_end', isset($product->discount_end) ? \Carbon\Carbon::parse($product->discount_end)->format('Y-m-d\TH:i') : '') }}"
+                <input type="datetime-local" name="discount_end_date" id="discount_end"
+                       value="{{ old('discount_end_date', isset($product->discount_end_date) ? \Carbon\Carbon::parse($product->discount_end_date)->format('Y-m-d\TH:i') : '') }}"
                        class="w-full px-4 py-2 rounded-md text-sm text-navy outline-none"
                        style="border:1.5px solid rgba(34,53,96,0.15);background:#fff">
             </div>

@@ -75,9 +75,30 @@
                 </div>
 
                 <div class="mb-4">
-                    <label class="fw-bold small mb-2">Catatan Tambahan</label>
-                    <textarea name="notes" class="form-control rounded-3 p-3" rows="2" placeholder="Jelaskan kebutuhan desain Anda..."></textarea>
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <label class="fw-bold small mb-0">Catatan Tambahan</label>
+                        <small class="text-muted" id="charCounter" style="font-size: 0.75rem; font-weight: 600;">0 / 500 karakter</small>
+                    </div>
+                    <textarea name="notes" id="notesInput" maxlength="500" class="form-control rounded-3 p-3" rows="2" placeholder="Jelaskan kebutuhan desain Anda..." oninput="updateCharCount()"></textarea>
                 </div>
+
+                <script>
+                    function updateCharCount() {
+                        const textarea = document.getElementById('notesInput');
+                        const counter = document.getElementById('charCounter');
+                        if (textarea && counter) {
+                            const length = textarea.value.length;
+                            counter.textContent = `${length} / 500 karakter`;
+                            if (length >= 500) {
+                                counter.classList.remove('text-muted');
+                                counter.classList.add('text-danger');
+                            } else {
+                                counter.classList.remove('text-danger');
+                                counter.classList.add('text-muted');
+                            }
+                        }
+                    }
+                </script>
 
                 <div class="row g-3 align-items-center">
                     <div class="col-md-4">

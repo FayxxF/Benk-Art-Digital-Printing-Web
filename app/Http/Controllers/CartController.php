@@ -35,6 +35,7 @@ class CartController extends Controller
             'product_id' => 'required|exists:products,id',
             'quantity' => 'required|integer|min:1',
             'image_request' => 'required|image|max:5120',
+            'notes' => 'nullable|string|max:500',
         ]);
 
         // validasi stok produk 

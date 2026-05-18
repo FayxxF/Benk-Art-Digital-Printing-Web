@@ -117,8 +117,8 @@
 
             <div class="mb-3">
                 <label class="block text-xs font-semibold text-navy mb-1.5" style="opacity:0.6">Tanggal Mulai</label>
-                <input type="datetime-local" name="discount_start" id="discount_start"
-                       value="{{ old('discount_start') }}"
+                <input type="datetime-local" name="discount_start_date" id="discount_start"
+                       value="{{ old('discount_start_date') }}"
                        class="w-full px-4 py-2 rounded-md text-sm text-navy outline-none transition-all"
                        style="border:1.5px solid rgba(34,53,96,0.15);background:#fff"
                        onfocus="this.style.borderColor='#3B82F6'" onblur="this.style.borderColor='rgba(34,53,96,0.15)'">
@@ -126,8 +126,8 @@
 
             <div class="mb-4">
                 <label class="block text-xs font-semibold text-navy mb-1.5" style="opacity:0.6">Tanggal Berakhir</label>
-                <input type="datetime-local" name="discount_end" id="discount_end"
-                       value="{{ old('discount_end') }}"
+                <input type="datetime-local" name="discount_end_date" id="discount_end"
+                       value="{{ old('discount_end_date') }}"
                        class="w-full px-4 py-2 rounded-md text-sm text-navy outline-none transition-all"
                        style="border:1.5px solid rgba(34,53,96,0.15);background:#fff"
                        onfocus="this.style.borderColor='#3B82F6'" onblur="this.style.borderColor='rgba(34,53,96,0.15)'">

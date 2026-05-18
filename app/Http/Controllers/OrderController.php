@@ -42,7 +42,7 @@ class OrderController extends Controller
     {
         $query = Order::where('user_id', auth()->id());
 
-        // SEARCH LOGIC: If searching, search by invoice or product name across ALL statuses
+        // SEARCH LOGIC: If searching, search by invoice or product name
         if ($request->search) {
             $query->where(function($q) use ($request) {
                 $q->where('invoice_number', 'like', '%' . $request->search . '%')
@@ -50,11 +50,11 @@ class OrderController extends Controller
                       $pq->where('name', 'like', '%' . $request->search . '%');
                   });
             });
-        } else {
-            // Only filter by status if NOT searching
-            if ($request->status) {
-                $query->where('status', $request->status);
-            }
+        }
+
+        // Filter by status if set
+        if ($request->status) {
+            $query->where('status', $request->status);
         }
 
         // Filter by Category
