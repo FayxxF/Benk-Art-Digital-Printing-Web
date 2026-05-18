@@ -16,6 +16,9 @@ return new class extends Migration
             $table->foreignId('category_id')->constrained('categories')->onDelete('cascade');
             $table->string('name');
             $table->decimal('price', 12, 2);
+            $table->integer('discount_percentage')->default(0);
+            $table->dateTime('discount_start_date')->nullable();
+            $table->dateTime('discount_end_date')->nullable();
             $table->integer('stock');
             $table->string('image');
             $table->text('description');

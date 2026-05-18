@@ -7,7 +7,7 @@ ini coba tentang kami
     /* Tidied Up Version of the Original About Design - Normal Size */
     .about-hero {
         height: 320px;
-        background: linear-gradient(rgba(11, 26, 51, 0.5), rgba(11, 26, 51, 0.5)), url('https://picsum.photos/seed/about-hero/1920/1080');
+        background: linear-gradient(rgba(11, 26, 51, 0.5), rgba(11, 26, 51, 0.5)), url('https://images.unsplash.com/photo-1616401784845-180882ba9ba8?q=80&w=1920&auto=format&fit=crop');
         background-size: cover;
         background-position: center;
         border-radius: 2rem;
@@ -163,7 +163,7 @@ ini coba tentang kami
         </div>
         <div class="col-lg-6 text-center text-lg-start">
             <div class="story-img-container d-inline-block position-relative" style="width: 85%;">
-                <img src="https://picsum.photos/seed/story-modern/800/600" class="story-img" alt="Our Story" style="width: 100%; height: 250px !important; object-fit: cover; margin: 0;">
+                <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=800&auto=format&fit=crop" class="story-img" alt="Our Story" style="width: 100%; height: 250px !important; object-fit: cover; margin: 0;">
                 
                 {{-- Quote Card inside the frame --}}
                 <div class="quote-card shadow-lg d-none d-md-block" style="position: absolute; bottom: -20px; left: -20px; background: white; padding: 1.5rem; border-radius: 1rem; max-width: 220px; text-align: left; z-index: 10; border: 1px solid rgba(0,0,0,0.05);">

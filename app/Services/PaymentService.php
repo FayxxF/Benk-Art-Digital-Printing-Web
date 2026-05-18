@@ -29,7 +29,7 @@ class PaymentService
         $params = array(
             'transaction_details' => array(
             'order_id' => $order->invoice_number,
-            'gross_amount' => $order->total_price,
+            'gross_amount' => (int) round($order->total_price),
             ),
             'customer_details' => array(
                 'first_name' => $order->user->name,

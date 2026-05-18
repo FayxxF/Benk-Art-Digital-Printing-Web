@@ -35,7 +35,7 @@
 
             <div class="mb-4">
                 <label class="block text-xs font-semibold text-navy mb-1.5" style="opacity:0.6">Nama Produk</label>
-                <input type="text" name="name" value="{{ $product->name }}" required
+                <input type="text" name="name" value="{{ old('name', $product->name) }}" required
                        class="w-full px-4 py-2 rounded-md text-sm text-navy outline-none"
                        style="border:1.5px solid rgba(34,53,96,0.15);background:#fff"
                        onfocus="this.style.borderColor='#3B82F6'" onblur="this.style.borderColor='rgba(34,53,96,0.15)'">
@@ -49,20 +49,20 @@
                             style="border:1.5px solid rgba(34,53,96,0.15);background:#fff"
                             onfocus="this.style.borderColor='#3B82F6'" onblur="this.style.borderColor='rgba(34,53,96,0.15)'">
                         @foreach($categories as $cat)
-                            <option value="{{ $cat->id }}" {{ $product->category_id == $cat->id ? 'selected' : '' }}>{{ $cat->name }}</option>
+                            <option value="{{ $cat->id }}" {{ old('category_id', $product->category_id) == $cat->id ? 'selected' : '' }}>{{ $cat->name }}</option>
                         @endforeach
                     </select>
                 </div>
                 <div>
                     <label class="block text-xs font-semibold text-navy mb-1.5" style="opacity:0.6">Harga (Rp)</label>
-                    <input type="number" name="price" value="{{ $product->price }}" required
+                    <input type="number" name="price" value="{{ old('price', $product->price) }}" required
                            class="w-full px-4 py-2 rounded-md text-sm text-navy outline-none"
                            style="border:1.5px solid rgba(34,53,96,0.15);background:#fff"
                            onfocus="this.style.borderColor='#3B82F6'" onblur="this.style.borderColor='rgba(34,53,96,0.15)'">
                 </div>
                 <div>
                     <label class="block text-xs font-semibold text-navy mb-1.5" style="opacity:0.6">Stok</label>
-                    <input type="number" name="stock" value="{{ $product->stock }}" required
+                    <input type="number" name="stock" value="{{ old('stock', $product->stock) }}" required
                            class="w-full px-4 py-2 rounded-md text-sm text-navy outline-none"
                            style="border:1.5px solid rgba(34,53,96,0.15);background:#fff"
                            onfocus="this.style.borderColor='#3B82F6'" onblur="this.style.borderColor='rgba(34,53,96,0.15)'">
@@ -74,7 +74,7 @@
                 <textarea name="description" rows="4"
                           class="w-full px-4 py-2 rounded-md text-sm text-navy outline-none resize-none"
                           style="border:1.5px solid rgba(34,53,96,0.15);background:#fff"
-                          onfocus="this.style.borderColor='#3B82F6'" onblur="this.style.borderColor='rgba(34,53,96,0.15)'">{{ $product->description }}</textarea>
+                          onfocus="this.style.borderColor='#3B82F6'" onblur="this.style.borderColor='rgba(34,53,96,0.15)'">{{ old('description', $product->description) }}</textarea>
             </div>
         </div>
 
@@ -108,7 +108,7 @@
                 <label class="block text-xs font-semibold text-navy mb-1.5" style="opacity:0.6">Persentase Diskon (%)</label>
                 <div class="relative flex items-center">
                     <input type="number" name="discount_percentage" id="discount_percentage" 
-                           value="{{ $product->discount_percentage ?? 0 }}" min="0" max="100"
+                           value="{{ old('discount_percentage', $product->discount_percentage ?? 0) }}" min="0" max="100"
                            class="w-full px-4 py-2 rounded-md text-sm text-navy outline-none"
                            style="border:1.5px solid rgba(34,53,96,0.15);background:#fff; padding-right: 2.5rem;"
                            placeholder="0"
@@ -121,7 +121,7 @@
             <div class="mb-3">
                 <label class="block text-xs font-semibold text-navy mb-1.5" style="opacity:0.6">Tanggal Mulai</label>
                 <input type="datetime-local" name="discount_start" id="discount_start"
-                       value="{{ isset($product->discount_start) ? \Carbon\Carbon::parse($product->discount_start)->format('Y-m-d\TH:i') : '' }}"
+                       value="{{ old('discount_start', isset($product->discount_start) ? \Carbon\Carbon::parse($product->discount_start)->format('Y-m-d\TH:i') : '') }}"
                        class="w-full px-4 py-2 rounded-md text-sm text-navy outline-none"
                        style="border:1.5px solid rgba(34,53,96,0.15);background:#fff">
             </div>
@@ -129,7 +129,7 @@
             <div class="mb-4">
                 <label class="block text-xs font-semibold text-navy mb-1.5" style="opacity:0.6">Tanggal Berakhir</label>
                 <input type="datetime-local" name="discount_end" id="discount_end"
-                       value="{{ isset($product->discount_end) ? \Carbon\Carbon::parse($product->discount_end)->format('Y-m-d\TH:i') : '' }}"
+                       value="{{ old('discount_end', isset($product->discount_end) ? \Carbon\Carbon::parse($product->discount_end)->format('Y-m-d\TH:i') : '') }}"
                        class="w-full px-4 py-2 rounded-md text-sm text-navy outline-none"
                        style="border:1.5px solid rgba(34,53,96,0.15);background:#fff">
             </div>

@@ -34,7 +34,7 @@ class CartController extends Controller
         $request->validate([
             'product_id' => 'required|exists:products,id',
             'quantity' => 'required|integer|min:1',
-            'image_request' => 'nullable|image|max:5120',
+            'image_request' => 'required|image|max:5120',
         ]);
 
         // validasi stok produk 

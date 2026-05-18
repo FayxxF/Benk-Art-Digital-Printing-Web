@@ -28,29 +28,7 @@ class Product extends Model
         'discount_end_date' => 'datetime',
     ];
 
-    // Helper: Cek apakah diskon sedang aktif
-    public function isDiscountActive()
-    {
-        if ($this->discount_percentage <= 0) return false;
-        
-        $now = now();
-        $start = $this->discount_start_date;
-        $end = $this->discount_end_date;
 
-        if ($start && $now->lt($start)) return false;
-        if ($end && $now->gt($end)) return false;
-
-        return true;
-    }
-
-    // Helper: Ambil harga setelah diskon (sebelum spesifikasi)
-    public function getDiscountedPrice()
-    {
-        if ($this->isDiscountActive()) {
-            return $this->price - ($this->price * ($this->discount_percentage / 100));
-        }
-        return $this->price;
-    }
 
     // Foreign Key ke Category
     public function category()
@@ -70,9 +48,29 @@ class Product extends Model
         return $this->hasMany(OrderDetail::class);
     }
 
-    // Helper: untuk menghitung harga tambahan sesuai spesifikasi
     public function calculatePrice($selectedSpecs = []){
-        $total = $this->getDiscountedPrice();
+        $total = $this->price;
+        if ($this->discount_percentage > 0) {
+            $now = now();
+            $applyDiscount = false;
+
+            // Check if both dates are filled in the database
+            if ($this->discount_start_date && $this->discount_end_date) { 
+                // Check if today is inside the promo window
+                if ($now->between($this->discount_start_date, $this->discount_end_date)) {
+                    $applyDiscount = true;
+                }
+            } else {
+                // Permanent ongoing discount (if dates are not set)
+                $applyDiscount = true;
+            }
+
+            if ($applyDiscount) {
+                $discountAmount = $this->price * ($this->discount_percentage / 100);
+                $total = $this->price - $discountAmount;
+            }
+        }
+
         
         // cek apabila tidak ada opsi spesifikasi atau spek yang dipilih = kosong 
         if(empty($this->specs) || empty($selectedSpecs)) {

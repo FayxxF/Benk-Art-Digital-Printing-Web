@@ -35,7 +35,7 @@
 
             <div class="mb-4">
                 <label class="block text-xs font-semibold text-navy mb-1.5" style="opacity:0.6">Nama Produk</label>
-                <input type="text" name="name" required
+                <input type="text" name="name" value="{{ old('name') }}" required
                        class="w-full px-4 py-2 rounded-md text-sm text-navy outline-none transition-all"
                        style="border:1.5px solid rgba(34,53,96,0.15);background:#fff"
                        onfocus="this.style.borderColor='#3B82F6'" onblur="this.style.borderColor='rgba(34,53,96,0.15)'"
@@ -50,13 +50,13 @@
                             style="border:1.5px solid rgba(34,53,96,0.15);background:#fff"
                             onfocus="this.style.borderColor='#3B82F6'" onblur="this.style.borderColor='rgba(34,53,96,0.15)'">
                         @foreach($categories as $cat)
-                            <option value="{{ $cat->id }}">{{ $cat->name }}</option>
+                            <option value="{{ $cat->id }}" {{ old('category_id') == $cat->id ? 'selected' : '' }}>{{ $cat->name }}</option>
                         @endforeach
                     </select>
                 </div>
                 <div>
                     <label class="block text-xs font-semibold text-navy mb-1.5" style="opacity:0.6">Harga Dasar (Rp)</label>
-                    <input type="number" name="price" required
+                    <input type="number" name="price" value="{{ old('price') }}" required
                            class="w-full px-4 py-2 rounded-md text-sm text-navy outline-none transition-all"
                            style="border:1.5px solid rgba(34,53,96,0.15);background:#fff"
                            onfocus="this.style.borderColor='#3B82F6'" onblur="this.style.borderColor='rgba(34,53,96,0.15)'"
@@ -70,13 +70,13 @@
                           class="w-full px-4 py-2 rounded-md text-sm text-navy outline-none transition-all resize-none"
                           style="border:1.5px solid rgba(34,53,96,0.15);background:#fff"
                           onfocus="this.style.borderColor='#3B82F6'" onblur="this.style.borderColor='rgba(34,53,96,0.15)'"
-                          placeholder="Deskripsi produk..."></textarea>
+                          placeholder="Deskripsi produk...">{{ old('description') }}</textarea>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                     <label class="block text-xs font-semibold text-navy mb-1.5" style="opacity:0.6">Stok Awal</label>
-                    <input type="number" name="stock" value="100"
+                    <input type="number" name="stock" value="{{ old('stock', 100) }}"
                            class="w-full px-4 py-2 rounded-md text-sm text-navy outline-none transition-all"
                            style="border:1.5px solid rgba(34,53,96,0.15);background:#fff"
                            onfocus="this.style.borderColor='#3B82F6'" onblur="this.style.borderColor='rgba(34,53,96,0.15)'">
@@ -104,7 +104,7 @@
                 <label class="block text-xs font-semibold text-navy mb-1.5" style="opacity:0.6">Persentase Diskon (%)</label>
                 <div class="relative flex items-center">
                     <input type="number" name="discount_percentage" id="discount_percentage" 
-                           value="0" min="0" max="100"
+                           value="{{ old('discount_percentage', 0) }}" min="0" max="100"
                            class="w-full px-4 py-2 rounded-md text-sm text-navy outline-none transition-all"
                            style="border:1.5px solid rgba(34,53,96,0.15);background:#fff; padding-right: 2.5rem;"
                            placeholder="0"
@@ -118,6 +118,7 @@
             <div class="mb-3">
                 <label class="block text-xs font-semibold text-navy mb-1.5" style="opacity:0.6">Tanggal Mulai</label>
                 <input type="datetime-local" name="discount_start" id="discount_start"
+                       value="{{ old('discount_start') }}"
                        class="w-full px-4 py-2 rounded-md text-sm text-navy outline-none transition-all"
                        style="border:1.5px solid rgba(34,53,96,0.15);background:#fff"
                        onfocus="this.style.borderColor='#3B82F6'" onblur="this.style.borderColor='rgba(34,53,96,0.15)'">
@@ -126,6 +127,7 @@
             <div class="mb-4">
                 <label class="block text-xs font-semibold text-navy mb-1.5" style="opacity:0.6">Tanggal Berakhir</label>
                 <input type="datetime-local" name="discount_end" id="discount_end"
+                       value="{{ old('discount_end') }}"
                        class="w-full px-4 py-2 rounded-md text-sm text-navy outline-none transition-all"
                        style="border:1.5px solid rgba(34,53,96,0.15);background:#fff"
                        onfocus="this.style.borderColor='#3B82F6'" onblur="this.style.borderColor='rgba(34,53,96,0.15)'">

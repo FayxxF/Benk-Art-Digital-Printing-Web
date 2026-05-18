@@ -137,6 +137,7 @@ class AdminController extends Controller
             'discount_percentage' => 'nullable|numeric|min:0|max:100',
             'discount_start_date' => 'nullable|date',
             'discount_end_date'   => 'nullable|date|after_or_equal:discount_start_date',
+            'description' => 'required|string',
         ]);
 
         $imagePath = $request->file('image')->store('products', 'public');
@@ -170,9 +171,12 @@ class AdminController extends Controller
             'category_id' => 'required',
             'price' => 'required|numeric',
             'stock' => 'required|numeric|min:0',
+            'image' => 'nullable|image',
+            'specs' => 'nullable|array',
             'discount_percentage' => 'nullable|numeric|min:0|max:100',
             'discount_start_date' => 'nullable|date',
             'discount_end_date'   => 'nullable|date|after_or_equal:discount_start_date',
+            'description' => 'required|string',
         ]);
 
         if ($request->hasFile('image')) {

@@ -73,11 +73,20 @@ class OrderService{
             Cart::where('user_id', $user->id)->delete();
             return $order;
         });
-        try{
-            $snapToken = $this->paymentService->processCheckout($order);
-            $order->update(['snap_token' => $snapToken]);
-        } catch (\Exception $e) {
-            \Illuminate\Support\Facades\Log::error('Midtrans Error: ' . $e->getMessage());
+
+        if ($order->total_price > 0) {
+            try {
+                $snapToken = $this->paymentService->processCheckout($order);
+                $order->update(['snap_token' => $snapToken]);
+            } catch (\Exception $e) {
+                \Illuminate\Support\Facades\Log::error('Midtrans Error: ' . $e->getMessage());
+            }
+        } else {
+            // Free transaction (100% discount): Mark as paid and set dummy snap token
+            $order->update([
+                'status' => 'paid',
+                'snap_token' => 'free_order'
+            ]);
         }
         return $order;
     }

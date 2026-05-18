@@ -19,7 +19,7 @@ return new class extends Migration
             $table->decimal('price', 12, 2);
             $table->json('specs_detail')->nullable();
             $table->string('image_detail')->nullable();
-            $table->string('note_detail')->nullable();
+            $table->text('note_detail')->nullable();
             $table->timestamps();
         });
     }
