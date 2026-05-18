@@ -40,9 +40,18 @@ class CartController extends Controller
 
         // validasi stok produk 
         $product = Product::find($request->product_id);
-        if (!$product || $request->quantity > $product->stock){
-            return redirect()->back()->with('error', 'Maaf, stok tidak cukup.');
-        }   
+        if (!$product) {
+            return redirect()->back()->with('error', 'Produk tidak ditemukan.');
+        }
+
+        // Hitung total kuantitas produk ini yang sudah ada di keranjang user
+        $existingCartQty = Cart::where('user_id', Auth::id())
+            ->where('product_id', $request->product_id)
+            ->sum('quantity');
+
+        if (($existingCartQty + $request->quantity) > $product->stock) {
+            return redirect()->back()->with('error', 'Maaf, jumlah pembelian melebihi stok yang tersedia (Tersisa: ' . $product->stock . ', di keranjang Anda: ' . $existingCartQty . ').');
+        }
         
         // memanggil fungsi cartservice tambah keranjang 
         $this->cartService->addToCart(Auth::user(), $request->all(), $request->file('image_request'));

@@ -130,7 +130,7 @@ class AdminController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'category_id' => 'required',
-            'price' => 'required|numeric',
+            'price' => 'required|numeric|min:0',
             'stock' => 'required|numeric|min:0',
             'image' => 'required|image|max:51200',
             'specs' => 'nullable|array',
@@ -138,6 +138,9 @@ class AdminController extends Controller
             'discount_start_date' => 'nullable|date',
             'discount_end_date'   => 'nullable|date|after_or_equal:discount_start_date',
             'description' => 'required|string',
+        ], [
+            'price.min' => 'Harga tidak boleh kurang dari 0',
+            'discount_end_date.after_or_equal' => 'Tanggal selesai tidak boleh sebelum tanggal mulai',
         ]);
 
         $imagePath = $request->file('image')->store('products', 'public');
@@ -169,7 +172,7 @@ class AdminController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'category_id' => 'required',
-            'price' => 'required|numeric',
+            'price' => 'required|numeric|min:0',
             'stock' => 'required|numeric|min:0',
             'image' => 'nullable|image|max:51200',
             'specs' => 'nullable|array',
@@ -177,6 +180,9 @@ class AdminController extends Controller
             'discount_start_date' => 'nullable|date',
             'discount_end_date'   => 'nullable|date|after_or_equal:discount_start_date',
             'description' => 'required|string',
+        ], [
+            'price.min' => 'Harga tidak boleh kurang dari 0',
+            'discount_end_date.after_or_equal' => 'Tanggal selesai tidak boleh sebelum tanggal mulai',
         ]);
 
         if ($request->hasFile('image')) {
