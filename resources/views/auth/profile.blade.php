@@ -220,19 +220,23 @@
                         </div>
                     </div>
                 </div>
+            @php
+                $showSecurity = $errors->has('current_password') || $errors->has('password') || old('action') == 'password';
+            @endphp
+
             <!-- Tab Navigation -->
             <nav class="nav nav-custom-tabs" role="tablist">
-                <button class="nav-link active" id="info-tab" data-bs-toggle="pill" data-bs-target="#info-pane" type="button" role="tab">
+                <button class="nav-link {{ !$showSecurity ? 'active' : '' }}" id="info-tab" data-bs-toggle="pill" data-bs-target="#info-pane" type="button" role="tab">
                     <i class="fas fa-user"></i> Profil
                 </button>
-                <button class="nav-link" id="security-tab" data-bs-toggle="pill" data-bs-target="#security-pane" type="button" role="tab">
+                <button class="nav-link {{ $showSecurity ? 'active' : '' }}" id="security-tab" data-bs-toggle="pill" data-bs-target="#security-pane" type="button" role="tab">
                     <i class="fas fa-shield-alt"></i> Keamanan
                 </button>
             </nav>
 
             <div class="tab-content">
                 <!-- FORM PROFIL -->
-                <div class="tab-pane fade show active" id="info-pane" role="tabpanel">
+                <div class="tab-pane fade {{ !$showSecurity ? 'show active' : '' }}" id="info-pane" role="tabpanel">
                     <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
@@ -264,7 +268,7 @@
                 </div>
 
                 <!-- FORM KEAMANAN -->
-                <div class="tab-pane fade" id="security-pane" role="tabpanel">
+                <div class="tab-pane fade {{ $showSecurity ? 'show active' : '' }}" id="security-pane" role="tabpanel">
                     <form action="{{ route('profile.update') }}" method="POST">
                         @csrf
                         @method('PUT')
@@ -273,11 +277,17 @@
                         <div class="mb-3">
                             <label class="form-label-custom">Password Saat Ini</label>
                             <input type="password" name="current_password" class="form-control-custom @error('current_password') is-invalid @enderror" required>
+                            @error('current_password')
+                                <div class="text-danger small mt-1" style="font-weight: 600; font-size: 0.8rem;">{{ $message }}</div>
+                            @enderror
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label-custom">Password Baru</label>
                             <input type="password" name="password" class="form-control-custom @error('password') is-invalid @enderror" required>
+                            @error('password')
+                                <div class="text-danger small mt-1" style="font-weight: 600; font-size: 0.8rem;">{{ $message }}</div>
+                            @enderror
                         </div>
 
                         <div class="mb-4">
