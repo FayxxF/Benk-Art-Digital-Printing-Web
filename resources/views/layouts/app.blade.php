@@ -109,7 +109,7 @@
                             <a href="{{ route('cart.index') }}" class="btn btn-link text-dark position-relative p-2">
                                 <i class="bi bi-cart fs-5"></i>
                                 @if(auth()->user()->carts->count() > 0)
-                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.6rem; padding: 0.35em 0.6em;">{{ auth()->user()->carts->count() }}</span>
+                                    <span class="position-absolute badge rounded-pill bg-danger" style="font-size: 0.6rem; padding: 0.25em 0.5em; top: 2px; right: 2px;">{{ auth()->user()->carts->count() }}</span>
                                 @endif
                             </a>
                         @endif
