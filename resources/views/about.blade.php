@@ -310,7 +310,7 @@ ini coba tentang kami
                             </div>
                             <div class="contact-content">
                                 <h6>Alamat Workshop</h6>
-                                <p>Jl. Haji Murtad No.124, Citeureup, Kec. Citeureup, Kabupaten Bogor, Jawa Barat 16810</p>
+                                <p>Jl. Kiai H. Raden Ma'mun Nawawi No.88, Sukadami, Cikarang Sel., Kabupaten Bekasi, Jawa Barat 17530</p>
                             </div>
                         </div>
 
@@ -334,7 +334,7 @@ ini coba tentang kami
                             <div class="contact-content">
                                 <h6>Kontak Langsung</h6>
                                 <p>WhatsApp: <a href="https://wa.me/6289637506893" target="_blank" class="text-primary fw-bold text-decoration-none">+62 896-3750-6893</a></p>
-                                <p>Email: <a href="mailto:info@benkart.com" class="text-secondary text-decoration-none">info@benkart.com</a></p>
+                                <p>Email: <a href="mailto:muliaprimabenk@gmail.com" class="text-secondary text-decoration-none">muliaprimabenk@gmail.com</a></p>
                             </div>
                         </div>
                     </div>
