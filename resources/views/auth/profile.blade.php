@@ -1,7 +1,21 @@
 @extends('layouts.app')
 
 @section('content')
+<!-- Cropper.js CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css">
+
 <style>
+    /* Style untuk Cropper JS agar berbentuk lingkaran */
+    .cropper-view-box,
+    .cropper-face {
+        border-radius: 50%;
+    }
+    
+    .cropper-view-box {
+        outline: 2px solid #3b82f6;
+        outline-color: rgba(59, 130, 246, 0.75);
+    }
+
     .profile-container {
         max-width: 750px; /* Diperkecil dari 1000px */
         margin: 0 auto;
@@ -56,20 +70,26 @@
         margin-bottom: 2rem;
     }
 
-    .avatar-wrapper {
+    .avatar-container {
         position: relative;
         width: 90px;
         height: 90px;
-        border-radius: 1.5rem;
+    }
+
+    .avatar-wrapper {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
         overflow: hidden;
         background: #f8fafc;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 2rem;
+        font-size: 2.2rem;
         color: #334155;
         font-weight: 700;
-        border: 1px solid #e2e8f0;
+        border: 2px solid #ffffff;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     }
 
     .avatar-image {
@@ -85,23 +105,28 @@
 
     .avatar-overlay {
         position: absolute;
-        bottom: 0.5rem;
-        right: 0.5rem;
-        width: 34px;
-        height: 34px;
+        bottom: -2px;
+        right: -2px;
+        width: 32px;
+        height: 32px;
         border-radius: 50%;
-        background: rgba(255,255,255,0.95);
-        border: 1px solid #e2e8f0;
+        background: #3b82f6;
+        color: white;
+        border: 2px solid #ffffff;
         display: flex;
         align-items: center;
         justify-content: center;
         cursor: pointer;
-        transition: transform 0.15s ease, box-shadow 0.15s ease;
+        transition: all 0.2s ease;
+        box-shadow: 0 4px 10px rgba(59, 130, 246, 0.35);
+        font-size: 0.85rem;
+        z-index: 5;
     }
 
     .avatar-overlay:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(15, 23, 42, 0.12);
+        transform: scale(1.1);
+        background: #2563eb;
+        box-shadow: 0 6px 14px rgba(59, 130, 246, 0.45);
     }
 
     .avatar-actions {
@@ -194,9 +219,11 @@
         <div class="profile-card">
             <!-- Header Ringkas -->
             <div class="profile-header">
-                    <div class="avatar-wrapper">
-                        <img id="avatarPreview" src="{{ auth()->user()->profile_image ? asset('storage/' . auth()->user()->profile_image) : '' }}" alt="Avatar" class="avatar-image {{ auth()->user()->profile_image ? '' : 'd-none' }}">
-                        <span id="avatarInitial" class="avatar-initial {{ auth()->user()->profile_image ? 'd-none' : '' }}">{{ substr(auth()->user()->name, 0, 1) }}</span>
+                    <div class="avatar-container">
+                        <div class="avatar-wrapper">
+                            <img id="avatarPreview" src="{{ auth()->user()->profile_image ? asset('storage/' . auth()->user()->profile_image) : '' }}" alt="Avatar" class="avatar-image {{ auth()->user()->profile_image ? '' : 'd-none' }}">
+                            <span id="avatarInitial" class="avatar-initial {{ auth()->user()->profile_image ? 'd-none' : '' }}">{{ substr(auth()->user()->name, 0, 1) }}</span>
+                        </div>
                         <label for="profile_image" class="avatar-overlay" title="Ganti foto profil">
                             <i class="fas fa-camera"></i>
                         </label>
@@ -304,32 +331,124 @@
         </div>
     </div>
 </div>
+
+<!-- Modal Crop Foto Profil -->
+<div class="modal fade" id="cropperModal" tabindex="-1" aria-labelledby="cropperModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded-4 border-0 shadow-lg">
+            <div class="modal-header border-0 px-4 pt-4 pb-0">
+                <h5 class="modal-title fw-bold" id="cropperModalLabel" style="color: #1e293b; font-size: 1.15rem;">Sesuaikan Foto Profil</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4 text-center">
+                <div class="img-container mb-3" style="max-height: 380px; overflow: hidden; border-radius: 1rem; background: #f8fafc; border: 1px solid #f1f5f9;">
+                    <img id="imageToCrop" src="" alt="Source Image" style="max-width: 100%; display: block;">
+                </div>
+                <p class="text-muted small mb-0"><i class="fas fa-info-circle me-1 text-primary"></i> Geser atau cubit/scroll gambar untuk menyesuaikan posisi di dalam lingkaran.</p>
+            </div>
+            <div class="modal-footer border-0 px-4 pb-4 pt-0 gap-2">
+                <button type="button" class="btn btn-light rounded-3 px-4 fw-bold text-muted border-0" data-bs-dismiss="modal" style="font-size: 0.85rem; padding: 0.6rem 1.25rem;">Batal</button>
+                <button type="button" id="cropButton" class="btn btn-primary rounded-3 px-4 fw-bold" style="font-size: 0.85rem; padding: 0.6rem 1.25rem;">Potong & Simpan</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Cropper.js JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const profileInput = document.getElementById('profile_image');
         const avatarPreview = document.getElementById('avatarPreview');
         const avatarInitial = document.getElementById('avatarInitial');
+        
+        let cropper = null;
+        const cropperModalEl = document.getElementById('cropperModal');
+        const cropperModal = new bootstrap.Modal(cropperModalEl);
+        const imageToCrop = document.getElementById('imageToCrop');
+        const cropButton = document.getElementById('cropButton');
+        let selectedFile = null;
 
         if (profileInput) {
             profileInput.addEventListener('change', function (event) {
                 const file = event.target.files[0];
-                if (!file) {
-                    return;
-                }
+                if (!file) return;
+
+                selectedFile = file;
 
                 const reader = new FileReader();
                 reader.onload = function (e) {
-                    if (avatarPreview) {
-                        avatarPreview.src = e.target.result;
-                        avatarPreview.classList.remove('d-none');
-                    }
-                    if (avatarInitial) {
-                        avatarInitial.classList.add('d-none');
-                    }
+                    imageToCrop.src = e.target.result;
+                    cropperModal.show();
                 };
                 reader.readAsDataURL(file);
             });
         }
+
+        cropperModalEl.addEventListener('shown.bs.modal', function () {
+            if (cropper) {
+                cropper.destroy();
+            }
+            cropper = new Cropper(imageToCrop, {
+                aspectRatio: 1,
+                viewMode: 1,
+                dragMode: 'move',
+                autoCropArea: 1,
+                restore: false,
+                guides: false,
+                center: true,
+                highlight: false,
+                cropBoxMovable: false,
+                cropBoxResizable: false,
+                toggleDragModeOnDblclick: false,
+                background: false
+            });
+        });
+
+        cropperModalEl.addEventListener('hidden.bs.modal', function () {
+            if (cropper) {
+                cropper.destroy();
+                cropper = null;
+            }
+            if (profileInput && !avatarPreview.src.startsWith('data:image')) {
+                profileInput.value = '';
+            }
+        });
+
+        cropButton.addEventListener('click', function () {
+            if (!cropper) return;
+
+            const canvas = cropper.getCroppedCanvas({
+                width: 300,
+                height: 300,
+                imageSmoothingEnabled: true,
+                imageSmoothingQuality: 'high'
+            });
+
+            const croppedDataURL = canvas.toDataURL('image/jpeg', 0.9);
+            
+            if (avatarPreview) {
+                avatarPreview.src = croppedDataURL;
+                avatarPreview.classList.remove('d-none');
+            }
+            if (avatarInitial) {
+                avatarInitial.classList.add('d-none');
+            }
+
+            canvas.toBlob(function (blob) {
+                const croppedFile = new File([blob], selectedFile.name, {
+                    type: 'image/jpeg',
+                    lastModified: Date.now()
+                });
+
+                const dataTransfer = new DataTransfer();
+                dataTransfer.items.add(croppedFile);
+                profileInput.files = dataTransfer.files;
+
+                cropperModal.hide();
+            }, 'image/jpeg', 0.9);
+        });
     });
 </script>
 @endsection
