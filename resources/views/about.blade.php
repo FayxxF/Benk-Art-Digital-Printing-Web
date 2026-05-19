@@ -128,6 +128,70 @@ ini coba tentang kami
         margin-top: 5rem;
         margin-bottom: 2rem;
     }
+
+    /* LOKASI & KONTAK SECTION STYLE */
+    .contact-section {
+        margin-top: 4rem;
+        margin-bottom: 2rem;
+    }
+
+    .maps-container {
+        border-radius: 2rem;
+        overflow: hidden;
+        border: 1px solid #edf2f7;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+        height: 380px;
+    }
+
+    .contact-info-card {
+        background: white;
+        padding: 2.5rem;
+        border-radius: 2rem;
+        border: 1px solid #edf2f7;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .contact-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 1.25rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .contact-item:last-child {
+        margin-bottom: 0;
+    }
+
+    .contact-icon-box {
+        width: 44px;
+        height: 44px;
+        background: #f0f7ff;
+        color: var(--primary-color);
+        border-radius: 0.85rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.1rem;
+        flex-shrink: 0;
+    }
+
+    .contact-content h6 {
+        font-weight: 700;
+        color: #0b1a33;
+        margin-bottom: 0.25rem;
+        font-size: 0.9rem;
+    }
+
+    .contact-content p {
+        color: #718096;
+        font-size: 0.85rem;
+        margin-bottom: 0;
+        line-height: 1.5;
+    }
 </style>
 
 <div class="pb-5">
@@ -208,6 +272,81 @@ ini coba tentang kami
             </div>
         </div>
     </div>
+
+    <!-- LOKASI & KONTAK SECTION -->
+    <section class="contact-section">
+        <div class="mb-4">
+            <span class="section-tag text-center mx-auto">Kunjungi Kami</span>
+            <h2 class="about-title h2 text-center mb-4" style="color: #0b1a33;">Lokasi & Jam Operasional</h2>
+        </div>
+
+        <div class="row g-4 align-items-stretch">
+            <!-- Kolom Map -->
+            <div class="col-lg-7">
+                <div class="maps-container">
+                    <iframe 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.3312952877395!2d106.8122396!3d-6.2201995!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f3e4a8b792e3%3A0x6b44fb1c06df9a5!2sJakarta%20Selatan%2C%20Kota%20Jakarta%20Selatan%2C%20Daerah%20Khusus%20Ibukota%20Jakarta!5e0!3m2!1sid!2sid!4v1700000000000!5m2!1sid!2sid" 
+                        width="100%" 
+                        height="100%" 
+                        style="border:0;" 
+                        allowfullscreen="" 
+                        loading="lazy" 
+                        referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
+                </div>
+            </div>
+
+            <!-- Kolom Kontak & Jam Kerja -->
+            <div class="col-lg-5">
+                <div class="contact-info-card">
+                    <div>
+                        <h4 class="fw-black mb-4" style="color: #0b1a33; font-size: 1.25rem;">Hubungi & Temukan Kami</h4>
+                        
+                        <!-- Alamat -->
+                        <div class="contact-item">
+                            <div class="contact-icon-box">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div class="contact-content">
+                                <h6>Alamat Workshop</h6>
+                                <p>Jl. Raya Percetakan No. 45, Kebayoran Baru, Jakarta Selatan, DKI Jakarta 12130</p>
+                            </div>
+                        </div>
+
+                        <!-- Jam Kerja -->
+                        <div class="contact-item">
+                            <div class="contact-icon-box" style="background: #ecfdf5; color: #10b981;">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="contact-content">
+                                <h6>Jam Operasional</h6>
+                                <p class="fw-semibold text-dark">Senin - Sabtu: 08.00 - 20.00 WIB</p>
+                                <p class="text-danger small fw-semibold">Minggu & Hari Libur: Tutup</p>
+                            </div>
+                        </div>
+
+                        <!-- Hubungi Kami -->
+                        <div class="contact-item">
+                            <div class="contact-icon-box" style="background: #fdf2f8; color: #db2777;">
+                                <i class="fas fa-phone-alt"></i>
+                            </div>
+                            <div class="contact-content">
+                                <h6>Kontak Langsung</h6>
+                                <p>WhatsApp: <a href="https://wa.me/6289637506893" target="_blank" class="text-primary fw-bold text-decoration-none">+62 896-3750-6893</a></p>
+                                <p>Email: <a href="mailto:info@benkart.com" class="text-secondary text-decoration-none">info@benkart.com</a></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pt-3 border-top mt-3">
+                        <a href="https://wa.me/6289637506893" target="_blank" class="btn btn-primary w-100 rounded-4 py-2 fw-bold text-white shadow-sm">
+                            <i class="fab fa-whatsapp me-2"></i> Hubungi via WhatsApp
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <!-- CTA BANNER -->
     <div class="cta-banner shadow-sm">
