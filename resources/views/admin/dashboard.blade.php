@@ -76,7 +76,7 @@
 {{-- GRID: ASOSIASI RULE & INSIGHT --}}
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
     {{-- KIRI: TABEL ASOSIASI --}}
-    <div class="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+    <div class="lg:col-span-3 bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
         <div class="px-6 py-5 border-b border-slate-50">
             <h3 class="text-base font-bold text-slate-800">Rekomendasi Bundling (Asosiasi)</h3>
         </div>
@@ -113,7 +113,7 @@
         </div>
     </div>
 
-    {{-- KANAN: INSIGHT --}}
+    <!-- {{-- KANAN: INSIGHT --}}
     <div class="lg:col-span-1">
         <div class="bg-slate-800 rounded-2xl p-6 text-white h-full shadow-lg">
             <h3 class="text-base font-bold mb-4">Insight Analisis</h3>
@@ -125,7 +125,7 @@
                 <p class="text-sm font-bold text-white">{{ $topCombination ?? '-' }}</p>
             </div>
         </div>
-    </div>
+    </div> -->
 </div>
 
 {{-- PESANAN TERBARU --}}
