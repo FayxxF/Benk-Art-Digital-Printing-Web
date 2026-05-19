@@ -7,7 +7,7 @@ ini coba tentang kami
     /* Tidied Up Version of the Original About Design - Normal Size */
     .about-hero {
         height: 320px;
-        background: linear-gradient(rgba(11, 26, 51, 0.5), rgba(11, 26, 51, 0.5)), url('https://images.unsplash.com/photo-1616401784845-180882ba9ba8?q=80&w=1920&auto=format&fit=crop');
+        background: linear-gradient(rgba(11, 26, 51, 0.5), rgba(11, 26, 51, 0.5)), url('{{ asset('storage/asset/tentang-kami.jpg') }}');
         background-size: cover;
         background-position: center;
         border-radius: 2rem;
