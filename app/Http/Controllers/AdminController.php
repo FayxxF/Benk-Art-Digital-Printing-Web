@@ -206,7 +206,6 @@ class AdminController extends Controller
     }
     public function destroy(Product $product)
     {
-        Storage::disk('public')->delete($product->image);
         $product->delete();
         return back()->with('success', 'Produk Berhasil Dihapus');
     }
