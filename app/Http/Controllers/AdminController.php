@@ -342,6 +342,12 @@ class AdminController extends Controller
             // update status
         }
         $order->update(['status' => $request->status]);
+
+        // Hapus cache Apriori agar relasi bundling terupdate otomatis dengan order baru yang diselesaikan
+        if ($request->status === 'completed' || $order->getOriginal('status') === 'completed') {
+            AprioriService::clearCache();
+        }
+
         return back()->with('success', 'Status pesanan diperbarui');
     }
 
