@@ -203,7 +203,7 @@
 
             <div class="col-lg-5 d-none d-lg-block position-relative">
                 <div class="hero-img-wrapper">
-                    <img src="https://images.unsplash.com/photo-1626785774573-4b799315345d?q=80&w=800&auto=format&fit=crop" alt="Hero Image" class="img-fluid rounded-4" style="height: 350px; object-fit: cover; width: 100%;">
+                    <img src="{{ asset('storage/asset/profil-depan.jpg') }}" alt="Hero Image" class="img-fluid" style="height: 350px; object-fit: cover; width: 100%; border-radius: 1.75rem;">
                     
                     <!-- Floating Badges -->
                     <div class="floating-badge" style="top: 20%; left: -40px; animation: float 4s ease-in-out infinite;">
