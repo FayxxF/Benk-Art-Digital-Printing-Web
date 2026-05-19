@@ -283,7 +283,7 @@
                             <div class="position-absolute top-0 start-0 p-3">
                                 <span class="badge bg-white text-primary rounded-pill px-3 py-2 shadow-sm fw-bold">{{ $product->category->name }}</span>
                             </div>
-                            @if($product->discount_percentage != 0)
+                            @if($product->hasActiveDiscount())
                                 <div class="position-absolute top-0 end-0 p-3">
                                     <span class="badge bg-danger text-white rounded-pill px-3 py-2 shadow-sm fw-bold">{{ $product->discount_percentage }}% OFF</span>
                                 </div>
@@ -303,7 +303,7 @@
                             <div class="d-flex justify-content-between align-items-center pt-3 border-top mt-auto" style="min-height: 62px;">
                                 <div>
                                     <p class="mb-0 text-muted small fw-bold text-uppercase" style="font-size: 8px; line-height: 1;">Mulai Dari</p>
-                                    @if($product->discount_percentage != 0)
+                                    @if($product->hasActiveDiscount())
                                         <small class="text-decoration-line-through text-muted" style="font-size: 0.7rem; line-height: 1;">Rp {{ number_format($product->price, 0, ',', '.') }}</small>
                                         <h4 class="fw-bold text-danger mb-0" style="font-size: 1.15rem; line-height: 1.1; margin-top: 2px;">Rp {{ number_format($product->calculatePrice(), 0, ',', '.') }}</h4>
                                     @else

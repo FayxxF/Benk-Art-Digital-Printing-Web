@@ -50,6 +50,11 @@ class Product extends Model
         return $this->hasMany(OrderDetail::class);
     }
 
+    public function hasActiveDiscount()
+    {
+        return $this->calculatePrice() < $this->price;
+    }
+
     public function calculatePrice($selectedSpecs = []){
         $total = $this->price;
         if ($this->discount_percentage > 0) {
