@@ -140,7 +140,8 @@ ini coba tentang kami
         overflow: hidden;
         border: 1px solid #edf2f7;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
-        height: 380px;
+        height: 100%;
+        min-height: 380px;
     }
 
     .contact-info-card {
@@ -282,10 +283,10 @@ ini coba tentang kami
 
         <div class="row g-4 align-items-stretch">
             <!-- Kolom Map -->
-            <div class="col-lg-7">
-                <div class="maps-container">
+            <div class="col-lg-7 d-flex flex-column">
+                <div class="maps-container flex-grow-1">
                     <iframe 
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.3312952877395!2d106.8122396!3d-6.2201995!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f3e4a8b792e3%3A0x6b44fb1c06df9a5!2sJakarta%20Selatan%2C%20Kota%20Jakarta%20Selatan%2C%20Daerah%20Khusus%20Ibukota%20Jakarta!5e0!3m2!1sid!2sid!4v1700000000000!5m2!1sid!2sid" 
+                        src="https://maps.google.com/maps?q=-6.3511354171669305,107.1199625840855&t=&z=16&ie=UTF8&iwloc=&output=embed" 
                         width="100%" 
                         height="100%" 
                         style="border:0;" 
@@ -309,7 +310,7 @@ ini coba tentang kami
                             </div>
                             <div class="contact-content">
                                 <h6>Alamat Workshop</h6>
-                                <p>Jl. Raya Percetakan No. 45, Kebayoran Baru, Jakarta Selatan, DKI Jakarta 12130</p>
+                                <p>Jl. Haji Murtad No.124, Citeureup, Kec. Citeureup, Kabupaten Bogor, Jawa Barat 16810</p>
                             </div>
                         </div>
 
@@ -347,19 +348,6 @@ ini coba tentang kami
             </div>
         </div>
     </section>
-
-    <!-- CTA BANNER -->
-    <div class="cta-banner shadow-sm">
-        <h3 class="fw-black mb-4">Siap mewujudkan ide kreatif Anda?</h3>
-        <div class="d-flex flex-wrap justify-content-center gap-3">
-            <a href="{{ route('products.index') }}" class="btn btn-light rounded-4 px-4 py-2 fw-bold text-primary shadow-sm">
-                Mulai Belanja
-            </a>
-            <a href="https://wa.me/6289637506893" target="_blank" class="btn btn-outline-light rounded-4 px-4 py-2 fw-bold">
-                Konsultasi Gratis
-            </a>
-        </div>
-    </div>
 </div>
 
 @endsection
