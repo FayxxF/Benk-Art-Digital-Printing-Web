@@ -101,5 +101,60 @@ class ProductSeeder extends Seeder
                 ]
             ]
         ]);
-    }
+
+        // Product 4: Brosur / Flyer (Category ID 5)
+        Product::create([
+            'category_id' => 1,
+            'name' => 'Brosur / Flyer A5 Full Color',
+            'price' => 25000,
+            'stock' => 300,
+            'description' => 'Cetak brosur atau flyer A5 full color untuk promosi bisnis, event, dan produk.',
+            'image' => 'brosur.jpg',
+            'specs' => [
+                [
+                    "name" => "Bahan Kertas",
+                    "options" => [
+                        ["value" => "HVS 100gr", "price" => 0],
+                        ["value" => "Art Paper 120gr", "price" => 5000],
+                        ["value" => "Art Carton 190gr", "price" => 10000],
+                    ]
+                ],
+                [
+                    "name" => "Sisi Cetak",
+                    "options" => [
+                        ["value" => "1 Sisi", "price" => 0],
+                        ["value" => "2 Sisi", "price" => 10000],
+                    ]
+                ]
+            ]
+        ]);
+
+        // Product 5: Spanduk / Banner Outdoor (Category ID 5)
+        Product::create([
+            'category_id' => 2,
+            'name' => 'Spanduk Outdoor Custom',
+            'price' => 85000,
+            'stock' => 80,
+            'description' => 'Spanduk outdoor bahan flexi untuk promosi toko, acara, dan kebutuhan branding.',
+            'image' => 'spanduk.jpg',
+            'specs' => [
+                [
+                    "name" => "Ukuran",
+                    "options" => [
+                        ["value" => "1 x 1 meter", "price" => 0],
+                        ["value" => "2 x 1 meter", "price" => 60000],
+                        ["value" => "3 x 1 meter", "price" => 120000],
+                    ]
+                ],
+                [
+                    "name" => "Finishing",
+                    "options" => [
+                        ["value" => "Tanpa Mata Ayam", "price" => 0],
+                        ["value" => "Mata Ayam / Ring", "price" => 10000],
+                        ["value" => "Jahit Pinggir", "price" => 15000],
+                    ]
+                ]
+            ]
+        ]);
+            }
 }
