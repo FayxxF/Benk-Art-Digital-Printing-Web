@@ -22,7 +22,8 @@ class User extends Authenticatable
         'email',
         'password',
         'phone',
-        'role'
+        'role',
+        'profile_image'
     ];
 
     /**
@@ -46,6 +47,13 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function getProfileImageUrlAttribute(): string
+    {
+        return $this->profile_image
+            ? asset('storage/' . $this->profile_image)
+            : 'https://via.placeholder.com/150/3b82f6/ffffff?text=' . urlencode(substr($this->name, 0, 1));
     }
 
     // One to Many

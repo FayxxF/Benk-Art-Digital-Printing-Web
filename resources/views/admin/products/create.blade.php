@@ -2,6 +2,19 @@
 
 @section('content')
 
+<style>
+    /* Hide number input spinners */
+    input[type=number]::-webkit-inner-spin-button, 
+    input[type=number]::-webkit-outer-spin-button { 
+        -webkit-appearance: none; 
+        margin: 0; 
+    }
+    input[type=number] {
+        -moz-appearance: textfield;
+    }
+</style>
+
+
 {{-- Page Header --}}
 <div class="mb-4">
     <p class="text-xs font-semibold uppercase tracking-widest text-navy mb-1" style="opacity:0.45">Manajemen Produk</p>
@@ -22,7 +35,7 @@
 
             <div class="mb-4">
                 <label class="block text-xs font-semibold text-navy mb-1.5" style="opacity:0.6">Nama Produk</label>
-                <input type="text" name="name" required
+                <input type="text" name="name" value="{{ old('name') }}" required
                        class="w-full px-4 py-2 rounded-md text-sm text-navy outline-none transition-all"
                        style="border:1.5px solid rgba(34,53,96,0.15);background:#fff"
                        onfocus="this.style.borderColor='#3B82F6'" onblur="this.style.borderColor='rgba(34,53,96,0.15)'"
@@ -37,13 +50,13 @@
                             style="border:1.5px solid rgba(34,53,96,0.15);background:#fff"
                             onfocus="this.style.borderColor='#3B82F6'" onblur="this.style.borderColor='rgba(34,53,96,0.15)'">
                         @foreach($categories as $cat)
-                            <option value="{{ $cat->id }}">{{ $cat->name }}</option>
+                            <option value="{{ $cat->id }}" {{ old('category_id') == $cat->id ? 'selected' : '' }}>{{ $cat->name }}</option>
                         @endforeach
                     </select>
                 </div>
                 <div>
                     <label class="block text-xs font-semibold text-navy mb-1.5" style="opacity:0.6">Harga Dasar (Rp)</label>
-                    <input type="number" name="price" required
+                    <input type="number" name="price" value="{{ old('price') }}" required
                            class="w-full px-4 py-2 rounded-md text-sm text-navy outline-none transition-all"
                            style="border:1.5px solid rgba(34,53,96,0.15);background:#fff"
                            onfocus="this.style.borderColor='#3B82F6'" onblur="this.style.borderColor='rgba(34,53,96,0.15)'"
@@ -57,13 +70,13 @@
                           class="w-full px-4 py-2 rounded-md text-sm text-navy outline-none transition-all resize-none"
                           style="border:1.5px solid rgba(34,53,96,0.15);background:#fff"
                           onfocus="this.style.borderColor='#3B82F6'" onblur="this.style.borderColor='rgba(34,53,96,0.15)'"
-                          placeholder="Deskripsi produk..."></textarea>
+                          placeholder="Deskripsi produk...">{{ old('description') }}</textarea>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                     <label class="block text-xs font-semibold text-navy mb-1.5" style="opacity:0.6">Stok Awal</label>
-                    <input type="number" name="stock" value="100"
+                    <input type="number" name="stock" value="{{ old('stock', 100) }}"
                            class="w-full px-4 py-2 rounded-md text-sm text-navy outline-none transition-all"
                            style="border:1.5px solid rgba(34,53,96,0.15);background:#fff"
                            onfocus="this.style.borderColor='#3B82F6'" onblur="this.style.borderColor='rgba(34,53,96,0.15)'">
@@ -81,6 +94,53 @@
 
     {{-- Right: Spesifikasi --}}
     <div class="flex flex-col gap-5">
+
+        {{-- Discount Settings --}}
+        <div class="bg-white rounded-lg shadow-sm p-5" style="border:1px solid rgba(34,53,96,0.1)">
+            <h5 class="text-base font-bold text-navy mb-1">Pengaturan Diskon</h5>
+            <p class="text-xs text-navy mb-4" style="opacity:0.4">Kelola diskon promosi berdasarkan periode waktu.</p>
+
+            <div class="mb-3">
+                <label class="block text-xs font-semibold text-navy mb-1.5" style="opacity:0.6">Persentase Diskon (%)</label>
+                <div class="relative flex items-center">
+                    <input type="number" name="discount_percentage" id="discount_percentage" 
+                           value="{{ old('discount_percentage', 0) }}" min="0" max="100"
+                           class="w-full px-4 py-2 rounded-md text-sm text-navy outline-none transition-all"
+                           style="border:1.5px solid rgba(34,53,96,0.15);background:#fff; padding-right: 2.5rem;"
+                           placeholder="0"
+                           onfocus="this.style.borderColor='#3B82F6'" onblur="this.style.borderColor='rgba(34,53,96,0.15)'"
+                           onkeydown="if(event.key==='-' || event.key==='e') event.preventDefault();"
+                           oninput="if(value > 100) value = 100; if(value < 0) value = 0; updatePricePreview()">
+                    <span class="absolute right-4 text-sm font-bold text-navy" style="opacity:0.4">%</span>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="block text-xs font-semibold text-navy mb-1.5" style="opacity:0.6">Tanggal Mulai</label>
+                <input type="datetime-local" name="discount_start_date" id="discount_start"
+                       value="{{ old('discount_start_date') }}"
+                       class="w-full px-4 py-2 rounded-md text-sm text-navy outline-none transition-all"
+                       style="border:1.5px solid rgba(34,53,96,0.15);background:#fff"
+                       onfocus="this.style.borderColor='#3B82F6'" onblur="this.style.borderColor='rgba(34,53,96,0.15)'">
+            </div>
+
+            <div class="mb-4">
+                <label class="block text-xs font-semibold text-navy mb-1.5" style="opacity:0.6">Tanggal Berakhir</label>
+                <input type="datetime-local" name="discount_end_date" id="discount_end"
+                       value="{{ old('discount_end_date') }}"
+                       class="w-full px-4 py-2 rounded-md text-sm text-navy outline-none transition-all"
+                       style="border:1.5px solid rgba(34,53,96,0.15);background:#fff"
+                       onfocus="this.style.borderColor='#3B82F6'" onblur="this.style.borderColor='rgba(34,53,96,0.15)'">
+            </div>
+
+            <div class="p-4 rounded-lg" style="background:rgba(34,53,96,0.03);border:1px dashed rgba(34,53,96,0.1)">
+                <p class="text-[10px] font-bold uppercase tracking-wider text-navy mb-2" style="opacity:0.5">Preview Harga</p>
+                <div id="price-preview-container">
+                    <p id="original-price-display" class="text-sm text-navy mb-1" style="opacity:0.5; text-decoration: line-through; display:none;">Rp 0</p>
+                    <p id="discounted-price-display" class="text-xl font-bold text-navy">Rp 0</p>
+                </div>
+            </div>
+        </div>
 
         <div class="bg-white rounded-lg shadow-sm p-5" style="border:1px solid rgba(34,53,96,0.1)">
             <h5 class="text-base font-bold text-navy mb-1">Spesifikasi Dinamis</h5>
@@ -183,5 +243,34 @@
     function removeGroup(id) {
         document.getElementById(`spec-group-${id}`).remove();
     }
+
+    function updatePricePreview() {
+        const basePrice = parseFloat(document.querySelector('input[name="price"]').value) || 0;
+        const discount = parseFloat(document.getElementById('discount_percentage').value) || 0;
+        
+        const originalPriceDisplay = document.getElementById('original-price-display');
+        const discountedPriceDisplay = document.getElementById('discounted-price-display');
+
+        if (discount > 0) {
+            const finalPrice = basePrice - (basePrice * (discount / 100));
+            originalPriceDisplay.style.display = 'block';
+            originalPriceDisplay.innerText = 'Rp ' + new Intl.NumberFormat('id-ID').format(basePrice);
+            discountedPriceDisplay.innerText = 'Rp ' + new Intl.NumberFormat('id-ID').format(finalPrice);
+            discountedPriceDisplay.classList.add('text-red-600');
+            discountedPriceDisplay.classList.remove('text-navy');
+        } else {
+            originalPriceDisplay.style.display = 'none';
+            discountedPriceDisplay.innerText = 'Rp ' + new Intl.NumberFormat('id-ID').format(basePrice);
+            discountedPriceDisplay.classList.remove('text-red-600');
+            discountedPriceDisplay.classList.add('text-navy');
+        }
+    }
+
+    // Initialize preview
+    document.addEventListener('DOMContentLoaded', function() {
+        updatePricePreview();
+        // Listen to base price changes too
+        document.querySelector('input[name="price"]').addEventListener('input', updatePricePreview);
+    });
 </script>
 @endpush

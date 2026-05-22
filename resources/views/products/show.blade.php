@@ -19,16 +19,32 @@
         <div class="col-lg-6">
             <span class="badge bg-primary bg-opacity-10 text-primary mb-3">{{ $product->category->name }}</span>
             <h1 class="fw-black mb-3">{{ $product->name }}</h1>
-            <div class="mb-4">
-                <span class="price-tag" id="displayPrice">Rp {{ number_format($product->price, 0, ',', '.') }}</span>
+            <div class="mb-4 d-flex align-items-center flex-wrap gap-2">
+                @if($product->calculatePrice() < $product->price)
+                    <span class="text-decoration-line-through text-muted fs-4 me-1">Rp {{ number_format($product->price, 0, ',', '.') }}</span>
+                    <span class="price-tag text-danger" id="displayPrice">Rp {{ number_format($product->calculatePrice(), 0, ',', '.') }}</span>
+                    <span class="badge bg-danger text-white rounded-pill px-3 py-2 fw-bold align-middle shadow-sm">{{ $product->discount_percentage }}% OFF</span>
+                @else
+                    <span class="price-tag" id="displayPrice">Rp {{ number_format($product->price, 0, ',', '.') }}</span>
+                @endif
             </div>
             
-            <p class="text-muted mb-5">{{ $product->description }}</p>
+            <p class="text-muted mb-4">{{ $product->description }}</p>
+            
+            <div class="mb-4 p-3 rounded-4 bg-light d-inline-block border">
+                @if($product->stock > 10)
+                    <span class="text-muted small"><i class="fas fa-boxes me-2"></i>Stok Tersedia: <span class="fw-bold text-dark">{{ $product->stock }}</span></span>
+                @elseif($product->stock > 0)
+                    <span class="text-warning small fw-bold"><i class="fas fa-exclamation-triangle me-2"></i>Stok Menipis: {{ $product->stock }}</span>
+                @else
+                    <span class="text-danger small fw-bold"><i class="fas fa-times-circle me-2"></i>Stok Habis</span>
+                @endif
+            </div>
 
             <form action="{{ route('cart.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <input type="hidden" name="product_id" value="{{ $product->id }}">
-                <input type="hidden" id="basePrice" value="{{ $product->price }}">
+                <input type="hidden" id="basePrice" value="{{ $product->calculatePrice() }}">
 
                 {{-- Spesifikasi (Backend Anda) --}}
                 @if($product->specs && count($product->specs) > 0)
@@ -54,14 +70,35 @@
 
                 {{-- Upload & Notes --}}
                 <div class="mb-3">
-                    <label class="fw-bold small mb-2">Upload Desain (Opsional)</label>
-                    <input type="file" name="image_request" class="form-control rounded-3 py-2" accept="image/*,.pdf">
+                    <label class="fw-bold small mb-2">Upload Desain (Wajib)</label>
+                    <input type="file" name="image_request" class="form-control rounded-3 py-2" accept="image/*,.pdf" required>
                 </div>
 
                 <div class="mb-4">
-                    <label class="fw-bold small mb-2">Catatan Tambahan</label>
-                    <textarea name="notes" class="form-control rounded-3 p-3" rows="2" placeholder="Jelaskan kebutuhan desain Anda..."></textarea>
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <label class="fw-bold small mb-0">Catatan Tambahan</label>
+                        <small class="text-muted" id="charCounter" style="font-size: 0.75rem; font-weight: 600;">0 / 500 karakter</small>
+                    </div>
+                    <textarea name="notes" id="notesInput" maxlength="500" class="form-control rounded-3 p-3" rows="2" placeholder="Jelaskan kebutuhan desain Anda..." oninput="updateCharCount()"></textarea>
                 </div>
+
+                <script>
+                    function updateCharCount() {
+                        const textarea = document.getElementById('notesInput');
+                        const counter = document.getElementById('charCounter');
+                        if (textarea && counter) {
+                            const length = textarea.value.length;
+                            counter.textContent = `${length} / 500 karakter`;
+                            if (length >= 500) {
+                                counter.classList.remove('text-muted');
+                                counter.classList.add('text-danger');
+                            } else {
+                                counter.classList.remove('text-danger');
+                                counter.classList.add('text-muted');
+                            }
+                        }
+                    }
+                </script>
 
                 <div class="row g-3 align-items-center">
                     <div class="col-md-4">
@@ -84,13 +121,23 @@
         <div class="row g-4">
             @foreach($recommendedProducts as $rec)
             <div class="col-6 col-md-3">
-                <div class="card h-100 border-0 shadow-sm rounded-4 p-2">
+                <div class="card h-100 border-0 shadow-sm rounded-4 p-2 position-relative d-flex flex-column">
+                    @if($rec->calculatePrice() < $rec->price)
+                        <span class="badge bg-danger text-white rounded-pill px-2 py-1 position-absolute top-0 end-0 m-2 shadow-sm" style="font-size: 0.6rem; z-index: 10;">{{ $rec->discount_percentage }}% OFF</span>
+                    @endif
                     <img src="{{ $rec->image ? asset('storage/'.$rec->image) : 'https://via.placeholder.com/300' }}" class="rounded-3 mb-2" style="height: 150px; object-fit:cover;">
-                    <div class="p-2">
+                    <div class="p-2 d-flex flex-column flex-grow-1">
                         <small class="text-primary fw-bold">{{ round($rec->rec_confidence * 100) }}% Match</small>
-                        <h6 class="fw-bold text-truncate">{{ $rec->name }}</h6>
-                        <p class="fw-black text-primary mb-2">Rp {{ number_format($rec->price, 0, ',', '.') }}</p>
-                        <a href="{{ route('products.show', $rec->id) }}" class="btn btn-sm btn-outline-dark w-100 rounded-pill">Lihat</a>
+                        <h6 class="fw-bold text-truncate mb-1">{{ $rec->name }}</h6>
+                        <div class="mb-2 d-flex flex-column justify-content-end" style="min-height: 38px;">
+                            @if($rec->calculatePrice() < $rec->price)
+                                <small class="text-decoration-line-through text-muted" style="font-size: 0.7rem; display: block; line-height: 1;">Rp {{ number_format($rec->price, 0, ',', '.') }}</small>
+                                <span class="fw-black text-danger" style="font-size: 0.95rem; line-height: 1.2;">Rp {{ number_format($rec->calculatePrice(), 0, ',', '.') }}</span>
+                            @else
+                                <span class="fw-black text-primary" style="font-size: 0.95rem; line-height: 1.2;">Rp {{ number_format($rec->price, 0, ',', '.') }}</span>
+                            @endif
+                        </div>
+                        <a href="{{ route('products.show', $rec->id) }}" class="btn btn-sm btn-outline-dark w-100 rounded-pill mt-auto">Lihat</a>
                     </div>
                 </div>
             </div>

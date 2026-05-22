@@ -10,7 +10,9 @@ class PageController extends Controller
     public function index()
     {
         // Get 6 latest products for homepage
-        $products = Product::latest()->take(6)->get();
+        $products = Product::latest()
+                           ->take(6)
+                           ->get();
         return view('home', compact('products'));
     }
 

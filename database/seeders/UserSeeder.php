@@ -17,8 +17,8 @@ class UserSeeder extends Seeder
         // 1. Admin
         User::create([
             'name' => 'Admin Benk Art',
-            'email' => 'admin@benkart.com',
-            'password' => Hash::make('password'), // Login with this!
+            'email' => 'admin@gmail.com',
+            'password' => Hash::make('123123123'), // Login with this!
             'role' => 'admin',
             'phone' => '081234567890',
         ]);
@@ -30,6 +30,15 @@ class UserSeeder extends Seeder
             'password' => Hash::make('password'),
             'role' => 'customer',
             'phone' => '089876543210',
+        ]);
+
+        // 3. Regular Customer (Usap)
+        User::create([
+            'name' => 'Usap Biasa',
+            'email' => 'usap@gmail.com',
+            'password' => Hash::make('123123123'),
+            'role' => 'customer',
+            'phone' => '081298765432',
         ]);
     }
 }

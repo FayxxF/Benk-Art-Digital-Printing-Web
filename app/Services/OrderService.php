@@ -28,9 +28,23 @@ class OrderService{
                 throw new \Exception("Keranjang Belanja Kosong.");
             }
 
-            // 2. itung total
+            // 2. itung total dan validasi stok
             $grandTotal = 0;
-            foreach ($cartItems as $item){
+            $productTotals = [];
+            foreach ($cartItems as $item) {
+                if (!isset($productTotals[$item->product_id])) {
+                    $productTotals[$item->product_id] = 0;
+                }
+                $productTotals[$item->product_id] += $item->quantity;
+            }
+
+            foreach ($cartItems as $item) {
+                $totalRequested = $productTotals[$item->product_id];
+                // Validasi Stok
+                if ($totalRequested > $item->product->stock) {
+                    throw new \Exception("Stok produk '{$item->product->name}' tidak mencukupi (Mencoba membeli: {$totalRequested}, Tersisa: {$item->product->stock}).");
+                }
+
                 $unitPrice = $item->product->calculatePrice($item->specs_request);
                 $grandTotal += $unitPrice * $item->quantity;
             }
@@ -68,11 +82,20 @@ class OrderService{
             Cart::where('user_id', $user->id)->delete();
             return $order;
         });
-        try{
-            $snapToken = $this->paymentService->processCheckout($order);
-            $order->update(['snap_token' => $snapToken]);
-        } catch (\Exception $e) {
-            \Illuminate\Support\Facades\Log::error('Midtrans Error: ' . $e->getMessage());
+
+        if ($order->total_price > 0) {
+            try {
+                $snapToken = $this->paymentService->processCheckout($order);
+                $order->update(['snap_token' => $snapToken]);
+            } catch (\Exception $e) {
+                \Illuminate\Support\Facades\Log::error('Midtrans Error: ' . $e->getMessage());
+            }
+        } else {
+            // Free transaction (100% discount): Mark as paid and set dummy snap token
+            $order->update([
+                'status' => 'paid',
+                'snap_token' => 'free_order'
+            ]);
         }
         return $order;
     }

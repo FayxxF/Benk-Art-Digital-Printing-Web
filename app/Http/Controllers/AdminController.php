@@ -128,11 +128,19 @@ class AdminController extends Controller
 
     public function store(Request $request){
         $request->validate([
-            'name' => 'required',
+            'name' => 'required|string|max:255',
             'category_id' => 'required',
-            'price' => 'required|numeric',
-            'image' => 'required|image',
-            'specs' => 'nullable|array'
+            'price' => 'required|numeric|min:0',
+            'stock' => 'required|numeric|min:0',
+            'image' => 'required|image|max:51200',
+            'specs' => 'nullable|array',
+            'discount_percentage' => 'nullable|numeric|min:0|max:100',
+            'discount_start_date' => 'nullable|date',
+            'discount_end_date'   => 'nullable|date|after_or_equal:discount_start_date',
+            'description' => 'required|string',
+        ], [
+            'price.min' => 'Harga tidak boleh kurang dari 0',
+            'discount_end_date.after_or_equal' => 'Tanggal selesai tidak boleh sebelum tanggal mulai',
         ]);
 
         $imagePath = $request->file('image')->store('products', 'public');
@@ -145,6 +153,9 @@ class AdminController extends Controller
             'description' => $request->description,
             'image' => $imagePath,
             'specs' => $request->specs,
+            'discount_percentage' => $request->discount_percentage ?? 0,
+            'discount_start_date' => $request->discount_start_date,
+            'discount_end_date'   => $request->discount_end_date,
         ]);
 
         return redirect()->route('admin.products.index')->with('success', 'Produk Berhasil Dibuat!');
@@ -157,26 +168,44 @@ class AdminController extends Controller
     }
 
     public function update(Request $request, Product $product)
-{
-    if ($request->hasFile('image')) {
-        Storage::disk('public')->delete($product->image);
-        $product->image = $request->file('image')->store('products', 'public');
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'category_id' => 'required',
+            'price' => 'required|numeric|min:0',
+            'stock' => 'required|numeric|min:0',
+            'image' => 'nullable|image|max:51200',
+            'specs' => 'nullable|array',
+            'discount_percentage' => 'nullable|numeric|min:0|max:100',
+            'discount_start_date' => 'nullable|date',
+            'discount_end_date'   => 'nullable|date|after_or_equal:discount_start_date',
+            'description' => 'required|string',
+        ], [
+            'price.min' => 'Harga tidak boleh kurang dari 0',
+            'discount_end_date.after_or_equal' => 'Tanggal selesai tidak boleh sebelum tanggal mulai',
+        ]);
+
+        if ($request->hasFile('image')) {
+            Storage::disk('public')->delete($product->image);
+            $product->image = $request->file('image')->store('products', 'public');
+        }
+
+        $product->name                = $request->name;
+        $product->category_id         = $request->category_id;
+        $product->price               = $request->price;
+        $product->stock               = $request->stock ?? $product->stock;
+        $product->description         = $request->description;
+        $product->specs               = $request->specs;
+        $product->discount_percentage = $request->discount_percentage ?? 0;
+        $product->discount_start_date = $request->discount_start_date;
+        $product->discount_end_date   = $request->discount_end_date;
+        
+        $product->save();
+
+        return redirect()->route('admin.products.index')->with('success', 'Produk diupdate');
     }
-
-    $product->name        = $request->name;
-    $product->category_id = $request->category_id;
-    $product->price       = $request->price;
-    $product->stock         = $request->stock ?? $product->stock;
-    $product->description = $request->description;
-    $product->specs       = $request->specs;
-    $product->save();
-
-    return redirect()->route('admin.products.index')->with('success', 'Produk diupdate');
-}
-
     public function destroy(Product $product)
     {
-        Storage::disk('public')->delete($product->image);
         $product->delete();
         return back()->with('success', 'Produk Berhasil Dihapus');
     }
@@ -313,6 +342,12 @@ class AdminController extends Controller
             // update status
         }
         $order->update(['status' => $request->status]);
+
+        // Hapus cache Apriori agar relasi bundling terupdate otomatis dengan order baru yang diselesaikan
+        if ($request->status === 'completed' || $order->getOriginal('status') === 'completed') {
+            AprioriService::clearCache();
+        }
+
         return back()->with('success', 'Status pesanan diperbarui');
     }
 
@@ -328,7 +363,7 @@ class AdminController extends Controller
  
     public function storeCategory(Request $request)
     {
-        $request->validate(['name' => 'required|unique:categories,name']);
+        $request->validate(['name' => 'required|string|max:255|unique:categories,name']);
         Category::create(['name' => $request->name, 'is_active' => true]);
         return back()->with('success', 'Kategori berhasil ditambah');
     }
@@ -342,7 +377,7 @@ class AdminController extends Controller
     public function updateCategory(Request $request, Category $category)
     {
         $request->validate([
-            'name' => 'required|unique:categories,name,' . $category->id
+            'name' => 'required|string|max:255|unique:categories,name,' . $category->id
         ]);
         $category->update(['name' => $request->name]);
         return back()->with('success', 'Kategori berhasil diupdate');

@@ -117,8 +117,24 @@
                     </td>
 
                     {{-- Harga --}}
-                    <td class="px-5 py-3 font-semibold text-navy">
-                        Rp {{ number_format($product->price, 0, ',', '.') }}
+                    <td class="px-5 py-3">
+                        @php
+                            $discountedPrice = $product->calculatePrice();
+                            $hasDiscount = $discountedPrice < $product->price;
+                        @endphp
+                        @if($hasDiscount)
+                            <div class="flex flex-col">
+                                <span class="font-bold text-red-600">Rp {{ number_format($discountedPrice, 0, ',', '.') }}</span>
+                                <span class="text-xs text-gray-400 line-through">Rp {{ number_format($product->price, 0, ',', '.') }}</span>
+                                <div>
+                                    <span class="inline-block text-[10px] font-bold px-1.5 py-0.5 rounded bg-red-500 text-white mt-1">
+                                        Promo -{{ $product->discount_percentage }}%
+                                    </span>
+                                </div>
+                            </div>
+                        @else
+                            <span class="font-semibold text-navy">Rp {{ number_format($product->price, 0, ',', '.') }}</span>
+                        @endif
                     </td>
 
                     {{-- Stok --}}

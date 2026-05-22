@@ -100,6 +100,8 @@
         transition: all 0.4s ease;
         padding: 0.75rem;
         height: 100%;
+        display: flex;
+        flex-direction: column;
     }
 
     .product-card-premium:hover {
@@ -151,6 +153,35 @@
     .hero-img-wrapper:hover {
         transform: rotate(0deg);
     }
+
+    /* Mobile Enhancements */
+    @media (max-width: 768px) {
+        .hero-section {
+            padding: 2rem 1rem;
+            border-radius: 1.5rem;
+            margin-top: 0.5rem;
+        }
+        .display-title {
+            font-size: 2.25rem;
+        }
+        .hero-img-wrapper {
+            transform: none;
+            margin: 2rem auto 0;
+            max-width: 100%;
+        }
+        .floating-badge {
+            padding: 0.75rem 1rem;
+            gap: 0.5rem;
+            transform: scale(0.85);
+        }
+        .floating-badge p {
+            font-size: 0.8rem !important;
+        }
+        .stats-container {
+            justify-content: space-between;
+            gap: 1rem !important;
+        }
+    }
 </style>
 
 <div class="pb-5">
@@ -171,40 +202,40 @@
                 </h1>
                 
                 <p class="text-muted mb-4 fs-6 pr-lg-5">
-                    Solusi cetak profesional dengan hasil warna yang memukau untuk mendukung pertumbuhan bisnis dan ide kreatif Anda.
+                    Benk Art menghadirkan solusi cetak digital profesional dengan hasil warna memukau, tajam, dan presisi tinggi untuk mendukung setiap pertumbuhan bisnis serta ide kreatif Anda.
                 </p>
                 
-                <div class="d-flex flex-wrap gap-3 mb-4">
-                    <a href="{{ route('products.index') }}" class="btn btn-primary rounded-4 px-4 py-2 fw-bold shadow-lg text-white">
+                <div class="d-flex flex-column flex-sm-row gap-3 mb-4">
+                    <a href="{{ route('products.index') }}" class="btn btn-primary rounded-4 px-4 py-3 py-sm-2 fw-bold shadow-lg text-white d-flex justify-content-center align-items-center transition-all">
                         Mulai Belanja <i class="fas fa-arrow-right ms-2 small"></i>
                     </a>
-                    <a href="https://wa.me/6289637506893" target="_blank" class="btn btn-outline-primary rounded-4 px-4 py-2 fw-bold border-2">
+                    <a href="https://wa.me/6289637506893" target="_blank" class="btn btn-outline-primary rounded-4 px-4 py-3 py-sm-2 fw-bold border-2 d-flex justify-content-center align-items-center transition-all">
                         Hubungi Kami
                     </a>
                 </div>
                 
-                <div class="d-flex gap-5 pt-4 border-top">
-                    <div>
+                <div class="d-flex stats-container gap-5 pt-4 border-top">
+                    <div class="text-center text-lg-start">
                         <h4 class="fw-bold mb-0 text-dark">10k+</h4>
                         <small class="text-uppercase text-muted fw-bold" style="font-size: 9px; letter-spacing: 1px;">Pelanggan</small>
                     </div>
-                    <div>
+                    <div class="text-center text-lg-start">
                         <h4 class="fw-bold mb-0 text-dark">50+</h4>
                         <small class="text-uppercase text-muted fw-bold" style="font-size: 9px; letter-spacing: 1px;">Produk</small>
                     </div>
-                    <div>
+                    <div class="text-center text-lg-start">
                         <h4 class="fw-bold mb-0 text-dark">24h</h4>
                         <small class="text-uppercase text-muted fw-bold" style="font-size: 9px; letter-spacing: 1px;">Pengerjaan</small>
                     </div>
                 </div>
             </div>
 
-            <div class="col-lg-5 d-none d-lg-block position-relative">
+            <div class="col-lg-5 mt-5 mt-lg-0 position-relative">
                 <div class="hero-img-wrapper">
-                    <img src="https://picsum.photos/seed/print-hero/800/800" alt="Hero Image" class="img-fluid rounded-4">
+                    <img src="{{ asset('storage/asset/profil-depan.jpg') }}" alt="Hero Image" class="img-fluid" style="height: 350px; object-fit: cover; width: 100%; border-radius: 1.75rem;">
                     
                     <!-- Floating Badges -->
-                    <div class="floating-badge" style="top: 20%; left: -40px; animation: float 4s ease-in-out infinite;">
+                    <div class="floating-badge" style="top: 10%; left: -10px; animation: float 4s ease-in-out infinite;">
                         <div class="bg-success bg-opacity-10 text-success rounded-3 p-2">
                             <i class="fas fa-check-circle"></i>
                         </div>
@@ -214,7 +245,7 @@
                         </div>
                     </div>
 
-                    <div class="floating-badge" style="bottom: 20%; right: -20px; animation: float 5s ease-in-out infinite 1s;">
+                    <div class="floating-badge" style="bottom: 10%; right: -10px; animation: float 5s ease-in-out infinite 1s;">
                         <div class="bg-primary bg-opacity-10 text-primary rounded-3 p-2">
                             <i class="fas fa-star"></i>
                         </div>
@@ -232,7 +263,7 @@
     <section class="mb-4 py-3">
         <div class="text-center mb-4">
             <h2 class="fw-bold h2 mb-2 text-dark">Layanan Unggulan Kami</h2>
-            <p class="text-muted small">Kami menyediakan berbagai macam jasa cetak dengan kualitas premium.</p>
+            <p class="text-muted small">Benk Art menyediakan berbagai macam layanan jasa cetak terintegrasi dengan standar kualitas warna premium dan bahan terbaik.</p>
         </div>
         
         <div class="row g-4">
@@ -263,7 +294,7 @@
         <div class="d-flex justify-content-between align-items-end mb-4">
             <div>
                 <h2 class="fw-bold h2 mb-1 text-dark">Produk Terbaru</h2>
-                <p class="text-muted small mb-0">Koleksi produk cetak terbaik kami.</p>
+                <p class="text-muted small mb-0">Koleksi mahakarya cetak digital terbaik dari Benk Art khusus untuk kesuksesan promosi Anda.</p>
             </div>
             <a href="{{ route('products.index') }}" class="btn btn-link text-primary fw-bold text-decoration-none">
                 Lihat Katalog <i class="fas fa-arrow-right ms-2 small"></i>
@@ -272,24 +303,43 @@
 
         <div class="row g-4">
             @foreach($products as $product)
-            <div class="col-md-6 col-lg-4">
-                <div class="product-card-premium">
-                    <a href="{{ route('products.show', $product->id) }}" class="text-decoration-none">
-                        <div class="product-img-container mb-4">
+            <div class="col-md-6 col-lg-4 d-flex align-items-stretch">
+                <div class="product-card-premium w-100 d-flex flex-column">
+                    <a href="{{ route('products.show', $product->id) }}" class="text-decoration-none d-flex flex-column h-100 flex-grow-1">
+                        <div class="product-img-container mb-4 position-relative">
                             <img src="{{ $product->image ? asset('storage/'.$product->image) : 'https://picsum.photos/seed/ba-'.$product->id.'/400/400' }}" 
                                  alt="{{ $product->name }}">
                             <div class="position-absolute top-0 start-0 p-3">
                                 <span class="badge bg-white text-primary rounded-pill px-3 py-2 shadow-sm fw-bold">{{ $product->category->name }}</span>
                             </div>
-                        </div>
-                        <div class="px-3 pb-3">
-                            <h5 class="fw-bold text-dark mb-3 text-truncate" style="max-width: 90%;">{{ $product->name }}</h5>
-                            <div class="d-flex justify-content-between align-items-center pt-3 border-top">
-                                <div>
-                                    <p class="mb-0 text-muted small fw-bold text-uppercase" style="font-size: 8px;">Mulai Dari</p>
-                                    <h4 class="fw-bold text-primary mb-0">Rp {{ number_format($product->price, 0, ',', '.') }}</h4>
+                            @if($product->hasActiveDiscount())
+                                <div class="position-absolute top-0 end-0 p-3">
+                                    <span class="badge bg-danger text-white rounded-pill px-3 py-2 shadow-sm fw-bold">{{ $product->discount_percentage }}% OFF</span>
                                 </div>
-                                <span class="btn btn-primary rounded-pill px-4 btn-sm fw-bold text-white">Detail & Pesan</span>
+                            @endif
+                        </div>
+                        <div class="px-3 pb-3 d-flex flex-column flex-grow-1">
+                            <h5 class="fw-bold text-dark mb-1 text-truncate" style="max-width: 90%;">{{ $product->name }}</h5>
+                            <div class="mb-3">
+                                @if($product->stock > 10)
+                                    <small class="text-muted" style="font-size: 0.7rem;">Stok: <span class="fw-bold">{{ $product->stock }}</span></small>
+                                @elseif($product->stock > 0)
+                                    <small class="text-warning fw-bold" style="font-size: 0.7rem;">Stok Menipis: {{ $product->stock }}</small>
+                                @else
+                                    <small class="text-danger fw-bold" style="font-size: 0.7rem;">Stok Habis</small>
+                                @endif
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center pt-3 border-top mt-auto" style="min-height: 62px;">
+                                <div>
+                                    <p class="mb-0 text-muted small fw-bold text-uppercase" style="font-size: 8px; line-height: 1;">Mulai Dari</p>
+                                    @if($product->hasActiveDiscount())
+                                        <small class="text-decoration-line-through text-muted" style="font-size: 0.7rem; line-height: 1;">Rp {{ number_format($product->price, 0, ',', '.') }}</small>
+                                        <h4 class="fw-bold text-danger mb-0" style="font-size: 1.15rem; line-height: 1.1; margin-top: 2px;">Rp {{ number_format($product->calculatePrice(), 0, ',', '.') }}</h4>
+                                    @else
+                                        <h4 class="fw-bold text-primary mb-0" style="font-size: 1.15rem; line-height: 1.1; margin-top: 10px;">Rp {{ number_format($product->price, 0, ',', '.') }}</h4>
+                                    @endif
+                                </div>
+                                <span class="btn btn-outline-dark btn-sm rounded-pill px-4 fw-bold align-self-center">Detail & Pesan</span>
                             </div>
                         </div>
                     </a>

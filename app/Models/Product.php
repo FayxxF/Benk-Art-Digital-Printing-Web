@@ -4,24 +4,33 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Product extends Model
 {
+    use SoftDeletes;
     use HasFactory;
 
     protected $fillable = [
         'category_id',
         'name',
         'price',
+        'discount_percentage',
+        'discount_start_date',
+        'discount_end_date',
         'stock',
         'image',
         'description',
-        'specs'
+        'specs',
     ];
 
     protected $casts = [
-        'specs' => 'array'
+        'specs' => 'array',
+        'discount_start_date' => 'datetime',
+        'discount_end_date' => 'datetime',
     ];
+
+
 
     // Foreign Key ke Category
     public function category()
@@ -41,9 +50,34 @@ class Product extends Model
         return $this->hasMany(OrderDetail::class);
     }
 
-    // Helper: untuk menghitung harga tambahan sesuai spesifikasi
+    public function hasActiveDiscount()
+    {
+        return $this->calculatePrice() < $this->price;
+    }
+
     public function calculatePrice($selectedSpecs = []){
         $total = $this->price;
+        if ($this->discount_percentage > 0) {
+            $now = now();
+            $applyDiscount = false;
+
+            // Check if both dates are filled in the database
+            if ($this->discount_start_date && $this->discount_end_date) { 
+                // Check if today is inside the promo window
+                if ($now->between($this->discount_start_date, $this->discount_end_date)) {
+                    $applyDiscount = true;
+                }
+            } else {
+                // Permanent ongoing discount (if dates are not set)
+                $applyDiscount = true;
+            }
+
+            if ($applyDiscount) {
+                $discountAmount = $this->price * ($this->discount_percentage / 100);
+                $total = $this->price - $discountAmount;
+            }
+        }
+
         
         // cek apabila tidak ada opsi spesifikasi atau spek yang dipilih = kosong 
         if(empty($this->specs) || empty($selectedSpecs)) {
@@ -70,5 +104,4 @@ class Product extends Model
         }
         return $total;
     }
-    
 }
