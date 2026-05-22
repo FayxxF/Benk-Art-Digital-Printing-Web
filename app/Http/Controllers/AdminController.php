@@ -384,8 +384,15 @@ class AdminController extends Controller
     }
  
     public function destroyCategory(Category $category)
-    {
-        $category->delete();
-        return back()->with('success', 'Kategori berhasil dihapus');
+{
+    // 1. Check if the category still has products attached
+    if ($category->products()->count() > 0) {
+        return back()->with('error', 'Kategori tidak bisa dihapus karena masih ada produk di dalamnya. Pindahkan atau hapus produk terlebih dahulu.');
     }
+
+    // 2. If it is empty, it is safe to delete
+    $category->delete();
+
+    return back()->with('success', 'Kategori berhasil dihapus');
+}
 }
