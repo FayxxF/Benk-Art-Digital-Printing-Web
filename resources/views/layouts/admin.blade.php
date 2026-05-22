@@ -35,18 +35,21 @@
         .sidebar-link i { width: 18px; text-align: center; font-size: 13px; }
     </style>
 </head>
-<body class="bg-gray-100 h-screen overflow-hidden">
+<body class="bg-gray-100 h-screen overflow-hidden flex flex-col">
 
-{{-- Mobile Layout (Tetap Sama) --}}
-<div class="md:hidden flex items-center justify-between px-4 py-3 bg-navy shadow-md">
+{{-- Mobile Layout --}}
+<div class="md:hidden flex items-center justify-between px-4 py-3 bg-navy shadow-md shrink-0 relative z-50">
     <span class="text-white font-bold text-lg">Benk Art Admin</span>
     <button onclick="toggleSidebar()" class="text-white text-xl"><i class="fas fa-bars"></i></button>
 </div>
 
-<div class="flex h-screen overflow-hidden">
+<div class="flex flex-1 overflow-hidden relative">
 
-    {{-- Sidebar (Dibuat Fix) --}}
-    <aside id="sidebar" class="w-64 bg-navy flex flex-col p-4 shrink-0 h-full">
+    {{-- Overlay Mobile --}}
+    <div id="sidebar-overlay" class="fixed inset-0 bg-black/50 z-40 hidden md:hidden" onclick="toggleSidebar()"></div>
+
+    {{-- Sidebar (Interaktif) --}}
+    <aside id="sidebar" class="w-64 bg-navy flex flex-col p-4 shrink-0 absolute inset-y-0 left-0 z-50 md:relative transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out">
         <div class="flex items-center gap-3 mb-6 px-2">
             <div class="w-9 h-9 rounded-full bg-brand flex items-center justify-center">
                 <span class="text-white font-black text-sm">BA</span>
@@ -94,11 +97,18 @@
     </aside>
 
     {{-- Main Content (Scroll di sini saja) --}}
-    <main class="flex-1 overflow-y-auto p-8">
+    <main class="flex-1 overflow-y-auto p-4 md:p-8">
         @if(session('success'))
             <div class="flex items-center gap-3 bg-green-50 border border-green-200 text-green-800 text-sm font-medium px-4 py-3 rounded-md mb-6">
                 <i class="fas fa-check-circle text-green-500"></i>
                 {{ session('success') }}
+            </div>
+        @endif
+
+        @if(session('error'))
+            <div class="flex items-center gap-3 bg-red-50 border border-red-200 text-red-800 text-sm font-medium px-4 py-3 rounded-md mb-6">
+                <i class="fas fa-exclamation-circle text-red-500"></i>
+                {{ session('error') }}
             </div>
         @endif
 
@@ -122,7 +132,10 @@
 
 <script>
     function toggleSidebar() {
-        document.getElementById('sidebar').classList.toggle('hidden');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebar-overlay');
+        sidebar.classList.toggle('-translate-x-full');
+        overlay.classList.toggle('hidden');
     }
 </script>
 

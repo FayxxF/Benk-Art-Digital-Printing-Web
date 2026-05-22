@@ -153,6 +153,35 @@
     .hero-img-wrapper:hover {
         transform: rotate(0deg);
     }
+
+    /* Mobile Enhancements */
+    @media (max-width: 768px) {
+        .hero-section {
+            padding: 2rem 1rem;
+            border-radius: 1.5rem;
+            margin-top: 0.5rem;
+        }
+        .display-title {
+            font-size: 2.25rem;
+        }
+        .hero-img-wrapper {
+            transform: none;
+            margin: 2rem auto 0;
+            max-width: 100%;
+        }
+        .floating-badge {
+            padding: 0.75rem 1rem;
+            gap: 0.5rem;
+            transform: scale(0.85);
+        }
+        .floating-badge p {
+            font-size: 0.8rem !important;
+        }
+        .stats-container {
+            justify-content: space-between;
+            gap: 1rem !important;
+        }
+    }
 </style>
 
 <div class="pb-5">
@@ -176,37 +205,37 @@
                     Benk Art menghadirkan solusi cetak digital profesional dengan hasil warna memukau, tajam, dan presisi tinggi untuk mendukung setiap pertumbuhan bisnis serta ide kreatif Anda.
                 </p>
                 
-                <div class="d-flex flex-wrap gap-3 mb-4">
-                    <a href="{{ route('products.index') }}" class="btn btn-primary rounded-4 px-4 py-2 fw-bold shadow-lg text-white">
+                <div class="d-flex flex-column flex-sm-row gap-3 mb-4">
+                    <a href="{{ route('products.index') }}" class="btn btn-primary rounded-4 px-4 py-3 py-sm-2 fw-bold shadow-lg text-white d-flex justify-content-center align-items-center transition-all">
                         Mulai Belanja <i class="fas fa-arrow-right ms-2 small"></i>
                     </a>
-                    <a href="https://wa.me/6289637506893" target="_blank" class="btn btn-outline-primary rounded-4 px-4 py-2 fw-bold border-2">
+                    <a href="https://wa.me/6289637506893" target="_blank" class="btn btn-outline-primary rounded-4 px-4 py-3 py-sm-2 fw-bold border-2 d-flex justify-content-center align-items-center transition-all">
                         Hubungi Kami
                     </a>
                 </div>
                 
-                <div class="d-flex gap-5 pt-4 border-top">
-                    <div>
+                <div class="d-flex stats-container gap-5 pt-4 border-top">
+                    <div class="text-center text-lg-start">
                         <h4 class="fw-bold mb-0 text-dark">10k+</h4>
                         <small class="text-uppercase text-muted fw-bold" style="font-size: 9px; letter-spacing: 1px;">Pelanggan</small>
                     </div>
-                    <div>
+                    <div class="text-center text-lg-start">
                         <h4 class="fw-bold mb-0 text-dark">50+</h4>
                         <small class="text-uppercase text-muted fw-bold" style="font-size: 9px; letter-spacing: 1px;">Produk</small>
                     </div>
-                    <div>
+                    <div class="text-center text-lg-start">
                         <h4 class="fw-bold mb-0 text-dark">24h</h4>
                         <small class="text-uppercase text-muted fw-bold" style="font-size: 9px; letter-spacing: 1px;">Pengerjaan</small>
                     </div>
                 </div>
             </div>
 
-            <div class="col-lg-5 d-none d-lg-block position-relative">
+            <div class="col-lg-5 mt-5 mt-lg-0 position-relative">
                 <div class="hero-img-wrapper">
                     <img src="{{ asset('storage/asset/profil-depan.jpg') }}" alt="Hero Image" class="img-fluid" style="height: 350px; object-fit: cover; width: 100%; border-radius: 1.75rem;">
                     
                     <!-- Floating Badges -->
-                    <div class="floating-badge" style="top: 20%; left: -40px; animation: float 4s ease-in-out infinite;">
+                    <div class="floating-badge" style="top: 10%; left: -10px; animation: float 4s ease-in-out infinite;">
                         <div class="bg-success bg-opacity-10 text-success rounded-3 p-2">
                             <i class="fas fa-check-circle"></i>
                         </div>
@@ -216,7 +245,7 @@
                         </div>
                     </div>
 
-                    <div class="floating-badge" style="bottom: 20%; right: -20px; animation: float 5s ease-in-out infinite 1s;">
+                    <div class="floating-badge" style="bottom: 10%; right: -10px; animation: float 5s ease-in-out infinite 1s;">
                         <div class="bg-primary bg-opacity-10 text-primary rounded-3 p-2">
                             <i class="fas fa-star"></i>
                         </div>
