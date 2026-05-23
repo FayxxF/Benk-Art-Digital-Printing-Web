@@ -34,7 +34,7 @@
             <h5 class="text-base font-bold text-navy mb-4">Informasi Produk</h5>
 
             <div class="mb-4">
-                <label class="block text-xs font-semibold text-navy mb-1.5" style="opacity:0.6">Nama Produk</label>
+                <label class="block text-xs font-semibold text-navy mb-1.5" style="opacity:0.6">Nama Produk <span class="text-danger">*</span></label>
                 <input type="text" name="name" value="{{ old('name', $product->name) }}" required
                        class="w-full px-4 py-2 rounded-md text-sm text-navy outline-none"
                        style="border:1.5px solid rgba(34,53,96,0.15);background:#fff"
@@ -43,7 +43,7 @@
 
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
                 <div>
-                    <label class="block text-xs font-semibold text-navy mb-1.5" style="opacity:0.6">Kategori</label>
+                    <label class="block text-xs font-semibold text-navy mb-1.5" style="opacity:0.6">Kategori <span class="text-danger">*</span></label>
                     <select name="category_id"
                             class="w-full px-4 py-2 rounded-md text-sm text-navy outline-none"
                             style="border:1.5px solid rgba(34,53,96,0.15);background:#fff"
@@ -54,14 +54,14 @@
                     </select>
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-navy mb-1.5" style="opacity:0.6">Harga (Rp)</label>
+                    <label class="block text-xs font-semibold text-navy mb-1.5" style="opacity:0.6">Harga (Rp) <span class="text-danger">*</span></label>
                     <input type="number" name="price" value="{{ old('price', $product->price) }}" required
                            class="w-full px-4 py-2 rounded-md text-sm text-navy outline-none"
                            style="border:1.5px solid rgba(34,53,96,0.15);background:#fff"
                            onfocus="this.style.borderColor='#3B82F6'" onblur="this.style.borderColor='rgba(34,53,96,0.15)'">
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-navy mb-1.5" style="opacity:0.6">Stok</label>
+                    <label class="block text-xs font-semibold text-navy mb-1.5" style="opacity:0.6">Stok <span class="text-danger">*</span></label>
                     <input type="number" name="stock" value="{{ old('stock', $product->stock) }}" required
                            class="w-full px-4 py-2 rounded-md text-sm text-navy outline-none"
                            style="border:1.5px solid rgba(34,53,96,0.15);background:#fff"
@@ -70,7 +70,7 @@
             </div>
 
             <div class="mb-4">
-                <label class="block text-xs font-semibold text-navy mb-1.5" style="opacity:0.6">Deskripsi</label>
+                <label class="block text-xs font-semibold text-navy mb-1.5" style="opacity:0.6">Deskripsi <span class="text-danger">*</span></label>
                 <textarea name="description" rows="4"
                           class="w-full px-4 py-2 rounded-md text-sm text-navy outline-none resize-none"
                           style="border:1.5px solid rgba(34,53,96,0.15);background:#fff"
@@ -105,7 +105,7 @@
             <p class="text-xs text-navy mb-4" style="opacity:0.4">Kelola diskon promosi berdasarkan periode waktu.</p>
 
             <div class="mb-3">
-                <label class="block text-xs font-semibold text-navy mb-1.5" style="opacity:0.6">Persentase Diskon (%)</label>
+                <label class="block text-xs font-semibold text-navy mb-1.5" style="opacity:0.6">Persentase Diskon (%) <span class="text-danger">*</span></label>
                 <div class="relative flex items-center">
                     <input type="number" name="discount_percentage" id="discount_percentage" 
                            value="{{ old('discount_percentage', $product->discount_percentage ?? 0) }}" min="0" max="100"
@@ -119,7 +119,7 @@
             </div>
 
             <div class="mb-3">
-                <label class="block text-xs font-semibold text-navy mb-1.5" style="opacity:0.6">Tanggal Mulai</label>
+                <label class="block text-xs font-semibold text-navy mb-1.5" style="opacity:0.6">Tanggal Mulai <span class="text-danger">*</span></label>
                 <input type="datetime-local" name="discount_start_date" id="discount_start"
                        value="{{ old('discount_start_date', isset($product->discount_start_date) ? \Carbon\Carbon::parse($product->discount_start_date)->format('Y-m-d\TH:i') : '') }}"
                        class="w-full px-4 py-2 rounded-md text-sm text-navy outline-none"
@@ -127,7 +127,7 @@
             </div>
 
             <div class="mb-4">
-                <label class="block text-xs font-semibold text-navy mb-1.5" style="opacity:0.6">Tanggal Berakhir</label>
+                <label class="block text-xs font-semibold text-navy mb-1.5" style="opacity:0.6">Tanggal Berakhir <span class="text-danger">*</span></label>
                 <input type="datetime-local" name="discount_end_date" id="discount_end"
                        value="{{ old('discount_end_date', isset($product->discount_end_date) ? \Carbon\Carbon::parse($product->discount_end_date)->format('Y-m-d\TH:i') : '') }}"
                        class="w-full px-4 py-2 rounded-md text-sm text-navy outline-none"

@@ -31,7 +31,7 @@
             </div>
             @endif
             <div class="mb-4">
-                <label class="block text-xs font-semibold text-navy mb-1.5" style="opacity:0.6">Nama Kategori</label>
+                <label class="block text-xs font-semibold text-navy mb-1.5" style="opacity:0.6">Nama Kategori <span class="text-danger">*</span></label>
                 <input type="text" name="name" required autofocus
                        placeholder="Cth: Merchandise"
                        class="w-full px-3 py-2 rounded-md text-sm text-navy outline-none"
@@ -62,7 +62,7 @@
         <form id="formEditKategori" method="POST">
             @csrf @method('PUT')
             <div class="mb-4">
-                <label class="block text-xs font-semibold text-navy mb-1.5" style="opacity:0.6">Nama Kategori</label>
+                <label class="block text-xs font-semibold text-navy mb-1.5" style="opacity:0.6">Nama Kategori <span class="text-danger">*</span></label>
                 <input type="text" id="editNamaKategori" name="name" required
                        class="w-full px-3 py-2 rounded-md text-sm text-navy outline-none"
                        style="border:1.5px solid rgba(34,53,96,0.15);background:#f8f9fb"
