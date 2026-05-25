@@ -36,7 +36,7 @@ class AdminController extends Controller
             ->orderBy('bulan', 'desc')
             ->get();
 
-        $apriori = new AprioriService(minSupport: 0.01, minConfidence: 0.3);
+        $apriori = new AprioriService(minSupport: 0.01, minConfidence: 0.5);
 
         // 1. Dapatkan SEMUA rule kombinasi secara global, bukan per produk
         $rules = $apriori->generateRules();
@@ -69,7 +69,9 @@ class AdminController extends Controller
                 $formattedRecommendations[] = [
                     'product_a' => $productNames[$idA] ?? 'Produk Dihapus',
                     'product_b' => $productNames[$idB] ?? 'Produk Dihapus',
-                    'percentage' => round($rule['confidence'] * 100) // Ubah 0.85 jadi 85
+                    'percentage' => round($rule['confidence'] * 100), // Ubah 0.85 jadi 85
+                    'support' => $rule['support'] ?? 0,
+                    'lift' => $rule['lift'] ?? 0,
                 ];
             }
 

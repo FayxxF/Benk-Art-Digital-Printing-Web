@@ -179,6 +179,9 @@ class AprioriService
                     $confidence = $itemset['support'] / $supportAntecedent;
 
                     if ($confidence >= $this->minConfidence) {
+                        $supportConsequent = $this->calculateSupport($consequent);
+                        if ($supportConsequent === 0.0) continue;
+
                         $rules[] = [
                             'antecedent'  => $antecedent,
                             'consequent'  => $consequent,
