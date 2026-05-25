@@ -36,7 +36,7 @@ class AdminController extends Controller
             ->orderBy('bulan', 'desc')
             ->get();
 
-        $apriori = new AprioriService(minSupport: 0.01, minConfidence: 0.3);
+        $apriori = new AprioriService(minSupport: 0.01, minConfidence: 0.5);
 
         // 1. Dapatkan SEMUA rule kombinasi secara global, bukan per produk
         $rules = $apriori->generateRules();
@@ -65,11 +65,33 @@ class AdminController extends Controller
                 // Karena Apriori bisa menghasilkan kombinasi [1, 2] => [3], kita ambil item pertamanya saja untuk disederhanakan di UI
                 $idA = $rule['antecedent'][0] ?? null;
                 $idB = $rule['consequent'][0] ?? null;
+                $confidence = $rule['confidence'] ?? 0;
+                $lift = $rule['lift'] ?? 0;
+                $transactionCount = $rule['count'] ?? 0;
+
+                if ($transactionCount < 20) {
+                    $status = 'Belum Cukup Transaksi';
+                    $statusClass = 'bg-amber-50 text-amber-700';
+                } elseif ($confidence >= 0.7 && $lift > 1) {
+                    $status = 'Strong';
+                    $statusClass = 'bg-emerald-50 text-emerald-700';
+                } elseif ($confidence >= 0.5 && $lift > 1) {
+                    $status = 'Medium';
+                    $statusClass = 'bg-blue-50 text-blue-700';
+                } else {
+                    $status = 'Weak';
+                    $statusClass = 'bg-slate-100 text-slate-600';
+}
 
                 $formattedRecommendations[] = [
                     'product_a' => $productNames[$idA] ?? 'Produk Dihapus',
                     'product_b' => $productNames[$idB] ?? 'Produk Dihapus',
-                    'percentage' => round($rule['confidence'] * 100) // Ubah 0.85 jadi 85
+                    'percentage' => $confidence,
+                    'support' => $rule['support'] ?? 0,
+                    'lift' => $lift,
+                    'transaction_count' => $transactionCount,
+                    'status' => $status,
+                    'status_class' => $statusClass,
                 ];
             }
 

@@ -88,6 +88,8 @@
                         <th class="px-6 py-3 text-center">→</th>
                         <th class="px-6 py-3">Produk B</th>
                         <th class="px-6 py-3 text-center">Conf.</th>
+                        <th class="px-6 py-3 text-center">Support</th>
+                        <th class="px-6 py-3 text-center">Lift</th>
                         <th class="px-6 py-3">Status</th>
                     </tr>
                 </thead>
@@ -97,16 +99,17 @@
                         <td class="px-6 py-4 font-medium text-slate-700">{{ $rec['product_a'] }}</td>
                         <td class="px-6 py-4 text-center text-slate-300"><i class="fas fa-arrow-right"></i></td>
                         <td class="px-6 py-4 font-medium text-slate-700">{{ $rec['product_b'] }}</td>
-                        <td class="px-6 py-4 text-center font-black text-slate-800">{{ $rec['percentage'] }}%</td>
+                        <td class="px-6 py-4 text-center font-black text-slate-800">{{ $rec['percentage'] }}</td>
+                        <td class="px-6 py-4 text-center font-black text-slate-800">{{ $rec['support'] ?? 0 }}</td>
+                        <td class="px-6 py-4 text-center font-black text-slate-800">{{ $rec['lift'] ?? 0 }}x</td>
                         <td class="px-6 py-4">
-                            @php $c = $rec['percentage'] > 70 ? 'bg-emerald-50 text-emerald-700' : 'bg-blue-50 text-blue-700'; @endphp
-                            <span class="px-2 py-1 rounded-md text-[10px] font-bold uppercase {{ $c }}">
-                                {{ $rec['percentage'] > 70 ? 'Strong' : 'Medium' }}
+                            <span class="px-2 py-1 rounded-md text-[10px] font-bold uppercase {{ $rec['status_class'] ?? 'bg-slate-100 text-slate-600' }}" title="{{ $rec['transaction_count'] ?? 0 }} transaksi pendukung">
+                                {{ $rec['status'] ?? 'Weak' }}
                             </span>
                         </td>
                     </tr>
                     @empty
-                    <tr><td colspan="5" class="px-6 py-8 text-center text-slate-400 italic">Data belum tersedia.</td></tr>
+                    <tr><td colspan="7" class="px-6 py-8 text-center text-slate-400 italic">Data belum tersedia.</td></tr>
                     @endforelse
                 </tbody>
             </table>
