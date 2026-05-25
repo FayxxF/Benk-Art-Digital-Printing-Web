@@ -29,6 +29,60 @@
         z-index: 10;
         box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3);
     }
+
+    /* Pagination Style */
+    .products-pagination-wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        align-items: center;
+        justify-content: center;
+        margin-top: 1.5rem;
+    }
+    .products-pagination-info {
+        font-size: 0.75rem;
+        color: #334155;
+        opacity: 0.65;
+    }
+    .products-pagination-controls {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.25rem;
+        align-items: center;
+        justify-content: center;
+    }
+    .products-pagination-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 2rem;
+        min-width: 2rem;
+        height: 2rem;
+        border-radius: 0.75rem;
+        background: rgba(34, 53, 96, 0.06);
+        color: #223560;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.2s ease;
+    }
+    .products-pagination-btn:hover {
+        background: rgba(34, 53, 96, 0.12);
+    }
+    .products-pagination-btn-current {
+        background: #3b82f6;
+        color: #ffffff;
+    }
+    .products-pagination-btn-disabled {
+        background: rgba(34, 53, 96, 0.05);
+        color: #334155;
+        opacity: 0.25;
+        cursor: not-allowed;
+        pointer-events: none;
+    }
+    .products-pagination-btn i {
+        font-size: 0.7rem;
+    }
 </style>
 
 <div class="container py-5">
@@ -105,14 +159,48 @@
                 </div>
                 @endforeach
             </div>
-            
-            {{-- Loading & End --}}
-            <div id="loadingIndicator" class="text-center py-4" style="display:none;">
-                <div class="spinner-border text-primary"></div>
+
+            {{-- PAGINATION --}}
+            @if($products->hasPages())
+            <div class="products-pagination-wrapper">
+                <div class="products-pagination-info">
+                    Halaman {{ $products->currentPage() }} dari {{ $products->lastPage() }}
+                </div>
+                <div class="products-pagination-controls">
+                    @if($products->onFirstPage())
+                        <span class="products-pagination-btn products-pagination-btn-disabled">
+                            <i class="fas fa-chevron-left"></i>
+                        </span>
+                    @else
+                        <a href="{{ $products->previousPageUrl() }}" class="products-pagination-btn">
+                            <i class="fas fa-chevron-left"></i>
+                        </a>
+                    @endif
+
+                    @foreach($products->getUrlRange(max(1, $products->currentPage() - 2), min($products->lastPage(), $products->currentPage() + 2)) as $page => $url)
+                        @if($page == $products->currentPage())
+                            <span class="products-pagination-btn products-pagination-btn-current">
+                                {{ $page }}
+                            </span>
+                        @else
+                            <a href="{{ $url }}" class="products-pagination-btn">
+                                {{ $page }}
+                            </a>
+                        @endif
+                    @endforeach
+
+                    @if($products->hasMorePages())
+                        <a href="{{ $products->nextPageUrl() }}" class="products-pagination-btn">
+                            <i class="fas fa-chevron-right"></i>
+                        </a>
+                    @else
+                        <span class="products-pagination-btn products-pagination-btn-disabled">
+                            <i class="fas fa-chevron-right"></i>
+                        </span>
+                    @endif
+                </div>
             </div>
-            <div id="endOfList" class="text-center py-4" style="display:none;">
-                <p class="text-muted small">Semua produk ditampilkan</p>
-            </div>
+            @endif
         </div>
     </div>
 </div>
