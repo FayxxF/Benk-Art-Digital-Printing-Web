@@ -185,9 +185,10 @@ class AprioriService
                         $rules[] = [
                             'antecedent'  => $antecedent,
                             'consequent'  => $consequent,
-                            'support'     => round($itemset['support'], 4),
-                            'confidence'  => round($confidence, 4),
-                            'lift'        => round($confidence / $this->calculateSupport($consequent), 4),
+                            'support'     => $itemset['support'],
+                            'confidence'  => $confidence,
+                            'lift'        => $confidence / $supportConsequent,
+                            'count'       => $itemset['count'] ?? (int) round($itemset['support'] * $this->totalTransactions),
                         ];
                     }
                 }
@@ -222,11 +223,15 @@ class AprioriService
                                 'confidence' => $rule['confidence'],
                                 'support'    => $rule['support'],
                                 'lift'       => $rule['lift'],
+                                'count'      => $rule['count'] ?? 0,
                             ];
                         } else {
                             // Ambil confidence tertinggi
                             if ($rule['confidence'] > $recommendations[$key]['confidence']) {
                                 $recommendations[$key]['confidence'] = $rule['confidence'];
+                                $recommendations[$key]['support']    = $rule['support'];
+                                $recommendations[$key]['lift']       = $rule['lift'];
+                                $recommendations[$key]['count']      = $rule['count'] ?? 0;
                             }
                         }
                     }
