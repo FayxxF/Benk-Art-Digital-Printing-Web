@@ -228,7 +228,7 @@
             <input type="number" name="specs[${groupIndex}][options][${optionIndex}][price]"
                    class="w-24 px-3 py-1.5 rounded-lg text-xs text-navy outline-none"
                    style="border:1.5px solid rgba(34,53,96,0.15);background:#fff"
-                   placeholder="Harga +" value="0">
+                   placeholder="Harga +" value="0" min="0">
             <button type="button" onclick="this.closest('.spec-option-row').remove()"
                     class="w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold"
                     style="background:rgba(239,68,68,0.08);color:#dc2626;border:none;cursor:pointer"
