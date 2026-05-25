@@ -127,6 +127,15 @@
                     <i class="fas fa-credit-card" style="font-size:13px"></i> Bayar Sekarang
                 </button>
             </div>
+            @elseif($order->status == 'processing' || $order->status == 'completed')
+            <div style="display:flex;justify-content:flex-end">
+                <a href="https://wa.me/6281234567890?text=Halo%20Admin,%20saya%20ingin%20menghubungi%20terkait%20pesanan%20dengan%20nomor%20invoice%20%23{{ $order->invoice_number }}" 
+                   target="_blank"
+                   style="display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:600;padding:10px 24px;border-radius:8px;background:#25D366;color:#fff;border:none;cursor:pointer;text-decoration:none"
+                   onmouseover="this.style.background='#128C7E'" onmouseout="this.style.background='#25D366'">
+                    <i class="fab fa-whatsapp" style="font-size:15px"></i> Hubungi Admin
+                </a>
+            </div>
             @endif
 
         </div>
