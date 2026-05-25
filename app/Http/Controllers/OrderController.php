@@ -30,9 +30,9 @@ class OrderController extends Controller
     public function show(Order $order)
     {
         // Security: Only allow owner or admin
-        if ($order->user_id !== Auth::id() && Auth::user() ->role !== 'admin') {
-            abort(403);
-        }
+        if ((int) $order->user_id !== (int) Auth::id() && Auth::user()->role !== 'admin') {
+        abort(403);
+    }
 
         $order->load('details.product');
         return view('orders.show', compact('order'));
