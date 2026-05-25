@@ -232,7 +232,7 @@
 
             <div class="col-lg-5 mt-5 mt-lg-0 position-relative">
                 <div class="hero-img-wrapper">
-                    <img src="{{ asset('storage/asset/profil-depan.jpg') }}" alt="Hero Image" class="img-fluid" style="height: 350px; object-fit: cover; width: 100%; border-radius: 1.75rem;">
+                    <img src="{{ asset('profil-depan.jpg') }}" alt="Hero Image" class="img-fluid" style="height: 350px; object-fit: cover; width: 100%; border-radius: 1.75rem;">
                     
                     <!-- Floating Badges -->
                     <div class="floating-badge" style="top: 10%; left: -10px; animation: float 4s ease-in-out infinite;">

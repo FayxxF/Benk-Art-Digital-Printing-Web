@@ -34,7 +34,7 @@
             <h5 class="text-base font-bold text-navy mb-4">Informasi Produk</h5>
 
             <div class="mb-4">
-                <label class="block text-xs font-semibold text-navy mb-1.5" style="opacity:0.6">Nama Produk</label>
+                <label class="block text-xs font-semibold text-navy mb-1.5" style="opacity:0.6">Nama Produk <span class="text-danger">*</span></label>
                 <input type="text" name="name" value="{{ old('name') }}" required
                        class="w-full px-4 py-2 rounded-md text-sm text-navy outline-none transition-all"
                        style="border:1.5px solid rgba(34,53,96,0.15);background:#fff"
@@ -44,7 +44,7 @@
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
                 <div>
-                    <label class="block text-xs font-semibold text-navy mb-1.5" style="opacity:0.6">Kategori</label>
+                    <label class="block text-xs font-semibold text-navy mb-1.5" style="opacity:0.6">Kategori <span class="text-danger">*</span></label>
                     <select name="category_id" required
                             class="w-full px-4 py-2 rounded-md text-sm text-navy outline-none transition-all"
                             style="border:1.5px solid rgba(34,53,96,0.15);background:#fff"
@@ -55,7 +55,7 @@
                     </select>
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-navy mb-1.5" style="opacity:0.6">Harga Dasar (Rp)</label>
+                    <label class="block text-xs font-semibold text-navy mb-1.5" style="opacity:0.6">Harga Dasar (Rp) <span class="text-danger">*</span></label>
                     <input type="number" name="price" value="{{ old('price') }}" required
                            class="w-full px-4 py-2 rounded-md text-sm text-navy outline-none transition-all"
                            style="border:1.5px solid rgba(34,53,96,0.15);background:#fff"
@@ -65,7 +65,7 @@
             </div>
 
             <div class="mb-4">
-                <label class="block text-xs font-semibold text-navy mb-1.5" style="opacity:0.6">Deskripsi</label>
+                <label class="block text-xs font-semibold text-navy mb-1.5" style="opacity:0.6">Deskripsi <span class="text-danger">*</span></label>
                 <textarea name="description" rows="4"
                           class="w-full px-4 py-2 rounded-md text-sm text-navy outline-none transition-all resize-none"
                           style="border:1.5px solid rgba(34,53,96,0.15);background:#fff"
@@ -75,14 +75,14 @@
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                    <label class="block text-xs font-semibold text-navy mb-1.5" style="opacity:0.6">Stok Awal</label>
+                    <label class="block text-xs font-semibold text-navy mb-1.5" style="opacity:0.6">Stok Awal <span class="text-danger">*</span></label>
                     <input type="number" name="stock" value="{{ old('stock', 100) }}"
                            class="w-full px-4 py-2 rounded-md text-sm text-navy outline-none transition-all"
                            style="border:1.5px solid rgba(34,53,96,0.15);background:#fff"
                            onfocus="this.style.borderColor='#3B82F6'" onblur="this.style.borderColor='rgba(34,53,96,0.15)'">
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-navy mb-1.5" style="opacity:0.6">Foto Produk</label>
+                    <label class="block text-xs font-semibold text-navy mb-1.5" style="opacity:0.6">Foto Produk <span class="text-danger">*</span></label>
                     <input type="file" name="image" required
                            class="w-full px-4 py-2 rounded-md text-sm text-navy outline-none transition-all"
                            style="border:1.5px solid rgba(34,53,96,0.15);background:#fff">
@@ -101,7 +101,7 @@
             <p class="text-xs text-navy mb-4" style="opacity:0.4">Kelola diskon promosi berdasarkan periode waktu.</p>
 
             <div class="mb-3">
-                <label class="block text-xs font-semibold text-navy mb-1.5" style="opacity:0.6">Persentase Diskon (%)</label>
+                <label class="block text-xs font-semibold text-navy mb-1.5" style="opacity:0.6">Persentase Diskon (%) <span class="text-danger">*</span></label>
                 <div class="relative flex items-center">
                     <input type="number" name="discount_percentage" id="discount_percentage" 
                            value="{{ old('discount_percentage', 0) }}" min="0" max="100"
@@ -116,7 +116,7 @@
             </div>
 
             <div class="mb-3">
-                <label class="block text-xs font-semibold text-navy mb-1.5" style="opacity:0.6">Tanggal Mulai</label>
+                <label class="block text-xs font-semibold text-navy mb-1.5" style="opacity:0.6">Tanggal Mulai <span class="text-danger">*</span></label>
                 <input type="datetime-local" name="discount_start_date" id="discount_start"
                        value="{{ old('discount_start_date') }}"
                        class="w-full px-4 py-2 rounded-md text-sm text-navy outline-none transition-all"
@@ -125,7 +125,7 @@
             </div>
 
             <div class="mb-4">
-                <label class="block text-xs font-semibold text-navy mb-1.5" style="opacity:0.6">Tanggal Berakhir</label>
+                <label class="block text-xs font-semibold text-navy mb-1.5" style="opacity:0.6">Tanggal Berakhir <span class="text-danger">*</span></label>
                 <input type="datetime-local" name="discount_end_date" id="discount_end"
                        value="{{ old('discount_end_date') }}"
                        class="w-full px-4 py-2 rounded-md text-sm text-navy outline-none transition-all"
@@ -228,7 +228,7 @@
             <input type="number" name="specs[${groupIndex}][options][${optionIndex}][price]"
                    class="w-24 px-3 py-1.5 rounded-lg text-xs text-navy outline-none"
                    style="border:1.5px solid rgba(34,53,96,0.15);background:#fff"
-                   placeholder="Harga +" value="0">
+                   placeholder="Harga +" value="0" min="0">
             <button type="button" onclick="this.closest('.spec-option-row').remove()"
                     class="w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold"
                     style="background:rgba(239,68,68,0.08);color:#dc2626;border:none;cursor:pointer"

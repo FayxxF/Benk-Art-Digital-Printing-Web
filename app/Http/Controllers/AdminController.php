@@ -134,11 +134,14 @@ class AdminController extends Controller
             'stock' => 'required|numeric|min:0',
             'image' => 'required|image|max:51200',
             'specs' => 'nullable|array',
+            'specs.*.price' => 'required_with:specs|numeric|min:0',
             'discount_percentage' => 'nullable|numeric|min:0|max:100',
             'discount_start_date' => 'nullable|date',
             'discount_end_date'   => 'nullable|date|after_or_equal:discount_start_date',
             'description' => 'required|string',
         ], [
+            'specs.*.price.min' => 'Harga spesifikasi tidak boleh di bawah Rp 0.',
+            'specs.*.price.numeric' => 'Harga spesifikasi harus berupa angka.',
             'price.min' => 'Harga tidak boleh kurang dari 0',
             'discount_end_date.after_or_equal' => 'Tanggal selesai tidak boleh sebelum tanggal mulai',
         ]);
@@ -176,11 +179,14 @@ class AdminController extends Controller
             'stock' => 'required|numeric|min:0',
             'image' => 'nullable|image|max:51200',
             'specs' => 'nullable|array',
+            'specs.*.price' => 'required_with:specs|numeric|min:0',
             'discount_percentage' => 'nullable|numeric|min:0|max:100',
             'discount_start_date' => 'nullable|date',
             'discount_end_date'   => 'nullable|date|after_or_equal:discount_start_date',
             'description' => 'required|string',
         ], [
+            'specs.*.price.min' => 'Harga spesifikasi tidak boleh di bawah Rp 0.',
+            'specs.*.price.numeric' => 'Harga spesifikasi harus berupa angka.',
             'price.min' => 'Harga tidak boleh kurang dari 0',
             'discount_end_date.after_or_equal' => 'Tanggal selesai tidak boleh sebelum tanggal mulai',
         ]);
