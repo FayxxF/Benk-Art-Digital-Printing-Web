@@ -106,11 +106,26 @@
             {{-- SEARCH BAR --}}
             <form method="GET" action="{{ route('products.index') }}" class="mb-4">
                 @if(request('category')) <input type="hidden" name="category" value="{{ request('category') }}"> @endif
-                <div class="input-group shadow-sm border rounded-pill p-1">
-                    <input type="text" name="search" value="{{ request('search') }}" class="form-control border-0 rounded-pill px-3" placeholder="Cari produk...">
-                    <button class="btn btn-primary rounded-pill px-3" type="submit">
-                        <i class="fas fa-search"></i>
-                    </button>
+                <div class="row g-2">
+                    <div class="col-12 col-md-7">
+                        <div class="input-group shadow-sm border rounded-pill p-1">
+                            <input type="text" name="search" value="{{ request('search') }}" class="form-control border-0 rounded-pill px-3" placeholder="Cari produk...">
+                            <button class="btn btn-primary rounded-pill px-3" type="submit">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-5">
+                        <div class="d-flex gap-2 align-items-center w-100">
+                            <select name="sort" class="form-select rounded-pill px-3 py-2 border" style="min-width:0;" onchange="this.form.submit()">
+                                <option value="">Urutkan berdasarkan</option>
+                                <option value="name_asc" {{ request('sort') === 'name_asc' ? 'selected' : '' }}>A - Z</option>
+                                <option value="name_desc" {{ request('sort') === 'name_desc' ? 'selected' : '' }}>Z - A</option>
+                                <option value="price_asc" {{ request('sort') === 'price_asc' ? 'selected' : '' }}>Harga Termurah</option>
+                                <option value="price_desc" {{ request('sort') === 'price_desc' ? 'selected' : '' }}>Harga Termahal</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
             </form>
 
