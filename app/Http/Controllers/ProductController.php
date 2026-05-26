@@ -22,6 +22,16 @@ class ProductController extends Controller
             $query->where('category_id', $request->category);
         }
 
+        if ($request->filled('sort')) {
+            match ($request->sort) {
+                'name_asc' => $query->orderBy('name', 'asc'),
+                'name_desc' => $query->orderBy('name', 'desc'),
+                'price_asc' => $query->orderBy('price', 'asc'),
+                'price_desc' => $query->orderBy('price', 'desc'),
+                default => null,
+            };
+        }
+
         $products   = $query->paginate(12)->withQueryString();
         $categories = Category::where('is_active', true)->get();
 
